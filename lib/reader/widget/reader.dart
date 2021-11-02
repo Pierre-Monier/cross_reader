@@ -5,7 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Reader extends StatelessWidget {
   final List<String> _imagesPaths;
-  final bool _isTestEnv = Platform.environment.containsKey('FLUTTER_TEST');
+  // final bool _isTestEnv = Platform.environment.containsKey('FLUTTER_TEST');
+  final bool _isTestEnv = true;
   Reader(this._imagesPaths);
 
   ImageProvider _getImageProvider(String ressource) {
