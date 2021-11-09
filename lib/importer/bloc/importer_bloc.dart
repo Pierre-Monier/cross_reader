@@ -1,13 +1,14 @@
 import 'dart:io';
-
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import './importer_event.dart';
 
-class ImporterBloc extends Bloc<ImporterEvent, Map<String, bool?>> {
+part 'importer_event.dart';
+part 'importer_state.dart';
+
+class ImporterBloc extends Bloc<ImporterEvent, ImporterState> {
   static const VALID_IMAGES_FILES = ['png', 'pdf', 'jpeg', 'jpg'];
-  ImporterBloc() : super({"isImporting": false, "importSuccess": null}) {
-    on<LaunchImport>(
-        (event, emit) => emit({"isImporting": true, "importSuccess": null}));
+  ImporterBloc() : super(ImporterDefault()) {
+    on<LaunchImport>((event, emit) => emit(ImporterStarted()));
 
     on<Import>((event, emit) async {
       final directory = event.directory;
@@ -17,9 +18,9 @@ class ImporterBloc extends Bloc<ImporterEvent, Map<String, bool?>> {
           exists ? await _doesDirHasValidFiles(directory) : false;
 
       if (!exists || !hasValidFiles) {
-        emit({"isImporting": false, "importSuccess": false});
+        emit(ImporterFailed());
       } else {
-        emit({"isImporting": false, "importSuccess": true});
+        emit(ImporterSucceed());
       }
     });
   }

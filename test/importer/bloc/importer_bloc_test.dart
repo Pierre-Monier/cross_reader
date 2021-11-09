@@ -2,42 +2,37 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cross_reader/importer/bloc/importer_bloc.dart';
-import 'package:cross_reader/importer/bloc/importer_event.dart';
+import 'package:cross_reader/importer/importer.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'importer_cubit_test.mocks.dart';
+import 'importer_bloc_test.mocks.dart';
 import '../../utils/mock_file_system_entity.dart';
 
 @GenerateMocks([Directory])
 void main() {
-  blocTest<ImporterBloc, Map<String, bool?>>(
+  blocTest<ImporterBloc, ImporterState>(
       'It emits no state when nothing is called, default state is {"isImporting": false, "importSuccess": null}',
       build: () => ImporterBloc(),
       expect: () => [],
-      verify: (bloc) =>
-          expect(bloc.state, {"isImporting": false, "importSuccess": null}));
+      verify: (bloc) => expect(bloc.state, ImporterDefault()));
 
-  blocTest<ImporterBloc, Map<String, bool?>>(
-    'It emits a sate with isImporting: true when LaunchImport event is trigger',
+  blocTest<ImporterBloc, ImporterState>(
+    'It emits a ImporterStarted state when LaunchImport event is trigger',
     build: () => ImporterBloc(),
     act: (bloc) => bloc.add(LaunchImport()),
-    expect: () => [
-      {"isImporting": true, "importSuccess": null}
-    ],
+    expect: () => [ImporterStarted()],
   );
 
-  blocTest<ImporterBloc, Map<String, bool?>>(
-    'It emits a sate with isImporting: false and importSuccess false when the imported directory doesn\'t exist',
+  blocTest<ImporterBloc, ImporterState>(
+    'It emits a ImporterFailed state when the imported directory doesn\'t exist',
     build: () => ImporterBloc(),
     act: (bloc) => bloc.add(Import(Directory('fake'))),
-    expect: () => [
-      {"isImporting": false, "importSuccess": false}
-    ],
+    expect: () => [ImporterFailed()],
   );
 
-  blocTest<ImporterBloc, Map<String, bool?>>(
-    'It emits a sate with isImporting: false and importSuccess false when the imported directory doesn\'t contains images',
+  blocTest<ImporterBloc, ImporterState>(
+    'It emits a ImporterFailed state when the imported directory doesn\'t contains images',
     build: () => ImporterBloc(),
     act: (bloc) {
       final directory = MockDirectory();
@@ -48,13 +43,11 @@ void main() {
       return bloc.add(Import(directory));
     },
     wait: const Duration(milliseconds: 300),
-    expect: () => [
-      {"isImporting": false, "importSuccess": false}
-    ],
+    expect: () => [ImporterFailed()],
   );
 
-  blocTest<ImporterBloc, Map<String, bool?>>(
-    'It emits a sate with isImporting: false and importSuccess: true when the imported directory contains images',
+  blocTest<ImporterBloc, ImporterState>(
+    'It emits a ImporterSucceed state when the imported directory contains images',
     build: () => ImporterBloc(),
     act: (bloc) {
       final directory = MockDirectory();
@@ -65,13 +58,11 @@ void main() {
       return bloc.add(Import(directory));
     },
     wait: const Duration(milliseconds: 300),
-    expect: () => [
-      {"isImporting": false, "importSuccess": true}
-    ],
+    expect: () => [ImporterSucceed()],
   );
 
-  blocTest<ImporterBloc, Map<String, bool?>>(
-    'It handle recursivity, should emit a state with importSuccess: true if files are valid',
+  blocTest<ImporterBloc, ImporterState>(
+    'It handle recursivity, should emit a ImporterSucceed state if files are valid',
     build: () => ImporterBloc(),
     act: (bloc) {
       final directory = MockDirectory();
@@ -85,13 +76,11 @@ void main() {
       return bloc.add(Import(directory));
     },
     wait: const Duration(milliseconds: 300),
-    expect: () => [
-      {"isImporting": false, "importSuccess": true}
-    ],
+    expect: () => [ImporterSucceed()],
   );
 
-  blocTest<ImporterBloc, Map<String, bool?>>(
-    'It handle recursivity, should emit a state with importSuccess: false if a file in a subdirectory isn\'t an image',
+  blocTest<ImporterBloc, ImporterState>(
+    'It handle recursivity, should emit a ImporterFailed state if a file in a subdirectory isn\'t an image',
     build: () => ImporterBloc(),
     act: (bloc) {
       final directory = MockDirectory();
@@ -105,8 +94,6 @@ void main() {
       return bloc.add(Import(directory));
     },
     wait: const Duration(milliseconds: 300),
-    expect: () => [
-      {"isImporting": false, "importSuccess": false}
-    ],
+    expect: () => [ImporterFailed()],
   );
 }

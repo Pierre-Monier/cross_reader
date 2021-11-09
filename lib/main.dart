@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cross_reader/reader/widget/reader.dart';
+import 'package:cross_reader/reader/reader.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,7 +28,7 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Todo'),
       ),
-      body: Reader(_imagesPaths),
+      body: ReaderPage(_imagesPaths),
     );
   }
 }
