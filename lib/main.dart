@@ -1,3 +1,4 @@
+import 'package:cross_reader/library/bloc/library_bloc.dart';
 import 'package:cross_reader/library/widget/library_page.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class CrossReaderApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LibraryPage(),
+      home: LibraryPage(LibraryBloc()),
     );
   }
 }

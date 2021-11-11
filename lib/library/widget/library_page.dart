@@ -5,7 +5,8 @@ import '../importer_fab/importer_fab.dart';
 import './library_view.dart';
 
 class LibraryPage extends StatelessWidget {
-  const LibraryPage({Key? key}) : super(key: key);
+  final LibraryBloc _libraryBloc;
+  const LibraryPage(this._libraryBloc, {Key? key}) : super(key: key);
 
   _showSnackBar(BuildContext context, String message) {
     final snackBar = SnackBar(content: Text(message));
@@ -15,7 +16,7 @@ class LibraryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => LibraryBloc(),
+        create: (_) => _libraryBloc,
         child: Scaffold(
             appBar: AppBar(
               title: Text('Library'),

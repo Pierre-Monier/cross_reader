@@ -29,8 +29,8 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
     bool hasValidFiles = true;
 
     try {
-      // TODO listSync should only be used in tests
-      final List<FileSystemEntity> entities = directory.listSync();
+      final List<FileSystemEntity> entities =
+          await _getFileSystemEntities(directory);
       int i = 0;
       while (hasValidFiles && i < entities.length) {
         FileSystemEntity fileSystemEntity = entities[i];
@@ -50,6 +50,18 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
       return hasValidFiles && entities.length > 0;
     } catch (e) {
       return false;
+    }
+  }
+
+  // We use this wrapper method because we need to use listSync in test env (Stream are hard to mock)
+  Future<List<FileSystemEntity>> _getFileSystemEntities(
+      Directory directory) async {
+    final bool _isTestEnv = Platform.environment.containsKey('FLUTTER_TEST');
+
+    if (_isTestEnv) {
+      return directory.listSync();
+    } else {
+      return directory.list().toList();
     }
   }
 }
