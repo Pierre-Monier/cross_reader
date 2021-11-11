@@ -13,7 +13,12 @@ class ReaderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ReaderCubit(_imagesPaths),
-      child: ReaderView(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Reader'),
+        ),
+        body: ReaderView(),
+      ),
     );
   }
 }

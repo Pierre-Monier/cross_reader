@@ -2,13 +2,13 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'importer_event.dart';
-part 'importer_state.dart';
+part 'library_event.dart';
+part 'library_state.dart';
 
-class ImporterBloc extends Bloc<ImporterEvent, ImporterState> {
+class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
   static const VALID_IMAGES_FILES = ['png', 'pdf', 'jpeg', 'jpg'];
-  ImporterBloc() : super(ImporterDefault()) {
-    on<LaunchImport>((event, emit) => emit(ImporterStarted()));
+  LibraryBloc() : super(Default()) {
+    on<LaunchImport>((event, emit) => emit(ImportStarted()));
 
     on<Import>((event, emit) async {
       final directory = event.directory;
@@ -18,9 +18,9 @@ class ImporterBloc extends Bloc<ImporterEvent, ImporterState> {
           exists ? await _doesDirHasValidFiles(directory) : false;
 
       if (!exists || !hasValidFiles) {
-        emit(ImporterFailed());
+        emit(ImportFailed());
       } else {
-        emit(ImporterSucceed());
+        emit(ImportSucceed());
       }
     });
   }
@@ -29,8 +29,8 @@ class ImporterBloc extends Bloc<ImporterEvent, ImporterState> {
     bool hasValidFiles = true;
 
     try {
-      final List<FileSystemEntity> entities = await directory.list().toList();
-
+      // TODO listSync should only be used in tests
+      final List<FileSystemEntity> entities = directory.listSync();
       int i = 0;
       while (hasValidFiles && i < entities.length) {
         FileSystemEntity fileSystemEntity = entities[i];
@@ -47,7 +47,7 @@ class ImporterBloc extends Bloc<ImporterEvent, ImporterState> {
         i++;
       }
 
-      return hasValidFiles;
+      return hasValidFiles && entities.length > 0;
     } catch (e) {
       return false;
     }

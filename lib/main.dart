@@ -1,12 +1,11 @@
+import 'package:cross_reader/library/widget/library_page.dart';
 import 'package:flutter/material.dart';
-import 'package:cross_reader/reader/reader.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(CrossReaderApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class CrossReaderApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,21 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  MyHomePage({Key? key}) : super(key: key);
-  final _imagesPaths = ['todo'];
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Todo'),
-      ),
-      body: ReaderPage(_imagesPaths),
+      home: const LibraryPage(),
     );
   }
 }
