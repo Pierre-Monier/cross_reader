@@ -2,17 +2,15 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cross_reader/library/bloc/library_bloc.dart';
-// import 'package:cross_reader/importer/importer.dart';
 import 'package:bloc_test/bloc_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'library_bloc_test.mocks.dart';
-import '../../utils/mock_file_system_entity.dart';
+import 'package:mocktail/mocktail.dart';
+import '../../utils/mock_data.dart';
 
-@GenerateMocks([Directory])
+class MockDirectory extends Mock implements Directory {}
+
 void main() {
   blocTest<LibraryBloc, LibraryState>(
-      'It emits no state when nothing is called, default state is {"isImporting": false, "importSuccess": null}',
+      'It emits no state when nothing is called, default state is Default',
       build: () => LibraryBloc(),
       expect: () => [],
       verify: (bloc) => expect(bloc.state, Default()));
@@ -36,8 +34,9 @@ void main() {
     build: () => LibraryBloc(),
     act: (bloc) {
       final directory = MockDirectory();
-      when(directory.exists()).thenAnswer((_) async => true);
-      when(directory.listSync()).thenAnswer((_) => [notAnImageFile]);
+      when(() => directory.exists()).thenAnswer((_) async => true);
+      when(() => directory.list())
+          .thenAnswer((_) => Future(() => notAnImageFile).asStream());
 
       return bloc.add(Import(directory));
     },
@@ -50,8 +49,9 @@ void main() {
     build: () => LibraryBloc(),
     act: (bloc) {
       final directory = MockDirectory();
-      when(directory.exists()).thenAnswer((_) async => true);
-      when(directory.listSync()).thenAnswer((_) => [realImageFile]);
+      when(() => directory.exists()).thenAnswer((_) async => true);
+      when(() => directory.list())
+          .thenAnswer((_) => Future(() => realImageFile).asStream());
 
       return bloc.add(Import(directory));
     },
@@ -65,9 +65,11 @@ void main() {
     act: (bloc) {
       final directory = MockDirectory();
       final subDirectory = MockDirectory();
-      when(directory.exists()).thenAnswer((_) async => true);
-      when(directory.listSync()).thenAnswer((_) => [subDirectory]);
-      when(subDirectory.listSync()).thenAnswer((_) => [realImageFile]);
+      when(() => directory.exists()).thenAnswer((_) async => true);
+      when(() => directory.list())
+          .thenAnswer((_) => Future(() => subDirectory).asStream());
+      when(() => subDirectory.list())
+          .thenAnswer((_) => Future(() => realImageFile).asStream());
 
       return bloc.add(Import(directory));
     },
@@ -81,9 +83,11 @@ void main() {
     act: (bloc) {
       final directory = MockDirectory();
       final subDirectory = MockDirectory();
-      when(directory.exists()).thenAnswer((_) async => true);
-      when(directory.listSync()).thenAnswer((_) => [subDirectory]);
-      when(subDirectory.listSync()).thenAnswer((_) => [notAnImageFile]);
+      when(() => directory.exists()).thenAnswer((_) async => true);
+      when(() => directory.list())
+          .thenAnswer((_) => Future(() => subDirectory).asStream());
+      when(() => subDirectory.list())
+          .thenAnswer((_) => Future(() => notAnImageFile).asStream());
 
       return bloc.add(Import(directory));
     },
@@ -96,8 +100,8 @@ void main() {
       build: () => LibraryBloc(),
       act: (bloc) {
         final directory = MockDirectory();
-        when(directory.exists()).thenAnswer((_) async => true);
-        when(directory.listSync()).thenAnswer((_) => []);
+        when(() => directory.exists()).thenAnswer((_) async => true);
+        when(() => directory.list()).thenAnswer((_) => Stream.empty());
 
         return bloc.add(Import(directory));
       },

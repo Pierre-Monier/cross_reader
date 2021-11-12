@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cross_reader/reader/bloc/reader_cubit.dart';
 import 'package:bloc_test/bloc_test.dart';
-import '../../utils/mock_images.dart';
+import '../../utils/mock_data.dart';
 
 void main() {
   blocTest<ReaderCubit, String>(

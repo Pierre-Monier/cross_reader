@@ -1,38 +1,36 @@
 part of 'library_bloc.dart';
 
 abstract class LibraryState extends Equatable {
-  final Map<String, bool?> value;
-
-  const LibraryState(this.value);
+  const LibraryState();
 
   @override
-  List<Object> get props => [value];
+  List<Object> get props => [];
 }
 
 class Default extends LibraryState {
-  Default() : super({"isImporting": false, "importSuccess": null});
+  Default() : super();
 
   @override
-  List<Object> get props => [value];
+  List<Object> get props => [];
 }
 
 class ImportStarted extends LibraryState {
-  ImportStarted() : super({"isImporting": true, "importSuccess": null});
+  ImportStarted() : super();
 
   @override
-  List<Object> get props => [value];
+  List<Object> get props => [];
 }
 
 class ImportSucceed extends LibraryState {
-  ImportSucceed() : super({"isImporting": false, "importSuccess": true});
+  ImportSucceed() : super();
 
   @override
-  List<Object> get props => [value];
+  List<Object> get props => [];
 }
 
 class ImportFailed extends LibraryState {
-  ImportFailed() : super({"isImporting": false, "importSuccess": false});
+  ImportFailed() : super();
 
   @override
-  List<Object> get props => [value];
+  List<Object> get props => [];
 }

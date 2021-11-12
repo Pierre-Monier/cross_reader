@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:cross_reader/model/chapter.dart';
 import 'package:test/test.dart';
-import '../utils/mock_images.dart';
+import '../utils/mock_data.dart';
 
 void main() {
   test('We can create chapter', () {
