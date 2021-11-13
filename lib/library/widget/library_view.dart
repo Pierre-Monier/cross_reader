@@ -11,16 +11,18 @@ class LibraryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LibraryBloc, LibraryState>(builder: (context, state) {
-      if (state is ImportStarted) {
-        return CircularProgressIndicator();
-      }
+    return BlocBuilder<LibraryBloc, LibraryState>(
+      builder: (context, state) {
+        if (state is ImportStarted) {
+          return CircularProgressIndicator();
+        }
 
-      if (GetIt.I<MangaRepository>().mangaList.isEmpty) {
-        return LibraryListEmpty();
-      } else {
-        return LibraryList();
-      }
-    });
+        if (GetIt.I<MangaRepository>().mangaList.isEmpty) {
+          return LibraryListEmpty();
+        } else {
+          return LibraryList();
+        }
+      },
+    );
   }
 }

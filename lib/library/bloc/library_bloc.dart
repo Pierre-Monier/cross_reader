@@ -10,7 +10,7 @@ part 'library_state.dart';
 
 class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
   static const VALID_IMAGES_FILES = ['png', 'pdf', 'jpeg', 'jpg'];
-  LibraryBloc() : super(Default()) {
+  LibraryBloc() : super(ShowMangas()) {
     on<LaunchImport>((event, emit) => emit(ImportStarted()));
 
     on<Import>((event, emit) async {
@@ -25,6 +25,11 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
       } else {
         await GetIt.I<MangaRepository>().updateMangaList(directory);
         emit(ImportSucceed());
+        // we don't want the lasted state to be ImportSucceed
+        // because if the user do two imports, the view won't rereder (because it's the same state)
+        // we can't relly on buildWhen function because it isn't trigger
+        // so we emit the ShowMangas state to avoid this behavior
+        emit(ShowMangas());
       }
     });
   }

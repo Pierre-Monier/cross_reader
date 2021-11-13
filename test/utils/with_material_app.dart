@@ -5,3 +5,11 @@ MaterialApp withMaterialApp(Widget widget) {
     home: widget,
   );
 }
+
+MaterialApp withMaterialAppAndWidgetAncestor(Widget widget) {
+  return MaterialApp(
+    home: Scaffold(
+      body: widget,
+    ),
+  );
+}

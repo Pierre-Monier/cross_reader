@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cross_reader/repository/chapter_repository.dart';
-import 'package:get_it/get_it.dart';
 import 'package:test/test.dart';
 import 'package:mocktail/mocktail.dart';
 import '../utils/mock_data.dart';

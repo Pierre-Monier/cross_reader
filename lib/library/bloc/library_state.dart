@@ -1,14 +1,14 @@
 part of 'library_bloc.dart';
 
 abstract class LibraryState extends Equatable {
-  const LibraryState();
+  LibraryState();
 
   @override
   List<Object> get props => [];
 }
 
-class Default extends LibraryState {
-  Default() : super();
+class ShowMangas extends LibraryState {
+  ShowMangas() : super();
 
   @override
   List<Object> get props => [];

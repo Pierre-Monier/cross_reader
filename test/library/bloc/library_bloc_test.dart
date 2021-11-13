@@ -24,10 +24,10 @@ void main() {
         .thenAnswer((_) => Future(() => null));
   });
   blocTest<LibraryBloc, LibraryState>(
-      'It emits no state when nothing is called, default state is Default',
+      'It emits no state when nothing is called, ShowMangas state is ShowMangas',
       build: () => LibraryBloc(),
       expect: () => [],
-      verify: (bloc) => expect(bloc.state, Default()));
+      verify: (bloc) => expect(bloc.state, ShowMangas()));
 
   blocTest<LibraryBloc, LibraryState>(
     'It emits a ImportStarted state when LaunchImport event is trigger',
@@ -59,7 +59,7 @@ void main() {
   );
 
   blocTest<LibraryBloc, LibraryState>(
-    'It emits a ImportSucceed state when the imported directory contains images',
+    'It emits a ImportSucceed and ShowMangas state when the imported directory contains images',
     build: () => LibraryBloc(),
     act: (bloc) {
       final directory = MockDirectory();
@@ -69,7 +69,7 @@ void main() {
       return bloc.add(Import(directory));
     },
     wait: const Duration(milliseconds: 300),
-    expect: () => [ImportSucceed()],
+    expect: () => [ImportSucceed(), ShowMangas()],
   );
 
   blocTest<LibraryBloc, LibraryState>(
@@ -87,7 +87,7 @@ void main() {
       return bloc.add(Import(directory));
     },
     wait: const Duration(milliseconds: 300),
-    expect: () => [ImportSucceed()],
+    expect: () => [ImportSucceed(), ShowMangas()],
   );
 
   blocTest<LibraryBloc, LibraryState>(

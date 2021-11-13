@@ -10,15 +10,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:get_it/get_it.dart';
 import '../../utils/mock_data.dart';
 import '../../utils/with_material_app.dart';
-
-class MockLibraryBloc extends MockBloc<LibraryEvent, LibraryState>
-    implements LibraryBloc {}
-
-class LibraryStateFake extends Fake implements LibraryState {}
-
-class LibraryEventFake extends Fake implements LibraryEvent {}
-
-class MockMangaRepository extends Mock implements MangaRepository {}
+import '../../utils/mock_class.dart';
 
 final mockMangaRepository = MockMangaRepository();
 
@@ -44,7 +36,7 @@ void main() {
     whenListen(
       mockBlock,
       Stream.fromIterable([ImportFailed()]),
-      initialState: Default(),
+      initialState: ShowMangas(),
     );
 
     await tester.pumpWidget(withMaterialApp(LibraryPage(mockBlock)));
@@ -61,7 +53,7 @@ void main() {
     whenListen(
       mockBlock,
       Stream.fromIterable([ImportSucceed()]),
-      initialState: Default(),
+      initialState: ShowMangas(),
     );
 
     await tester.pumpWidget(withMaterialApp(LibraryPage(mockBlock)));
@@ -78,7 +70,7 @@ void main() {
     whenListen(
       mockBlock,
       Stream.fromIterable([ImportStarted()]),
-      initialState: Default(),
+      initialState: ShowMangas(),
     );
 
     await tester.pumpWidget(withMaterialApp(LibraryPage(mockBlock)));
@@ -95,8 +87,8 @@ void main() {
 
     whenListen(
       mockBlock,
-      Stream.fromIterable([Default()]),
-      initialState: Default(),
+      Stream.fromIterable([ShowMangas()]),
+      initialState: ShowMangas(),
     );
 
     await tester.pumpWidget(withMaterialApp(LibraryPage(mockBlock)));
@@ -113,8 +105,8 @@ void main() {
     when(() => mockMangaRepository.mangaList).thenReturn([mockManga]);
     whenListen(
       mockBlock,
-      Stream.fromIterable([Default()]),
-      initialState: Default(),
+      Stream.fromIterable([ShowMangas()]),
+      initialState: ShowMangas(),
     );
 
     await tester.pumpWidget(withMaterialApp(LibraryPage(mockBlock)));
