@@ -1,14 +1,28 @@
 import 'dart:io';
 
+import 'package:cross_reader/repository/manga_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cross_reader/library/bloc/library_bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 import '../../utils/mock_data.dart';
 
 class MockDirectory extends Mock implements Directory {}
 
+class FakeDirectory extends Fake implements Directory {}
+
+class MockMangaRepository extends Mock implements MangaRepository {}
+
+final mockMangaRepository = MockMangaRepository();
+
 void main() {
+  setUpAll(() {
+    GetIt.I.registerSingleton<MangaRepository>(mockMangaRepository);
+    registerFallbackValue(FakeDirectory());
+    when(() => mockMangaRepository.updateMangaList(any()))
+        .thenAnswer((_) => Future(() => null));
+  });
   blocTest<LibraryBloc, LibraryState>(
       'It emits no state when nothing is called, default state is Default',
       build: () => LibraryBloc(),
@@ -52,7 +66,6 @@ void main() {
       when(() => directory.exists()).thenAnswer((_) async => true);
       when(() => directory.list())
           .thenAnswer((_) => Future(() => realImageFile).asStream());
-
       return bloc.add(Import(directory));
     },
     wait: const Duration(milliseconds: 300),

@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:cross_reader/repository/manga_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 part 'library_event.dart';
 part 'library_state.dart';
@@ -21,6 +23,7 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
       if (!exists || !hasValidFiles) {
         emit(ImportFailed());
       } else {
+        await GetIt.I<MangaRepository>().updateMangaList(directory);
         emit(ImportSucceed());
       }
     });
