@@ -34,6 +34,7 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
       }
     });
     on<ListChapters>((event, emit) => emit(ShowChapters(event.manga)));
+    on<ListMangas>((event, emit) => emit(ShowMangas()));
   }
 
   Future<bool> _doesDirHasValidFiles(Directory directory) async {

@@ -1,8 +1,7 @@
+import 'package:cross_reader/library/widget/library_page_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/library_bloc.dart';
-import '../importer_fab/importer_fab.dart';
-import './library_view.dart';
 
 class LibraryPage extends StatelessWidget {
   final LibraryBloc _libraryBloc;
@@ -13,27 +12,19 @@ class LibraryPage extends StatelessWidget {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-// TODO print data on toolbar : Mangas
-// If in ShowChapter state : Mangas > MangaName
-// TODO override back button behavior
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (_) => _libraryBloc,
-        child: Scaffold(
-            appBar: AppBar(
-              title: Text('Library'),
-            ),
-            body: BlocListener<LibraryBloc, LibraryState>(
-              listener: (context, state) {
-                if (state is ImportFailed) {
-                  _showSnackBar(context, "FAILED");
-                } else if (state is ImportSucceed) {
-                  _showSnackBar(context, "SUCCESS");
-                }
-              },
-              child: LibraryView(),
-            ),
-            floatingActionButton: ImporterFab()));
+        child: BlocListener<LibraryBloc, LibraryState>(
+          listener: (context, state) {
+            if (state is ImportFailed) {
+              _showSnackBar(context, "FAILED");
+            } else if (state is ImportSucceed) {
+              _showSnackBar(context, "SUCCESS");
+            }
+          },
+          child: LibraryPageScaffold(),
+        ));
   }
 }

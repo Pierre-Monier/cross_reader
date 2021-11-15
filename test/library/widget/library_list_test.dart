@@ -54,5 +54,5 @@ void main() {
 
     final libraryItemFinder = find.byType(LibraryListChapterItem);
     expect(libraryItemFinder, findsWidgets);
-  }, skip: true);
+  });
 }

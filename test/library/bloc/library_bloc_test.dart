@@ -30,21 +30,21 @@ void main() {
       verify: (bloc) => expect(bloc.state, ShowMangas()));
 
   blocTest<LibraryBloc, LibraryState>(
-    'It emits a ImportStarted state when LaunchImport event is trigger',
+    'It emits an ImportStarted state when LaunchImport event is trigger',
     build: () => LibraryBloc(),
     act: (bloc) => bloc.add(LaunchImport()),
     expect: () => [ImportStarted()],
   );
 
   blocTest<LibraryBloc, LibraryState>(
-    'It emits a ImportFailed state when the imported directory doesn\'t exist',
+    'It emits an ImportFailed state when the imported directory doesn\'t exist',
     build: () => LibraryBloc(),
     act: (bloc) => bloc.add(Import(Directory('fake'))),
     expect: () => [ImportFailed()],
   );
 
   blocTest<LibraryBloc, LibraryState>(
-    'It emits a ImportFailed state when the imported directory doesn\'t contains images',
+    'It emits an ImportFailed state when the imported directory doesn\'t contains images',
     build: () => LibraryBloc(),
     act: (bloc) {
       final directory = MockDirectory();
@@ -59,7 +59,7 @@ void main() {
   );
 
   blocTest<LibraryBloc, LibraryState>(
-    'It emits a ImportSucceed and ShowMangas state when the imported directory contains images',
+    'It emits an ImportSucceed and ShowMangas state when the imported directory contains images',
     build: () => LibraryBloc(),
     act: (bloc) {
       final directory = MockDirectory();
@@ -73,7 +73,7 @@ void main() {
   );
 
   blocTest<LibraryBloc, LibraryState>(
-    'It handle recursivity, should emit a ImportSucceed state if files are valid',
+    'It handle recursivity, should emit an ImportSucceed state if files are valid',
     build: () => LibraryBloc(),
     act: (bloc) {
       final directory = MockDirectory();
@@ -91,7 +91,7 @@ void main() {
   );
 
   blocTest<LibraryBloc, LibraryState>(
-    'It handle recursivity, should emit a ImportFailed state if a file in a subdirectory isn\'t an image',
+    'It handle recursivity, should emit an ImportFailed state if a file in a subdirectory isn\'t an image',
     build: () => LibraryBloc(),
     act: (bloc) {
       final directory = MockDirectory();
@@ -122,11 +122,20 @@ void main() {
       expect: () => [ImportFailed()]);
 
   blocTest<LibraryBloc, LibraryState>(
-      'It should emit an ShowChapters state when triggering the ListChapters',
+      'It should emit a ShowChapters state when triggering the ListChapters',
       build: () => LibraryBloc(),
       act: (bloc) {
         return bloc.add(ListChapters(mockManga));
       },
       wait: const Duration(milliseconds: 300),
       expect: () => [ShowChapters(mockManga)]);
+
+  blocTest<LibraryBloc, LibraryState>(
+      'It should emit a ShowMangas state when triggering the ListMangas',
+      build: () => LibraryBloc(),
+      act: (bloc) {
+        return bloc.add(ListMangas());
+      },
+      wait: const Duration(milliseconds: 300),
+      expect: () => [ShowMangas()]);
 }

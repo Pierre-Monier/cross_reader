@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:get_it/get_it.dart';
+import 'package:navigation_history_observer/navigation_history_observer.dart';
 import '../../utils/mock_data.dart';
 import '../../utils/with_material_app.dart';
 import '../../utils/mock_class.dart';
@@ -98,6 +99,65 @@ void main() {
     expect(emptyLibraryFinder, findsOneWidget);
   });
 
+  testWidgets(
+      'It should trigger the default back button logic when state isn\'t ShowChapters',
+      (WidgetTester tester) async {
+    final mockBlock = MockLibraryBloc();
+    final navigationHistoryObserver = NavigationHistoryObserver();
+    final globalNavigatorKey = GlobalKey<NavigatorState>();
+
+    whenListen(
+      mockBlock,
+      Stream.fromIterable([ShowMangas()]),
+      initialState: ShowMangas(),
+    );
+
+    await tester.pumpWidget(
+        withMaterialAppAndNavigationHistoryObserverAndNavigatorKey(
+            LibraryPage(mockBlock),
+            navigationHistoryObserver,
+            globalNavigatorKey));
+    await tester.pump(Duration.zero);
+
+    if (globalNavigatorKey.currentState != null) {
+      globalNavigatorKey.currentState!.pop();
+    } else {
+      throw Exception("State of the NavigatorKey is null");
+    }
+
+    expect(navigationHistoryObserver.history, []);
+  });
+
+  testWidgets('It should\'t pop current route on the ShowChapters event',
+      (WidgetTester tester) async {
+    final mockBlock = MockLibraryBloc();
+    final navigationHistoryObserver = NavigationHistoryObserver();
+    final globalNavigatorKey = GlobalKey<NavigatorState>();
+
+    whenListen(
+      mockBlock,
+      Stream.fromIterable([ShowChapters(mockManga)]),
+      initialState: ShowChapters(mockManga),
+    );
+
+    await tester.pumpWidget(
+        withMaterialAppAndNavigationHistoryObserverAndNavigatorKey(
+            LibraryPage(mockBlock),
+            navigationHistoryObserver,
+            globalNavigatorKey));
+    await tester.pump(Duration.zero);
+
+    final historyCopy = navigationHistoryObserver.history;
+
+    if (globalNavigatorKey.currentState != null) {
+      globalNavigatorKey.currentState!.maybePop();
+    } else {
+      throw Exception("State of the NavigatorKey is null");
+    }
+
+    // we make sure that the mayBePop operation didn't change the history
+    expect(navigationHistoryObserver.history, historyCopy);
+  });
   testWidgets('It should render the libraryList widget when there is manga',
       (WidgetTester tester) async {
     final mockBlock = MockLibraryBloc();
