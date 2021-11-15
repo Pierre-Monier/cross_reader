@@ -120,4 +120,13 @@ void main() {
       },
       wait: const Duration(milliseconds: 300),
       expect: () => [ImportFailed()]);
+
+  blocTest<LibraryBloc, LibraryState>(
+      'It should emit an ShowChapters state when triggering the ListChapters',
+      build: () => LibraryBloc(),
+      act: (bloc) {
+        return bloc.add(ListChapters(mockManga));
+      },
+      wait: const Duration(milliseconds: 300),
+      expect: () => [ShowChapters(mockManga)]);
 }

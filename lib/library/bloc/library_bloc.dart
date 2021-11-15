@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cross_reader/model/manga.dart';
 import 'package:cross_reader/repository/manga_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,6 +33,7 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
         emit(ShowMangas());
       }
     });
+    on<ListChapters>((event, emit) => emit(ShowChapters(event.manga)));
   }
 
   Future<bool> _doesDirHasValidFiles(Directory directory) async {

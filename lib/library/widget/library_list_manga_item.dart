@@ -1,5 +1,7 @@
+import 'package:cross_reader/library/bloc/library_bloc.dart';
 import 'package:cross_reader/model/manga.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LibraryListMangaItem extends StatelessWidget {
   final Manga _manga;
@@ -8,7 +10,9 @@ class LibraryListMangaItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => print("TAPED"),
+      onTap: () {
+        BlocProvider.of<LibraryBloc>(context).add(ListChapters(_manga));
+      },
       child: Container(
           alignment: Alignment.center,
           child: Column(children: [

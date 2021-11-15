@@ -8,3 +8,8 @@ class Import extends LibraryEvent {
   final Directory directory;
   Import(this.directory);
 }
+
+class ListChapters extends LibraryEvent {
+  final Manga manga;
+  ListChapters(this.manga);
+}

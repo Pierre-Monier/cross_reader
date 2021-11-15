@@ -1,4 +1,5 @@
 import 'package:cross_reader/library/bloc/library_bloc.dart';
+import 'package:cross_reader/library/widget/library_list_chapter_item.dart';
 import 'package:cross_reader/library/widget/library_list_manga_item.dart';
 import 'package:cross_reader/repository/manga_repository.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +24,19 @@ class LibraryList extends StatelessWidget {
               return LibraryListMangaItem(
                   GetIt.I.get<MangaRepository>().mangaList[index]);
             });
+      } else if (state is ShowChapters) {
+        return GridView.builder(
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 200,
+                childAspectRatio: 1,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10),
+            itemCount: state.manga.chapters.length,
+            itemBuilder: (BuildContext ctx, index) {
+              return LibraryListChapterItem(state.manga.chapters[index]);
+            });
       } else {
-        return Text('TODO');
+        return Text("TODO: error widget");
       }
     });
   }

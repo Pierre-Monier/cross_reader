@@ -13,6 +13,9 @@ class LibraryPage extends StatelessWidget {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
+// TODO print data on toolbar : Mangas
+// If in ShowChapter state : Mangas > MangaName
+// TODO override back button behavior
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

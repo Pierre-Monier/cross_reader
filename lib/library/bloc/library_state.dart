@@ -34,3 +34,11 @@ class ImportFailed extends LibraryState {
   @override
   List<Object> get props => [];
 }
+
+class ShowChapters extends LibraryState {
+  final Manga manga;
+  ShowChapters(this.manga) : super();
+
+  @override
+  List<Object> get props => [manga];
+}

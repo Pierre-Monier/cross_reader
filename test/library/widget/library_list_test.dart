@@ -1,5 +1,6 @@
 import 'package:cross_reader/library/bloc/library_bloc.dart';
 import 'package:cross_reader/library/library.dart';
+import 'package:cross_reader/library/widget/library_list_chapter_item.dart';
 import 'package:cross_reader/library/widget/library_list_manga_item.dart';
 import 'package:cross_reader/repository/manga_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -24,14 +25,14 @@ void main() {
   testWidgets(
       'It should render libraryListMangaItem widget on ShowMangas state',
       (WidgetTester tester) async {
-    final mockBlock = MockLibraryBloc();
+    final mockBloc = MockLibraryBloc();
     whenListen(
-      mockBlock,
+      mockBloc,
       Stream.fromIterable([ShowMangas()]),
       initialState: ShowMangas(),
     );
 
-    await tester.pumpWidget(withMaterialApp(LibraryPage(mockBlock)));
+    await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
     await tester.pump(Duration.zero);
 
     final libraryItemFinder = find.byType(LibraryListMangaItem);
@@ -41,17 +42,17 @@ void main() {
   testWidgets(
       'It should render libraryListChapterItem widget on ShowChapter state',
       (WidgetTester tester) async {
-    final mockBlock = MockLibraryBloc();
+    final mockBloc = MockLibraryBloc();
     whenListen(
-      mockBlock,
-      Stream.fromIterable([ShowMangas()]),
+      mockBloc,
+      Stream.fromIterable([ShowChapters(mockManga)]),
       initialState: ShowMangas(),
     );
 
-    await tester.pumpWidget(withMaterialApp(LibraryPage(mockBlock)));
+    await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
     await tester.pump(Duration.zero);
 
     final libraryItemFinder = find.byType(LibraryListChapterItem);
-    expect(libraryItemFinder, findsOneWidget);
+    expect(libraryItemFinder, findsWidgets);
   }, skip: true);
 }
