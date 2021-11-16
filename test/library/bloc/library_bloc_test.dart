@@ -138,4 +138,13 @@ void main() {
       },
       wait: const Duration(milliseconds: 300),
       expect: () => [ShowMangas()]);
+
+  blocTest<LibraryBloc, LibraryState>(
+      'It should emit a ShowImages state when triggering the ListImages',
+      build: () => LibraryBloc(),
+      act: (bloc) {
+        return bloc.add(ListImages(mockManga, 0));
+      },
+      wait: const Duration(milliseconds: 300),
+      expect: () => [ShowImages(mockManga, 0)]);
 }

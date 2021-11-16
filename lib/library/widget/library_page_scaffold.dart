@@ -13,6 +13,10 @@ class LibraryPageScaffold extends StatelessWidget {
     if (currentState is ShowChapters) {
       BlocProvider.of<LibraryBloc>(context).add(ListMangas());
       return false;
+    } else if (currentState is ShowImages) {
+      BlocProvider.of<LibraryBloc>(context)
+          .add(ListChapters(currentState.manga));
+      return false;
     }
 
     return true;
@@ -33,12 +37,3 @@ class LibraryPageScaffold extends StatelessWidget {
     });
   }
 }
-
-      // return WillPopScope(
-      //     child: Scaffold(
-      //         appBar: AppBar(
-      //           title: Text('Library'),
-      //         ),
-      //         body: LibraryView(),
-      //         floatingActionButton: ImporterFab()),
-      //     onWillPop: _onWillPop(context, state))

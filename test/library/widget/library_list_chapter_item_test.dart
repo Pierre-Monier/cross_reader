@@ -1,5 +1,5 @@
 import 'package:cross_reader/library/bloc/library_bloc.dart';
-import 'package:cross_reader/library/widget/library_list_manga_item.dart';
+import 'package:cross_reader/library/widget/library_list_chapter_item.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -12,35 +12,35 @@ void main() {
     registerFallbackValue(LibraryStateFake());
     registerFallbackValue(LibraryEventFake());
   });
-  testWidgets('It should render the title of the manga',
+  testWidgets('It should render the number of the chapter',
       (WidgetTester tester) async {
     await tester.pumpWidget(
-        withMaterialAppAndWidgetAncestor(LibraryListMangaItem(mockManga)));
+        withMaterialAppAndWidgetAncestor(LibraryListChapterItem(mockManga, 0)));
 
-    final titleFinder = find.text(mockManga.name);
+    final titleFinder = find.text(mockManga.chapters[0].name);
     expect(titleFinder, findsOneWidget);
   });
 
   testWidgets('It should render an image', (WidgetTester tester) async {
     await tester.pumpWidget(
-        withMaterialAppAndWidgetAncestor(LibraryListMangaItem(mockManga)));
+        withMaterialAppAndWidgetAncestor(LibraryListChapterItem(mockManga, 0)));
 
     final imageFinder = find.byType(Image);
     expect(imageFinder, findsOneWidget);
   });
 
-  testWidgets('It should send a ListChapters event on tap',
+  testWidgets('It should send a ListImages event on tap',
       (WidgetTester tester) async {
     final bloc = LibraryBloc();
 
     await tester.pumpWidget(
         withMaterialAppAndWidgetAncestorAndBlocProvider<LibraryBloc>(
-            LibraryListMangaItem(mockManga), bloc));
+            LibraryListChapterItem(mockManga, 0), bloc));
 
-    final mangaItemFinder = find.byType(LibraryListMangaItem);
-    await tester.tap(mangaItemFinder);
+    final chapterItemFinder = find.byType(LibraryListChapterItem);
+    await tester.tap(chapterItemFinder);
     await tester.pumpAndSettle();
 
-    expect(bloc.state, equals(ShowChapters(mockManga)));
+    expect(bloc.state, equals(ShowImages(mockManga, 0)));
   });
 }

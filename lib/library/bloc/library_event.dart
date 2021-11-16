@@ -17,3 +17,9 @@ class ListChapters extends LibraryEvent {
 class ListMangas extends LibraryEvent {
   ListMangas();
 }
+
+class ListImages extends LibraryEvent {
+  final Manga manga;
+  final int chapterIndex;
+  ListImages(this.manga, this.chapterIndex);
+}

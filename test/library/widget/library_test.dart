@@ -8,7 +8,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:get_it/get_it.dart';
-import 'package:navigation_history_observer/navigation_history_observer.dart';
 import '../../utils/mock_data.dart';
 import '../../utils/with_material_app.dart';
 import '../../utils/mock_class.dart';
@@ -32,15 +31,15 @@ void main() {
 
   testWidgets('It should display a snackBar on ImportFailed',
       (WidgetTester tester) async {
-    final mockBlock = MockLibraryBloc();
+    final mockBloc = MockLibraryBloc();
 
     whenListen(
-      mockBlock,
+      mockBloc,
       Stream.fromIterable([ImportFailed()]),
       initialState: ShowMangas(),
     );
 
-    await tester.pumpWidget(withMaterialApp(LibraryPage(mockBlock)));
+    await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
     await tester.pump(Duration.zero);
 
     final snackBarFinder = find.byType(SnackBar);
@@ -49,15 +48,15 @@ void main() {
 
   testWidgets('It should display a snackBar on ImportSucceed',
       (WidgetTester tester) async {
-    final mockBlock = MockLibraryBloc();
+    final mockBloc = MockLibraryBloc();
 
     whenListen(
-      mockBlock,
+      mockBloc,
       Stream.fromIterable([ImportSucceed()]),
       initialState: ShowMangas(),
     );
 
-    await tester.pumpWidget(withMaterialApp(LibraryPage(mockBlock)));
+    await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
     await tester.pump(Duration.zero);
 
     final snackBarFinder = find.byType(SnackBar);
@@ -66,15 +65,15 @@ void main() {
 
   testWidgets('It should display a CircularProgressIndication on ImportStart',
       (WidgetTester tester) async {
-    final mockBlock = MockLibraryBloc();
+    final mockBloc = MockLibraryBloc();
 
     whenListen(
-      mockBlock,
+      mockBloc,
       Stream.fromIterable([ImportStarted()]),
       initialState: ShowMangas(),
     );
 
-    await tester.pumpWidget(withMaterialApp(LibraryPage(mockBlock)));
+    await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
     await tester.pump(Duration.zero);
 
     final snackBarFinder = find.byType(CircularProgressIndicator);
@@ -84,92 +83,78 @@ void main() {
   testWidgets(
       'It should render the empty library widget when there is no manga',
       (WidgetTester tester) async {
-    final mockBlock = MockLibraryBloc();
+    final mockBloc = MockLibraryBloc();
 
     whenListen(
-      mockBlock,
+      mockBloc,
       Stream.fromIterable([ShowMangas()]),
       initialState: ShowMangas(),
     );
 
-    await tester.pumpWidget(withMaterialApp(LibraryPage(mockBlock)));
+    await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
     await tester.pump(Duration.zero);
 
     final emptyLibraryFinder = find.byType(LibraryListEmpty);
     expect(emptyLibraryFinder, findsOneWidget);
   });
 
-  testWidgets(
-      'It should trigger the default back button logic when state isn\'t ShowChapters',
-      (WidgetTester tester) async {
-    final mockBlock = MockLibraryBloc();
-    final navigationHistoryObserver = NavigationHistoryObserver();
-    final globalNavigatorKey = GlobalKey<NavigatorState>();
-
-    whenListen(
-      mockBlock,
-      Stream.fromIterable([ShowMangas()]),
-      initialState: ShowMangas(),
-    );
-
-    await tester.pumpWidget(
-        withMaterialAppAndNavigationHistoryObserverAndNavigatorKey(
-            LibraryPage(mockBlock),
-            navigationHistoryObserver,
-            globalNavigatorKey));
-    await tester.pump(Duration.zero);
-
-    if (globalNavigatorKey.currentState != null) {
-      globalNavigatorKey.currentState!.pop();
-    } else {
-      throw Exception("State of the NavigatorKey is null");
-    }
-
-    expect(navigationHistoryObserver.history, []);
-  });
-
   testWidgets('It should\'t pop current route on the ShowChapters event',
       (WidgetTester tester) async {
-    final mockBlock = MockLibraryBloc();
-    final navigationHistoryObserver = NavigationHistoryObserver();
+    final bloc = LibraryBloc();
     final globalNavigatorKey = GlobalKey<NavigatorState>();
 
-    whenListen(
-      mockBlock,
-      Stream.fromIterable([ShowChapters(mockManga)]),
-      initialState: ShowChapters(mockManga),
-    );
-
     await tester.pumpWidget(
-        withMaterialAppAndNavigationHistoryObserverAndNavigatorKey(
-            LibraryPage(mockBlock),
-            navigationHistoryObserver,
-            globalNavigatorKey));
+        withMaterialAppAndNavigatorKey(LibraryPage(bloc), globalNavigatorKey));
     await tester.pump(Duration.zero);
 
-    final historyCopy = navigationHistoryObserver.history;
+    bloc.add(ListChapters(mockManga));
+    // We wait for the bloc to stream the new state
+    await tester.pumpAndSettle(Duration(seconds: 1));
 
     if (globalNavigatorKey.currentState != null) {
-      globalNavigatorKey.currentState!.maybePop();
+      await globalNavigatorKey.currentState!.maybePop();
     } else {
       throw Exception("State of the NavigatorKey is null");
     }
 
-    // we make sure that the mayBePop operation didn't change the history
-    expect(navigationHistoryObserver.history, historyCopy);
+    // triggering maybePop change the bloc state
+    expect(bloc.state, equals(ShowMangas()));
+  });
+
+  testWidgets('It should\'t pop current route on the ShowImages event',
+      (WidgetTester tester) async {
+    final bloc = LibraryBloc();
+    final globalNavigatorKey = GlobalKey<NavigatorState>();
+
+    await tester.pumpWidget(
+        withMaterialAppAndNavigatorKey(LibraryPage(bloc), globalNavigatorKey));
+    await tester.pump(Duration.zero);
+
+    bloc.add(ListImages(mockManga, 0));
+    // We wait for the bloc to stream the new state
+    await tester.pumpAndSettle(Duration(seconds: 1));
+
+    if (globalNavigatorKey.currentState != null) {
+      await globalNavigatorKey.currentState!.maybePop();
+    } else {
+      throw Exception("State of the NavigatorKey is null");
+    }
+
+    // triggering maybePop change the bloc state
+    expect(bloc.state, equals(ShowChapters(mockManga)));
   });
   testWidgets('It should render the libraryList widget when there is manga',
       (WidgetTester tester) async {
-    final mockBlock = MockLibraryBloc();
+    final mockBloc = MockLibraryBloc();
     reset(mockMangaRepository);
     when(() => mockMangaRepository.mangaList).thenReturn([mockManga]);
     whenListen(
-      mockBlock,
+      mockBloc,
       Stream.fromIterable([ShowMangas()]),
       initialState: ShowMangas(),
     );
 
-    await tester.pumpWidget(withMaterialApp(LibraryPage(mockBlock)));
+    await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
     await tester.pump(Duration.zero);
 
     final emptyLibraryFinder = find.byType(LibraryList);

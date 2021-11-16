@@ -42,3 +42,12 @@ class ShowChapters extends LibraryState {
   @override
   List<Object> get props => [manga];
 }
+
+class ShowImages extends LibraryState {
+  final Manga manga;
+  final int chapterIndex;
+  ShowImages(this.manga, this.chapterIndex) : super();
+
+  @override
+  List<Object> get props => [manga, chapterIndex];
+}

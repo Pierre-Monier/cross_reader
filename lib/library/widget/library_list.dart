@@ -1,5 +1,6 @@
 import 'package:cross_reader/library/bloc/library_bloc.dart';
 import 'package:cross_reader/library/widget/library_list_chapter_item.dart';
+import 'package:cross_reader/library/widget/library_list_image_item.dart';
 import 'package:cross_reader/library/widget/library_list_manga_item.dart';
 import 'package:cross_reader/repository/manga_repository.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,9 @@ class LibraryList extends StatelessWidget {
       return GetIt.I.get<MangaRepository>().mangaList.length;
     } else if (currentState is ShowChapters) {
       return currentState.manga.chapters.length;
+    } else if (currentState is ShowImages) {
+      return currentState
+          .manga.chapters[currentState.chapterIndex].images.length;
     } else {
       return 0;
     }
@@ -24,7 +28,11 @@ class LibraryList extends StatelessWidget {
       return LibraryListMangaItem(
           GetIt.I.get<MangaRepository>().mangaList[index]);
     } else if (currentState is ShowChapters) {
-      return LibraryListChapterItem(currentState.manga.chapters[index]);
+      return LibraryListChapterItem(currentState.manga, index);
+    } else if (currentState is ShowImages) {
+      return LibraryListImageItem(
+          currentState.manga.chapters[currentState.chapterIndex].images[index],
+          index);
     } else {
       return Text("TODO: error widget");
     }
@@ -33,7 +41,7 @@ class LibraryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LibraryBloc, LibraryState>(builder: (context, state) {
-      if (state is ShowMangas || state is ShowChapters) {
+      if (state is ShowMangas || state is ShowChapters || state is ShowImages) {
         return GridView.builder(
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 200,
