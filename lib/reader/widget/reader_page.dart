@@ -5,14 +5,14 @@ import '../bloc/reader_cubit.dart';
 import './reader_view.dart';
 
 class ReaderPage extends StatelessWidget {
-  final List<String> _imagesPaths;
+  final ReaderCubit _readerCubit;
 
-  const ReaderPage(this._imagesPaths, {Key? key}) : super(key: key);
+  const ReaderPage(this._readerCubit, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ReaderCubit(_imagesPaths),
+      create: (_) => _readerCubit,
       child: Scaffold(
         appBar: AppBar(
           title: Text('Reader'),

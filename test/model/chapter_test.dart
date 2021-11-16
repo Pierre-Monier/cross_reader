@@ -7,10 +7,9 @@ import '../utils/mock_data.dart';
 void main() {
   test('We can create chapter', () {
     final name = "01";
-    final images = mockImages.map((imagePath) => File(imagePath)).toList();
-    final chapter = Chapter(name, images);
+    final chapter = Chapter(name, mockImages);
 
     expect(chapter.name, name);
-    expect(chapter.images, images);
+    expect(chapter.images, mockImages);
   });
 }

@@ -7,7 +7,8 @@ import '../../utils/with_material_app.dart';
 
 void main() {
   testWidgets('It display the firt image on init', (WidgetTester tester) async {
-    await tester.pumpWidget(withMaterialApp(ReaderPage(mockImages)));
+    final cubit = ReaderCubit(mockImages);
+    await tester.pumpWidget(withMaterialApp(ReaderPage(cubit)));
 
     final imageFinder = find.byType(Image);
     expect(imageFinder, findsOneWidget);
@@ -17,17 +18,22 @@ void main() {
   // Can't emulate a swipe properly so skipping for now
   testWidgets('It display the next ressource on left swip',
       (WidgetTester tester) async {
-    await tester.pumpWidget(withMaterialApp(ReaderPage(mockImages)));
-    final finder = find.text(mockImages[0]);
+    final cubit = ReaderCubit(mockImages);
+
+    await tester.pumpWidget(withMaterialApp(ReaderPage(cubit)));
+    final firstImageFinder = find.byType(Image);
 
     await tester.fling(
-        finder,
-        new Offset(
-            tester.getCenter(finder).dx + 100, tester.getCenter(finder).dy),
+        firstImageFinder,
+        new Offset(tester.getCenter(firstImageFinder).dx + 100,
+            tester.getCenter(firstImageFinder).dy),
         0.5,
         warnIfMissed: true);
-    await tester.pumpAndSettle();
-    final newFinder = find.text(mockImages[1]);
-    expect(newFinder, findsOneWidget);
+    await tester.pumpAndSettle(Duration(seconds: 1));
+
+    final secondImageFinder = find.byType(Image);
+
+    // finders should be different, because the image must have changed
+    expect(firstImageFinder.toString() != secondImageFinder.toString(), true);
   }, skip: true);
 }

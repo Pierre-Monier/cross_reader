@@ -6,12 +6,12 @@ import 'package:cross_reader/model/manga.dart';
 final notAnImageFile = File('notanimage.exe');
 final realImageFile = File('image.png');
 
-const mockImages = [
-  'assets/dev/Page01.png',
-  'assets/dev/Page02.png',
-  'assets/dev/Page03.png',
-  'assets/dev/Page04.png',
-  'assets/dev/Page05.png'
+final mockImages = [
+  File("Page01.png"),
+  File("Page02.png"),
+  File("Page03.png"),
+  File("Page04.png"),
+  File("Page05.png")
 ];
 
 final mockChapter1 = Chapter("01", [File("01.jpg")]);

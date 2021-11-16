@@ -1,11 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ReaderCubit extends Cubit<String> {
-  List<String> _imagesPaths = [];
+class ReaderCubit extends Cubit<File> {
+  List<File> _imagesPaths = [];
   int _currentIndex = 0;
-  ReaderCubit(List<String> ressources, {int index = 0})
-      : super(ressources[index]) {
-    _imagesPaths = ressources;
+  ReaderCubit(List<File> imagesPaths, {int index = 0})
+      : super(imagesPaths[index]) {
+    _imagesPaths = imagesPaths;
     _currentIndex = index;
   }
 

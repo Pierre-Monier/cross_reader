@@ -4,19 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ReaderView extends StatelessWidget {
-  final bool _isTestEnv = Platform.environment.containsKey('FLUTTER_TEST');
-
-  ImageProvider _getImageProvider(String ressource) {
-    if (_isTestEnv) {
-      return AssetImage(ressource);
-    } else {
-      return FileImage(File(ressource));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ReaderCubit, String>(builder: (context, ressource) {
+    return BlocBuilder<ReaderCubit, File>(builder: (context, state) {
       return SizedBox.expand(
           child: GestureDetector(
               onHorizontalDragEnd: (DragEndDetails details) {
@@ -28,7 +18,7 @@ class ReaderView extends StatelessWidget {
                   context.read<ReaderCubit>().next();
                 }
               },
-              child: Image(image: _getImageProvider(ressource))));
+              child: Image.file(state)));
     });
   }
 }
