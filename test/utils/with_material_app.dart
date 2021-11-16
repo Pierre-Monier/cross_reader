@@ -23,6 +23,31 @@ MaterialApp withMaterialAppAndWidgetAncestor(Widget widget) {
   );
 }
 
+MaterialApp
+    withMaterialAppAndWidgetAncestorAndNavigatorObserverAndRouteGenerator(
+        Widget widget, NavigatorObserver observer) {
+  return MaterialApp(
+    navigatorObservers: [observer],
+    onGenerateRoute: (RouteSettings settings) {
+      switch (settings.name) {
+        case '/reader':
+          return MaterialPageRoute(
+              builder: (context) => Scaffold(
+                    body: widget,
+                  ));
+        default:
+          return MaterialPageRoute(
+              builder: (context) => Scaffold(
+                    body: widget,
+                  ));
+      }
+    },
+    home: Scaffold(
+      body: widget,
+    ),
+  );
+}
+
 MaterialApp withMaterialAppAndWidgetAncestorAndBlocProvider<T extends Bloc>(
     Widget widget, T bloc) {
   return MaterialApp(

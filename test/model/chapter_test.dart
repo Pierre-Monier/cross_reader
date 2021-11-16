@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cross_reader/model/chapter.dart';
 import 'package:test/test.dart';
 import '../utils/mock_data.dart';

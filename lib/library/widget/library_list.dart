@@ -31,8 +31,7 @@ class LibraryList extends StatelessWidget {
       return LibraryListChapterItem(currentState.manga, index);
     } else if (currentState is ShowImages) {
       return LibraryListImageItem(
-          currentState.manga.chapters[currentState.chapterIndex].images[index],
-          index);
+          currentState.manga.chapters[currentState.chapterIndex].images, index);
     } else {
       return Text("TODO: error widget");
     }

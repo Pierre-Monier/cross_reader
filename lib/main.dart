@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cross_reader/library/bloc/library_bloc.dart';
 import 'package:cross_reader/library/widget/library_page.dart';
 import 'package:cross_reader/reader/bloc/reader_cubit.dart';
+import 'package:cross_reader/reader/model/reader_arguments.dart';
 import 'package:cross_reader/reader/widget/reader_page.dart';
 import 'package:cross_reader/repository/chapter_repository.dart';
 import 'package:cross_reader/repository/manga_repository.dart';
@@ -35,9 +36,10 @@ class CrossReaderApp extends StatelessWidget {
               builder: (context) => LibraryPage(LibraryBloc()),
             );
           case '/reader':
-            final images = settings.arguments as List<File>;
+            final args = settings.arguments as ReaderArguments;
             return MaterialPageRoute(
-              builder: (context) => ReaderPage(ReaderCubit(images)),
+              builder: (context) =>
+                  ReaderPage(ReaderCubit(args.images, index: args.index)),
             );
           default:
             return MaterialPageRoute(
