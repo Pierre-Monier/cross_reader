@@ -7,12 +7,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 import '../../utils/mock_data.dart';
-
-class MockDirectory extends Mock implements Directory {}
-
-class FakeDirectory extends Fake implements Directory {}
-
-class MockMangaRepository extends Mock implements MangaRepository {}
+import '../../utils/mock_class.dart';
 
 final mockMangaRepository = MockMangaRepository();
 

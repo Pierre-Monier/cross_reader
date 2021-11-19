@@ -74,7 +74,6 @@ void main() {
     );
 
     await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
-    await tester.pump(Duration.zero);
 
     final snackBarFinder = find.byType(CircularProgressIndicator);
     expect(snackBarFinder, findsOneWidget);
@@ -92,7 +91,6 @@ void main() {
     );
 
     await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
-    await tester.pump(Duration.zero);
 
     final emptyLibraryFinder = find.byType(LibraryListEmpty);
     expect(emptyLibraryFinder, findsOneWidget);
@@ -105,7 +103,6 @@ void main() {
 
     await tester.pumpWidget(
         withMaterialAppAndNavigatorKey(LibraryPage(bloc), globalNavigatorKey));
-    await tester.pump(Duration.zero);
 
     bloc.add(ListChapters(mockManga));
     // We wait for the bloc to stream the new state
@@ -128,7 +125,6 @@ void main() {
 
     await tester.pumpWidget(
         withMaterialAppAndNavigatorKey(LibraryPage(bloc), globalNavigatorKey));
-    await tester.pump(Duration.zero);
 
     bloc.add(ListImages(mockManga, 0));
     // We wait for the bloc to stream the new state
@@ -155,7 +151,6 @@ void main() {
     );
 
     await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
-    await tester.pump(Duration.zero);
 
     final emptyLibraryFinder = find.byType(LibraryList);
     expect(emptyLibraryFinder, findsOneWidget);

@@ -16,7 +16,7 @@ class LibraryView extends StatelessWidget {
         if (state is ImportStarted) {
           return CircularProgressIndicator();
         }
-
+        // TODO service should by use by BLOC
         if (GetIt.I<MangaRepository>().mangaList.isEmpty) {
           return LibraryListEmpty();
         } else {
