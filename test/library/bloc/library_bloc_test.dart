@@ -36,18 +36,22 @@ void main() {
       verify: (bloc) => expect(bloc.state, ShowMangas([mockManga])));
 
   blocTest<LibraryBloc, LibraryState>(
-    'It emits an ImportStarted and ImportFailed state when the imported directory doesn\'t exist',
+    'It emits an ImportStarted/ImportFailed/ShowMangas state when the imported directory doesn\'t exist',
     build: () => LibraryBloc(),
     act: (bloc) {
       resetMockFilePickerWrapper(Directory('fake'));
       return bloc.add(Import());
     },
     wait: const Duration(milliseconds: 300),
-    expect: () => [ImportStarted(), ImportFailed()],
+    expect: () => [
+      ImportStarted(),
+      ImportFailed(),
+      ShowMangas([mockManga])
+    ],
   );
 
   blocTest<LibraryBloc, LibraryState>(
-    'It emits an ImportStarted and ImportFailed state when the imported directory doesn\'t contains images',
+    'It emits an ImportStarted/ImportFailed/ShowMangas state when the imported directory doesn\'t contains images',
     build: () => LibraryBloc(),
     act: (bloc) {
       final directory = MockDirectory();
@@ -59,11 +63,15 @@ void main() {
       return bloc.add(Import());
     },
     wait: const Duration(milliseconds: 300),
-    expect: () => [ImportStarted(), ImportFailed()],
+    expect: () => [
+      ImportStarted(),
+      ImportFailed(),
+      ShowMangas([mockManga])
+    ],
   );
 
   blocTest<LibraryBloc, LibraryState>(
-    'It emits an ImportStarted and ImportSucceed and ShowMangas state when the imported directory contains images',
+    'It emits an ImportStarted/ImportSucceed/ShowMangas state when the imported directory contains images',
     build: () => LibraryBloc(),
     act: (bloc) {
       final directory = MockDirectory();
@@ -83,7 +91,7 @@ void main() {
   );
 
   blocTest<LibraryBloc, LibraryState>(
-    'It handle recursivity, should emit an ImportStarted and ImportSucceed state if files are valid',
+    'It handle recursivity, should emit an ImportStarted/ImportSucceed/ShowMangas state if files are valid',
     build: () => LibraryBloc(),
     act: (bloc) {
       final directory = MockDirectory();
@@ -106,7 +114,7 @@ void main() {
   );
 
   blocTest<LibraryBloc, LibraryState>(
-    'It handle recursivity, should emit an ImportStarted and an ImportFailed state if a file in a subdirectory isn\'t an image',
+    'It handle recursivity, should emit an ImportStarted/ImportFailed/ShowMangas state if a file in a subdirectory isn\'t an image',
     build: () => LibraryBloc(),
     act: (bloc) {
       final directory = MockDirectory();
@@ -121,11 +129,15 @@ void main() {
       return bloc.add(Import());
     },
     wait: const Duration(milliseconds: 300),
-    expect: () => [ImportStarted(), ImportFailed()],
+    expect: () => [
+      ImportStarted(),
+      ImportFailed(),
+      ShowMangas([mockManga])
+    ],
   );
 
   blocTest<LibraryBloc, LibraryState>(
-      'It should emit an ImportStarted and an ImportFailed state if a directory is valid but empty',
+      'It should emit an ImportStarted/ImportFailed/ShowMangas state if a directory is valid but empty',
       build: () => LibraryBloc(),
       act: (bloc) {
         final directory = MockDirectory();
@@ -136,7 +148,11 @@ void main() {
         return bloc.add(Import());
       },
       wait: const Duration(milliseconds: 300),
-      expect: () => [ImportStarted(), ImportFailed()]);
+      expect: () => [
+            ImportStarted(),
+            ImportFailed(),
+            ShowMangas([mockManga])
+          ]);
 
   blocTest<LibraryBloc, LibraryState>(
       'It should emit a ShowChapters state when triggering the ListChapters',
@@ -166,4 +182,28 @@ void main() {
       },
       wait: const Duration(milliseconds: 300),
       expect: () => [ShowImages(mockImages, mockManga, 0)]);
+
+  blocTest<LibraryBloc, LibraryState>(
+      'It should emit an ImportStarted/ImportFailed/ShowMangas when the selected directory is too nested',
+      build: () => LibraryBloc(),
+      act: (bloc) {
+        final directory = MockDirectory();
+        final subDirectory = MockDirectory();
+        final subSubDirectory = MockDirectory();
+        when(() => directory.exists()).thenAnswer((_) async => true);
+        when(() => directory.list())
+            .thenAnswer((_) => Future.value(subDirectory).asStream());
+        when(() => subDirectory.list())
+            .thenAnswer((_) => Future.value(subSubDirectory).asStream());
+        when(() => subSubDirectory.list())
+            .thenAnswer((_) => Stream.fromIterable(mockImages));
+        resetMockFilePickerWrapper(directory);
+        return bloc.add(Import());
+      },
+      wait: const Duration(milliseconds: 300),
+      expect: () => [
+            ImportStarted(),
+            ImportFailed(),
+            ShowMangas([mockManga])
+          ]);
 }

@@ -13,6 +13,15 @@ part 'library_state.dart';
 
 class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
   static const VALID_IMAGES_FILES = ['png', 'pdf', 'jpeg', 'jpg'];
+
+  /// this is use to limit the nested level of import
+  ///
+  /// ex : Directory -> File : File as a nestedLevel of 1
+  ///
+  /// ex : Directory -> Directory -> File : File as a nestedLevel of 2
+  ///
+  /// We don't want a nested level of 3 or more
+  static const MAX_IMPORT_NESTED_LEVEL = 2;
   LibraryBloc() : super(ShowMangas(GetIt.I.get<MangaRepository>().mangaList)) {
     on<Import>((event, emit) async => await _import(emit));
     on<ListChapters>(
@@ -29,6 +38,7 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
     final directory = await GetIt.I.get<FilePickerWrapper>().getDirectory();
 
     if (directory == null) {
+      emit(ShowMangas(GetIt.I.get<MangaRepository>().mangaList));
       return;
     }
 
@@ -39,25 +49,24 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
 
     if (!exists || !hasValidFiles) {
       emit(ImportFailed());
+      emit(ShowMangas(GetIt.I.get<MangaRepository>().mangaList));
     } else {
       await GetIt.I<MangaRepository>().updateMangaList(directory);
       emit(ImportSucceed());
-      // we don't want the lasted state to be ImportSucceed
-      // because if the user do two imports, the view won't rereder (because it's the same state)
-      // we can't relly on buildWhen function because it isn't trigger
-      // so we emit the ShowMangas state to avoid this behavior
       emit(ShowMangas(GetIt.I.get<MangaRepository>().mangaList));
     }
   }
 
-  Future<bool> _doesDirHasValidFiles(Directory directory) async {
+  Future<bool> _doesDirHasValidFiles(Directory directory,
+      {int nestedLevel = 0}) async {
     bool hasValidFiles = true;
-
     try {
       final List<FileSystemEntity> entities = await directory.list().toList();
 
       int i = 0;
-      while (hasValidFiles && i < entities.length) {
+      while (hasValidFiles &&
+          i < entities.length &&
+          nestedLevel < MAX_IMPORT_NESTED_LEVEL) {
         FileSystemEntity fileSystemEntity = entities[i];
 
         if (fileSystemEntity is File) {
@@ -65,13 +74,15 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
           final extension = fileName.split('.').last;
           hasValidFiles = VALID_IMAGES_FILES.contains(extension);
         } else if (fileSystemEntity is Directory) {
-          hasValidFiles = await _doesDirHasValidFiles(fileSystemEntity);
+          hasValidFiles = await _doesDirHasValidFiles(fileSystemEntity,
+              nestedLevel: nestedLevel + 1);
         }
 
         i++;
       }
-
-      return hasValidFiles && entities.length > 0;
+      return hasValidFiles &&
+          entities.length > 0 &&
+          nestedLevel < MAX_IMPORT_NESTED_LEVEL;
     } catch (e) {
       return false;
     }
