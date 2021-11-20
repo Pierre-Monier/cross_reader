@@ -74,6 +74,7 @@ void main() {
     );
 
     await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
+    await tester.pump(Duration.zero);
 
     final snackBarFinder = find.byType(CircularProgressIndicator);
     expect(snackBarFinder, findsOneWidget);

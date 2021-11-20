@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cross_reader/library/importer_fab/importer_fab.dart';
 import 'package:cross_reader/library/library.dart';
 import 'package:cross_reader/library/widget/library_list_chapter_item.dart';
@@ -44,9 +42,8 @@ void main() {
         .thenAnswer((invocation) => Future.value(true));
     when(() => mockDirectory.path).thenReturn('/manga');
 
-    when(() => mockSubDirectory.list()).thenAnswer((_) =>
-        Future.value(File("/storage/emulated/0/Documents/Page01.png"))
-            .asStream());
+    when(() => mockSubDirectory.list())
+        .thenAnswer((_) => Stream.fromIterable(onDeviceMockImages));
     when(() => mockDirectory.exists())
         .thenAnswer((invocation) => Future.value(true));
     when(() => mockSubDirectory.path).thenReturn('/manga/chapter');
@@ -77,9 +74,9 @@ void main() {
 
     final imageItemFinder = find.byType(LibraryListImageItem);
 
-    expect(imageItemFinder, findsOneWidget);
+    expect(imageItemFinder, findsNWidgets(onDeviceMockImages.length));
 
-    await tester.tap(imageItemFinder);
+    await tester.tap(imageItemFinder.first);
     await tester.pumpAndSettle();
 
     final readerPageFinder = find.byType(ReaderPage);
