@@ -7,13 +7,6 @@ abstract class LibraryState extends Equatable {
   List<Object> get props => [];
 }
 
-class ShowMangas extends LibraryState {
-  ShowMangas() : super();
-
-  @override
-  List<Object> get props => [];
-}
-
 class ImportStarted extends LibraryState {
   ImportStarted() : super();
 
@@ -35,19 +28,38 @@ class ImportFailed extends LibraryState {
   List<Object> get props => [];
 }
 
-class ShowChapters extends LibraryState {
-  final Manga manga;
-  ShowChapters(this.manga) : super();
+abstract class LibraryShowState extends LibraryState {
+  final bool isEmpty;
+  LibraryShowState(this.isEmpty);
 
   @override
-  List<Object> get props => [manga];
+  List<Object> get props => [isEmpty];
 }
 
-class ShowImages extends LibraryState {
-  final Manga manga;
-  final int chapterIndex;
-  ShowImages(this.manga, this.chapterIndex) : super();
+class ShowMangas extends LibraryShowState {
+  final List<Manga> mangas;
+  ShowMangas(this.mangas) : super(mangas.isEmpty);
 
   @override
-  List<Object> get props => [manga, chapterIndex];
+  List<Object> get props => [mangas];
+}
+
+class ShowChapters extends LibraryShowState {
+  final List<Chapter> chapters;
+  final Manga manga;
+  ShowChapters(this.chapters, this.manga) : super(chapters.isEmpty);
+
+  @override
+  List<Object> get props => [chapters, manga];
+}
+
+class ShowImages extends LibraryShowState {
+  final List<File> images;
+  final Manga manga;
+  final int chapterIndex;
+  ShowImages(this.images, this.manga, this.chapterIndex)
+      : super(images.isEmpty);
+
+  @override
+  List<Object> get props => [images, manga, chapterIndex];
 }

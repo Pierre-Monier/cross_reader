@@ -2,24 +2,23 @@ part of 'library_bloc.dart';
 
 abstract class LibraryEvent {}
 
-class LaunchImport extends LibraryEvent {}
-
 class Import extends LibraryEvent {
-  final Directory directory;
-  Import(this.directory);
-}
-
-class ListChapters extends LibraryEvent {
-  final Manga manga;
-  ListChapters(this.manga);
+  Import();
 }
 
 class ListMangas extends LibraryEvent {
   ListMangas();
 }
 
+class ListChapters extends LibraryEvent {
+  final List<Chapter> chapters;
+  final Manga manga;
+  ListChapters(this.chapters, this.manga);
+}
+
 class ListImages extends LibraryEvent {
+  final List<File> images;
   final Manga manga;
   final int chapterIndex;
-  ListImages(this.manga, this.chapterIndex);
+  ListImages(this.images, this.manga, this.chapterIndex);
 }

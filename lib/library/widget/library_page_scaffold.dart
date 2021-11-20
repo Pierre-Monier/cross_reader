@@ -8,14 +8,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // TODO print data on toolbar : Mangas
 // If in ShowChapter state : Mangas > MangaName
 class LibraryPageScaffold extends StatelessWidget {
-  Future<bool> _onWillPop(
-      BuildContext context, LibraryState currentState) async {
-    if (currentState is ShowChapters) {
+  Future<bool> _onWillPop(BuildContext context, LibraryState state) async {
+    if (state is ShowChapters) {
       BlocProvider.of<LibraryBloc>(context).add(ListMangas());
       return false;
-    } else if (currentState is ShowImages) {
+    } else if (state is ShowImages) {
       BlocProvider.of<LibraryBloc>(context)
-          .add(ListChapters(currentState.manga));
+          .add(ListChapters(state.manga.chapters, state.manga));
       return false;
     }
 

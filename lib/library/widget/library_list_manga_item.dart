@@ -11,7 +11,8 @@ class LibraryListMangaItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        BlocProvider.of<LibraryBloc>(context).add(ListChapters(_manga));
+        BlocProvider.of<LibraryBloc>(context)
+            .add(ListChapters(_manga.chapters, _manga));
       },
       child: Container(
           alignment: Alignment.center,

@@ -13,8 +13,8 @@ class LibraryListChapterItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        BlocProvider.of<LibraryBloc>(context)
-            .add(ListImages(_manga, _chapterIndex));
+        BlocProvider.of<LibraryBloc>(context).add(ListImages(
+            _manga.chapters[_chapterIndex].images, _manga, _chapterIndex));
       },
       child: Container(
           alignment: Alignment.center,

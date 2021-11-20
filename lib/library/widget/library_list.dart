@@ -10,28 +10,27 @@ import 'package:get_it/get_it.dart';
 class LibraryList extends StatelessWidget {
   const LibraryList({Key? key}) : super(key: key);
 
-  int _getItemCount(LibraryState currentState) {
-    if (currentState is ShowMangas) {
+  int _getItemCount(LibraryState state) {
+    if (state is ShowMangas) {
       return GetIt.I.get<MangaRepository>().mangaList.length;
-    } else if (currentState is ShowChapters) {
-      return currentState.manga.chapters.length;
-    } else if (currentState is ShowImages) {
-      return currentState
-          .manga.chapters[currentState.chapterIndex].images.length;
+    } else if (state is ShowChapters) {
+      return state.manga.chapters.length;
+    } else if (state is ShowImages) {
+      return state.manga.chapters[state.chapterIndex].images.length;
     } else {
       return 0;
     }
   }
 
-  Widget _getItem(LibraryState currentState, int index) {
-    if (currentState is ShowMangas) {
+  Widget _getItem(LibraryState state, int index) {
+    if (state is ShowMangas) {
       return LibraryListMangaItem(
           GetIt.I.get<MangaRepository>().mangaList[index]);
-    } else if (currentState is ShowChapters) {
-      return LibraryListChapterItem(currentState.manga, index);
-    } else if (currentState is ShowImages) {
+    } else if (state is ShowChapters) {
+      return LibraryListChapterItem(state.manga, index);
+    } else if (state is ShowImages) {
       return LibraryListImageItem(
-          currentState.manga.chapters[currentState.chapterIndex].images, index);
+          state.manga.chapters[state.chapterIndex].images, index);
     } else {
       return Text("TODO: error widget");
     }
@@ -40,7 +39,7 @@ class LibraryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LibraryBloc, LibraryState>(builder: (context, state) {
-      if (state is ShowMangas || state is ShowChapters || state is ShowImages) {
+      if (state is LibraryShowState) {
         return GridView.builder(
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 200,

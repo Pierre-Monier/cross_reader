@@ -29,8 +29,10 @@ void main() {
     final mockBloc = MockLibraryBloc();
     whenListen(
       mockBloc,
-      Stream.fromIterable([ShowMangas()]),
-      initialState: ShowMangas(),
+      Stream.fromIterable([
+        ShowMangas([mockManga])
+      ]),
+      initialState: ShowMangas([mockManga]),
     );
 
     await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
@@ -46,8 +48,8 @@ void main() {
     final mockBloc = MockLibraryBloc();
     whenListen(
       mockBloc,
-      Stream.fromIterable([ShowChapters(mockManga)]),
-      initialState: ShowMangas(),
+      Stream.fromIterable([ShowChapters(mockManga.chapters, mockManga)]),
+      initialState: ShowMangas([mockManga]),
     );
 
     await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
@@ -63,8 +65,9 @@ void main() {
     final mockBloc = MockLibraryBloc();
     whenListen(
       mockBloc,
-      Stream.fromIterable([ShowImages(mockManga, 0)]),
-      initialState: ShowMangas(),
+      Stream.fromIterable(
+          [ShowImages(mockManga.chapters[0].images, mockManga, 0)]),
+      initialState: ShowMangas([mockManga]),
     );
 
     await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));

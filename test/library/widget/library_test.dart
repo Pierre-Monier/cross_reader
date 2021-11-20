@@ -19,7 +19,7 @@ void main() {
     registerFallbackValue(LibraryStateFake());
     registerFallbackValue(LibraryEventFake());
 
-    when(() => mockMangaRepository.mangaList).thenReturn([]);
+    when(() => mockMangaRepository.mangaList).thenReturn([mockManga]);
     GetIt.I.registerSingleton<MangaRepository>(mockMangaRepository);
   });
   testWidgets('It should render a FAB btn', (WidgetTester tester) async {
@@ -36,7 +36,7 @@ void main() {
     whenListen(
       mockBloc,
       Stream.fromIterable([ImportFailed()]),
-      initialState: ShowMangas(),
+      initialState: ShowMangas([mockManga]),
     );
 
     await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
@@ -53,7 +53,7 @@ void main() {
     whenListen(
       mockBloc,
       Stream.fromIterable([ImportSucceed()]),
-      initialState: ShowMangas(),
+      initialState: ShowMangas([mockManga]),
     );
 
     await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
@@ -70,7 +70,7 @@ void main() {
     whenListen(
       mockBloc,
       Stream.fromIterable([ImportStarted()]),
-      initialState: ShowMangas(),
+      initialState: ShowMangas([mockManga]),
     );
 
     await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
@@ -87,8 +87,8 @@ void main() {
 
     whenListen(
       mockBloc,
-      Stream.fromIterable([ShowMangas()]),
-      initialState: ShowMangas(),
+      Stream.fromIterable([ShowMangas([])]),
+      initialState: ShowMangas([]),
     );
 
     await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
@@ -105,7 +105,7 @@ void main() {
     await tester.pumpWidget(
         withMaterialAppAndNavigatorKey(LibraryPage(bloc), globalNavigatorKey));
 
-    bloc.add(ListChapters(mockManga));
+    bloc.add(ListChapters(mockManga.chapters, mockManga));
     // We wait for the bloc to stream the new state
     await tester.pumpAndSettle(Duration(seconds: 1));
 
@@ -116,7 +116,7 @@ void main() {
     }
 
     // triggering maybePop change the bloc state
-    expect(bloc.state, equals(ShowMangas()));
+    expect(bloc.state, equals(ShowMangas([mockManga])));
   });
 
   testWidgets('It should\'t pop current route on the ShowImages event',
@@ -127,7 +127,7 @@ void main() {
     await tester.pumpWidget(
         withMaterialAppAndNavigatorKey(LibraryPage(bloc), globalNavigatorKey));
 
-    bloc.add(ListImages(mockManga, 0));
+    bloc.add(ListImages(mockManga.chapters[0].images, mockManga, 0));
     // We wait for the bloc to stream the new state
     await tester.pumpAndSettle(Duration(seconds: 1));
 
@@ -138,7 +138,7 @@ void main() {
     }
 
     // triggering maybePop change the bloc state
-    expect(bloc.state, equals(ShowChapters(mockManga)));
+    expect(bloc.state, equals(ShowChapters(mockManga.chapters, mockManga)));
   });
   testWidgets('It should render the libraryList widget when there is manga',
       (WidgetTester tester) async {
@@ -147,8 +147,10 @@ void main() {
     when(() => mockMangaRepository.mangaList).thenReturn([mockManga]);
     whenListen(
       mockBloc,
-      Stream.fromIterable([ShowMangas()]),
-      initialState: ShowMangas(),
+      Stream.fromIterable([
+        ShowMangas([mockManga])
+      ]),
+      initialState: ShowMangas([mockManga]),
     );
 
     await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));

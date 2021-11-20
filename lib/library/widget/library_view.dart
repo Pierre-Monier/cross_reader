@@ -1,10 +1,8 @@
 import 'package:cross_reader/library/bloc/library_bloc.dart';
 import 'package:cross_reader/library/widget/library_list.dart';
 import 'package:cross_reader/library/widget/library_list_empty.dart';
-import 'package:cross_reader/repository/manga_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
 class LibraryView extends StatelessWidget {
   const LibraryView({Key? key}) : super(key: key);
@@ -16,11 +14,13 @@ class LibraryView extends StatelessWidget {
         if (state is ImportStarted) {
           return CircularProgressIndicator();
         }
-        // TODO service should by use by BLOC
-        if (GetIt.I<MangaRepository>().mangaList.isEmpty) {
+
+        if (state is LibraryShowState && state.isEmpty) {
           return LibraryListEmpty();
-        } else {
+        } else if (state is LibraryShowState) {
           return LibraryList();
+        } else {
+          return Text("TODO: error widget");
         }
       },
     );
