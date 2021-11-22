@@ -5,8 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// TODO print data on toolbar : Mangas
-// If in ShowChapter state : Mangas > MangaName
 class LibraryPageScaffold extends StatelessWidget {
   const LibraryPageScaffold({Key? key}) : super(key: key);
 
