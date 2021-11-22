@@ -5,6 +5,6 @@ class LibraryListEmpty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text("Empty");
+    return const Text("Empty");
   }
 }

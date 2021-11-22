@@ -11,16 +11,12 @@ class LibraryView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LibraryBloc, LibraryState>(
       builder: (context, state) {
-        if (state is ImportStarted) {
-          return CircularProgressIndicator();
-        }
-
         if (state is LibraryShowState && state.isEmpty) {
-          return LibraryListEmpty();
+          return const LibraryListEmpty();
         } else if (state is LibraryShowState) {
-          return LibraryList();
+          return const LibraryList();
         } else {
-          return Text("TODO: error widget");
+          return const CircularProgressIndicator();
         }
       },
     );

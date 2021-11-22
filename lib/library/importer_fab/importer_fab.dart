@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/library_bloc.dart';
 
 class ImporterFab extends StatelessWidget {
+  const ImporterFab({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
@@ -11,7 +12,7 @@ class ImporterFab extends StatelessWidget {
           Import(),
         );
       },
-      child: Icon(Icons.add),
+      child: const Icon(Icons.add),
     );
   }
 }

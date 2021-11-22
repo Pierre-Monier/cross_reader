@@ -1,28 +1,28 @@
 part of 'library_bloc.dart';
 
 abstract class LibraryState extends Equatable {
-  LibraryState();
+  const LibraryState();
 
   @override
   List<Object> get props => [];
 }
 
 class ImportStarted extends LibraryState {
-  ImportStarted() : super();
+  const ImportStarted() : super();
 
   @override
   List<Object> get props => [];
 }
 
 class ImportSucceed extends LibraryState {
-  ImportSucceed() : super();
+  const ImportSucceed() : super();
 
   @override
   List<Object> get props => [];
 }
 
 class ImportFailed extends LibraryState {
-  ImportFailed() : super();
+  const ImportFailed() : super();
 
   @override
   List<Object> get props => [];
@@ -41,7 +41,7 @@ class ShowMangas extends LibraryShowState {
   ShowMangas(this.mangas) : super(mangas.isEmpty);
 
   @override
-  List<Object> get props => [mangas];
+  List<Object> get props => [mangas, isEmpty];
 }
 
 class ShowChapters extends LibraryShowState {
@@ -50,7 +50,7 @@ class ShowChapters extends LibraryShowState {
   ShowChapters(this.chapters, this.manga) : super(chapters.isEmpty);
 
   @override
-  List<Object> get props => [chapters, manga];
+  List<Object> get props => [chapters, manga, isEmpty];
 }
 
 class ShowImages extends LibraryShowState {
@@ -61,5 +61,5 @@ class ShowImages extends LibraryShowState {
       : super(images.isEmpty);
 
   @override
-  List<Object> get props => [images, manga, chapterIndex];
+  List<Object> get props => [images, manga, chapterIndex, isEmpty];
 }

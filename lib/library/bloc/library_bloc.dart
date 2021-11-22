@@ -22,6 +22,7 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
   ///
   /// We don't want a nested level of 3 or more
   static const MAX_IMPORT_NESTED_LEVEL = 2;
+
   LibraryBloc() : super(ShowMangas(GetIt.I.get<MangaRepository>().mangaList)) {
     on<Import>((event, emit) async => await _import(emit));
     on<ListChapters>(

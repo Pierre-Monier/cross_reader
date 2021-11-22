@@ -7,6 +7,7 @@ import 'package:cross_reader/repository/chapter_repository.dart';
 import 'package:cross_reader/repository/manga_repository.dart';
 import 'package:cross_reader/service/file_picker_wrapper.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -17,12 +18,32 @@ void registerServices() {
       FilePickerWrapper(FilePicker.platform));
 }
 
+handleErrors() {
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    if (kDebugMode) {
+      return ErrorWidget(details.exception);
+    } else {
+      return Container(
+        color: Colors.red,
+        child: Center(
+          child: Text(
+            details.exceptionAsString(),
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      );
+    }
+  };
+}
+
 void main() {
   registerServices();
-  runApp(CrossReaderApp());
+  handleErrors();
+  runApp(const CrossReaderApp());
 }
 
 class CrossReaderApp extends StatelessWidget {
+  const CrossReaderApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

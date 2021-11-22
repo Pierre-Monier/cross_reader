@@ -24,7 +24,7 @@ class LibraryPage extends StatelessWidget {
               _showSnackBar(context, "SUCCESS");
             }
           },
-          child: LibraryPageScaffold(),
+          child: const LibraryPageScaffold(),
         ));
   }
 }

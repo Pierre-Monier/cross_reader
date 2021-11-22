@@ -15,9 +15,9 @@ class ReaderPage extends StatelessWidget {
       create: (_) => _readerCubit,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Reader'),
+          title: const Text('Reader'),
         ),
-        body: ReaderView(),
+        body: const ReaderView(),
       ),
     );
   }

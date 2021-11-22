@@ -24,15 +24,14 @@ class LibraryList extends StatelessWidget {
 
   Widget _getItem(LibraryState state, int index) {
     if (state is ShowMangas) {
-      return LibraryListMangaItem(
-          GetIt.I.get<MangaRepository>().mangaList[index]);
+      return LibraryListMangaItem(state.mangas[index]);
     } else if (state is ShowChapters) {
       return LibraryListChapterItem(state.manga, index);
     } else if (state is ShowImages) {
       return LibraryListImageItem(
           state.manga.chapters[state.chapterIndex].images, index);
     } else {
-      return Text("TODO: error widget");
+      throw Exception('In LibraryList with state: $state');
     }
   }
 
@@ -51,7 +50,7 @@ class LibraryList extends StatelessWidget {
               return _getItem(state, index);
             });
       } else {
-        return Text("TODO: error widget");
+        throw Exception('In LibraryList with state: $state');
       }
     });
   }
