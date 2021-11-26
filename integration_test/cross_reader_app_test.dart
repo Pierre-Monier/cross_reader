@@ -43,7 +43,7 @@ void main() {
     when(() => mockDirectory.path).thenReturn('/manga');
 
     when(() => mockSubDirectory.list())
-        .thenAnswer((_) => Stream.fromIterable(onDeviceMockImages));
+        .thenAnswer((_) => Stream.fromIterable(onDevicemockImagesPath));
     when(() => mockDirectory.exists())
         .thenAnswer((invocation) => Future.value(true));
     when(() => mockSubDirectory.path).thenReturn('/manga/chapter');
@@ -74,7 +74,7 @@ void main() {
 
     final imageItemFinder = find.byType(LibraryListImageItem);
 
-    expect(imageItemFinder, findsNWidgets(onDeviceMockImages.length));
+    expect(imageItemFinder, findsNWidgets(onDevicemockImagesPath.length));
 
     await tester.tap(imageItemFinder.first);
     await tester.pumpAndSettle();

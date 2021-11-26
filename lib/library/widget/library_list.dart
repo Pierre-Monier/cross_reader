@@ -16,7 +16,7 @@ class LibraryList extends StatelessWidget {
     } else if (state is ShowChapters) {
       return state.manga.chapters.length;
     } else if (state is ShowImages) {
-      return state.manga.chapters[state.chapterIndex].images.length;
+      return state.manga.chapters[state.chapterIndex].imagesPath.length;
     } else {
       return 0;
     }
@@ -29,7 +29,7 @@ class LibraryList extends StatelessWidget {
       return LibraryListChapterItem(state.manga, index);
     } else if (state is ShowImages) {
       return LibraryListImageItem(
-          state.manga.chapters[state.chapterIndex].images, index);
+          state.manga.chapters[state.chapterIndex].imagesPath, index);
     } else {
       throw Exception('In LibraryList with state: $state');
     }

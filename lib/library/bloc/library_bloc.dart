@@ -30,7 +30,7 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
     on<ListMangas>((event, emit) =>
         emit(ShowMangas(GetIt.I.get<MangaRepository>().mangaList)));
     on<ListImages>((event, emit) =>
-        emit(ShowImages(event.images, event.manga, event.chapterIndex)));
+        emit(ShowImages(event.imagesPath, event.manga, event.chapterIndex)));
   }
 
   Future<void> _import(Emitter<LibraryState> emit) async {

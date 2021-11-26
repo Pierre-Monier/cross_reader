@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cross_reader/model/manga.dart';
 
 class Chapter {

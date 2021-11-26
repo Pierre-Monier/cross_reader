@@ -7,7 +7,7 @@ class ReaderView extends StatelessWidget {
   const ReaderView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ReaderCubit, File>(builder: (context, state) {
+    return BlocBuilder<ReaderCubit, String>(builder: (context, state) {
       return SizedBox.expand(
           child: GestureDetector(
               onHorizontalDragEnd: (DragEndDetails details) {
@@ -19,7 +19,7 @@ class ReaderView extends StatelessWidget {
                   context.read<ReaderCubit>().next();
                 }
               },
-              child: Image.file(state)));
+              child: Image.file(File(state))));
     });
   }
 }

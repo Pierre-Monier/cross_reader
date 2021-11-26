@@ -7,7 +7,7 @@ import '../../utils/with_material_app.dart';
 
 void main() {
   testWidgets('It display the firt image on init', (WidgetTester tester) async {
-    final cubit = ReaderCubit(mockImages);
+    final cubit = ReaderCubit(mockImagesPath);
     await tester.pumpWidget(withMaterialApp(ReaderPage(cubit)));
 
     final imageFinder = find.byType(Image);
@@ -18,7 +18,7 @@ void main() {
   // Can't emulate a swipe properly so skipping for now
   testWidgets('It display the next ressource on left swip',
       (WidgetTester tester) async {
-    final cubit = ReaderCubit(mockImages);
+    final cubit = ReaderCubit(mockImagesPath);
 
     await tester.pumpWidget(withMaterialApp(ReaderPage(cubit)));
     final firstImageFinder = find.byType(Image);

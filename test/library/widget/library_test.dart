@@ -127,7 +127,7 @@ void main() {
     await tester.pumpWidget(
         withMaterialAppAndNavigatorKey(LibraryPage(bloc), globalNavigatorKey));
 
-    bloc.add(ListImages(mockManga.chapters[0].images, mockManga, 0));
+    bloc.add(ListImages(mockManga.chapters[0].imagesPath, mockManga, 0));
     // We wait for the bloc to stream the new state
     await tester.pumpAndSettle(Duration(seconds: 1));
 

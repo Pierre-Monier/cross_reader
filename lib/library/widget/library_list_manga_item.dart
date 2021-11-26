@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cross_reader/library/bloc/library_bloc.dart';
 import 'package:cross_reader/model/manga.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +21,7 @@ class LibraryListMangaItem extends StatelessWidget {
           child: Column(children: [
             Expanded(
                 child: Image.file(
-              _manga.chapters[0].images[0],
+              File(_manga.chapters[0].imagesPath[0]),
               fit: BoxFit.contain,
             )),
             Text(_manga.name)

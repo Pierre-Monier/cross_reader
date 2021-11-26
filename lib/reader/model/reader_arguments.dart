@@ -1,7 +1,5 @@
-import 'dart:io';
-
 class ReaderArguments {
-  final List<File> images;
+  final List<String> images;
   final int index;
 
   ReaderArguments(this.images, this.index);

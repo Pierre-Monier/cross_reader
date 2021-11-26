@@ -45,6 +45,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(bloc.state,
-        equals(ShowImages(mockManga.chapters[0].images, mockManga, 0)));
+        equals(ShowImages(mockManga.chapters[0].imagesPath, mockManga, 0)));
   });
 }

@@ -1,11 +1,11 @@
 import 'package:cross_reader/model/chapter.dart';
-import 'package:hive/hive.dart';
-import 'package:json_annotation/json_annotation.dart';
+// import 'package:hive/hive.dart';
+// import 'package:json_annotation/json_annotation.dart';
 
-part 'manga.g.dart';
+// part 'manga.g.dart';
 
-@JsonSerializable()
-@HiveType(typeId: 1)
+// @JsonSerializable()
+// @HiveType(typeId: 1)
 class Manga {
   final String name;
   final List<Chapter> chapters;
@@ -18,8 +18,8 @@ class Manga {
 
   /// Connect the generated [_$MangaFromJson] function to the `fromJson`
   /// factory.
-  factory Manga.fromJson(Map<String, dynamic> json) => _$MangaFromJson(json);
+  // factory Manga.fromJson(Map<String, dynamic> json) => _$MangaFromJson(json);
 
   /// Connect the generated [_$MangaToJson] function to the `toJson` method.
-  Map<String, dynamic> toJson() => _$MangaToJson(this);
+  // Map<String, dynamic> toJson() => _$MangaToJson(this);
 }

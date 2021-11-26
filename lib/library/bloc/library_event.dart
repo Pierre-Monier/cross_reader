@@ -17,8 +17,8 @@ class ListChapters extends LibraryEvent {
 }
 
 class ListImages extends LibraryEvent {
-  final List<File> images;
+  final List<String> imagesPath;
   final Manga manga;
   final int chapterIndex;
-  ListImages(this.images, this.manga, this.chapterIndex);
+  ListImages(this.imagesPath, this.manga, this.chapterIndex);
 }

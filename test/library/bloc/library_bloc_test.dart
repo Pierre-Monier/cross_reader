@@ -178,10 +178,10 @@ void main() {
       'It should emit a ShowImages state when triggering the ListImages',
       build: () => LibraryBloc(),
       act: (bloc) {
-        return bloc.add(ListImages(mockImages, mockManga, 0));
+        return bloc.add(ListImages(mockImagesPath, mockManga, 0));
       },
       wait: const Duration(milliseconds: 300),
-      expect: () => [ShowImages(mockImages, mockManga, 0)]);
+      expect: () => [ShowImages(mockImagesPath, mockManga, 0)]);
 
   blocTest<LibraryBloc, LibraryState>(
       'It should emit an ImportStarted/ImportFailed/ShowMangas when the selected directory is too nested',
@@ -196,7 +196,7 @@ void main() {
         when(() => subDirectory.list())
             .thenAnswer((_) => Future.value(subSubDirectory).asStream());
         when(() => subSubDirectory.list())
-            .thenAnswer((_) => Stream.fromIterable(mockImages));
+            .thenAnswer((_) => Stream.fromIterable(mockImagesFile));
         resetMockFilePickerWrapper(directory);
         return bloc.add(Import());
       },

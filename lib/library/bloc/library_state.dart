@@ -54,12 +54,12 @@ class ShowChapters extends LibraryShowState {
 }
 
 class ShowImages extends LibraryShowState {
-  final List<File> images;
+  final List<String> imagesPath;
   final Manga manga;
   final int chapterIndex;
-  ShowImages(this.images, this.manga, this.chapterIndex)
-      : super(images.isEmpty);
+  ShowImages(this.imagesPath, this.manga, this.chapterIndex)
+      : super(imagesPath.isEmpty);
 
   @override
-  List<Object> get props => [images, manga, chapterIndex, isEmpty];
+  List<Object> get props => [imagesPath, manga, chapterIndex, isEmpty];
 }

@@ -20,6 +20,6 @@ void main() {
     final chapter = await chapterRepository.createChapter(mockDirectory);
 
     expect(chapter.name, mockDirectoryPath.split(Platform.pathSeparator).last);
-    expect(chapter.images[0].path, realImageFile.path);
+    expect(chapter.imagesPath[0], realImageFile.path);
   });
 }

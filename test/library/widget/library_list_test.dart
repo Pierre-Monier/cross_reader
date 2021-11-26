@@ -66,7 +66,7 @@ void main() {
     whenListen(
       mockBloc,
       Stream.fromIterable(
-          [ShowImages(mockManga.chapters[0].images, mockManga, 0)]),
+          [ShowImages(mockManga.chapters[0].imagesPath, mockManga, 0)]),
       initialState: ShowMangas([mockManga]),
     );
 

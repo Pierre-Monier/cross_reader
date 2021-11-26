@@ -1,15 +1,13 @@
-import 'dart:io';
-
 import 'package:cross_reader/model/chapter.dart';
 import 'package:cross_reader/model/manga.dart';
 import 'package:test/test.dart';
 
+import '../utils/mock_data.dart';
+
 void main() {
   test('We can create manga', () {
     final name = "name";
-    final chapters = [
-      Chapter("01", [File('toto'), File('titi')])
-    ];
+    final chapters = [Chapter("01", mockImagesPath)];
     final manga = Manga(name, chapters);
 
     expect(manga.name, name);
@@ -18,9 +16,7 @@ void main() {
 
   test('It should bind chapter to manga', () {
     final name = "name";
-    final chapters = [
-      Chapter("01", [File('toto'), File('titi')])
-    ];
+    final chapters = [Chapter("01", mockImagesPath)];
     final manga = Manga(name, chapters);
 
     expect(manga.chapters[0].manga, manga);

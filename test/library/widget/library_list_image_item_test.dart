@@ -11,7 +11,7 @@ void main() {
   testWidgets('It should render the number of the imgage',
       (WidgetTester tester) async {
     await tester.pumpWidget(withMaterialAppAndWidgetAncestor(
-        LibraryListImageItem(mockImages, index)));
+        LibraryListImageItem(mockImagesPath, index)));
 
     final titleFinder = find.text(index.toString());
     expect(titleFinder, findsOneWidget);
@@ -19,7 +19,7 @@ void main() {
 
   testWidgets('It should render an image', (WidgetTester tester) async {
     await tester.pumpWidget(withMaterialAppAndWidgetAncestor(
-        LibraryListImageItem(mockImages, index)));
+        LibraryListImageItem(mockImagesPath, index)));
 
     final imageFinder = find.byType(Image);
     expect(imageFinder, findsOneWidget);
@@ -30,7 +30,7 @@ void main() {
     final navigatorObserver = NavigationHistoryObserver();
     await tester.pumpWidget(
         withMaterialAppAndWidgetAncestorAndNavigatorObserverAndRouteGenerator(
-            LibraryListImageItem(mockImages, index), navigatorObserver));
+            LibraryListImageItem(mockImagesPath, index), navigatorObserver));
 
     final imageItemFinder = find.byType(LibraryListImageItem);
     await tester.tap(imageItemFinder);
