@@ -38,7 +38,7 @@ void main() {
     when(() => mockChapterRepository.createChapter(mockSubDirectory))
         .thenAnswer((_) => Future.value(mockChapter1));
 
-    await mangaRepository.updateMangaList(mockDirectory);
+    await mangaRepository.addMangaToMangaList(mockDirectory);
     expect(mangaRepository.mangaList.length, 1);
     expect(mangaRepository.mangaList[0].name,
         mockDirectoryPath.split(Platform.pathSeparator).last);

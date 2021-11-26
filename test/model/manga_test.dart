@@ -10,10 +10,19 @@ void main() {
     final chapters = [
       Chapter("01", [File('toto'), File('titi')])
     ];
-
     final manga = Manga(name, chapters);
 
     expect(manga.name, name);
     expect(manga.chapters, chapters);
+  });
+
+  test('It should bind chapter to manga', () {
+    final name = "name";
+    final chapters = [
+      Chapter("01", [File('toto'), File('titi')])
+    ];
+    final manga = Manga(name, chapters);
+
+    expect(manga.chapters[0].manga, manga);
   });
 }

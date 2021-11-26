@@ -25,7 +25,7 @@ void main() {
     GetIt.I.registerSingleton<MangaRepository>(mockMangaRepository);
     GetIt.I.registerSingleton<FilePickerWrapper>(mockFilePickerWrapper);
     registerFallbackValue(FakeDirectory());
-    when(() => mockMangaRepository.updateMangaList(any()))
+    when(() => mockMangaRepository.addMangaToMangaList(any()))
         .thenAnswer((_) => Future.value(null));
     when(() => mockMangaRepository.mangaList).thenReturn([mockManga]);
   });

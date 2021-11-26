@@ -52,7 +52,7 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
       emit(ImportFailed());
       emit(ShowMangas(GetIt.I.get<MangaRepository>().mangaList));
     } else {
-      await GetIt.I<MangaRepository>().updateMangaList(directory);
+      await GetIt.I<MangaRepository>().addMangaToMangaList(directory);
       emit(ImportSucceed());
       emit(ShowMangas(GetIt.I.get<MangaRepository>().mangaList));
     }

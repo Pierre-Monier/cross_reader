@@ -22,6 +22,6 @@ final onDeviceMockImages = [
   File("/storage/emulated/0/Documents/Page05.png")
 ];
 
+final mockManga = Manga("mock", [mockChapter1, mockChapter2]);
 final mockChapter1 = Chapter("01", [File("test_ressources/Page01.png")]);
 final mockChapter2 = Chapter("02", [File("test_ressources/Page02.png")]);
-final mockManga = Manga("mock", [mockChapter1, mockChapter2]);

@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:path_provider/path_provider.dart';
-
 class BackupService {
   final Directory _cacheDirectory;
   final bool shouldMock;

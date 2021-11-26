@@ -2,9 +2,6 @@ import 'dart:io';
 
 import 'package:cross_reader/service/backup_service.dart';
 import 'package:test/test.dart';
-import 'package:mocktail/mocktail.dart';
-import '../utils/mock_class.dart';
-import '../utils/mock_data.dart';
 
 const cacheDirPath = '/tmpPath/';
 const backupDirPath = cacheDirPath + 'backup/';
@@ -26,10 +23,10 @@ void main() {
   });
 
   test('It should get all mangas from the app', () async {
-    final backupService =
-        BackupService(Directory(cacheDirPath), shouldMock: true);
-    final mangas = await backupService.getMangas();
+    // final backupService =
+    //     BackupService(Directory(cacheDirPath), shouldMock: true);
+    // final mangas = await backupService.getMangas();
 
-    expect(mangas, [mockManga]);
+    // expect(mangas, [mockManga]);
   }, skip: true);
 }

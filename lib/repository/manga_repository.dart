@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cross_reader/model/chapter.dart';
 import 'package:cross_reader/model/manga.dart';
 import 'package:cross_reader/repository/chapter_repository.dart';
 import 'package:get_it/get_it.dart';
@@ -16,7 +15,7 @@ class MangaRepository {
   MangaRepository._internal();
 
   /// this should only be called by the library bloc
-  Future<void> updateMangaList(Directory directory) async {
+  Future<void> addMangaToMangaList(Directory directory) async {
     Manga manga = await _createManga(directory);
     _mangaRepository._mangaList.add(manga);
   }
@@ -24,7 +23,7 @@ class MangaRepository {
   Future<Manga> _createManga(Directory directory) async {
     final name = directory.path.split(Platform.pathSeparator).last;
 
-    List<Directory> subDirectories = await directory.list().toList().then(
+    final subDirectories = await directory.list().toList().then(
         (fileSystemEntityList) =>
             fileSystemEntityList.whereType<Directory>().toList());
 
@@ -32,8 +31,7 @@ class MangaRepository {
     // because we are sure that there is images file inside it (test by the library_bloc)
     final futureChapters =
         subDirectories.isEmpty ? [directory] : subDirectories;
-
-    final List<Chapter> chapters = await Future.wait(futureChapters.map(
+    final chapters = await Future.wait(futureChapters.map(
         (subDirectory) async => await GetIt.I
             .get<ChapterRepository>()
             .createChapter(subDirectory)));
