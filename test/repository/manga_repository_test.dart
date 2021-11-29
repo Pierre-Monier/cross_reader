@@ -19,10 +19,10 @@ void main() {
         .thenAnswer((_) => Future.value([]));
     GetIt.I.registerSingleton<BoxService>(mockBoxService);
   });
-  test('We can access mangaList', () {
+  test('We can access mangaList', () async {
     final mangaRepository = MangaRepository();
-
-    expect(mangaRepository.mangaList, []);
+    final mangaList = await mangaRepository.mangaList;
+    expect(mangaList, []);
   });
 
   test('We can update mangaList', () async {

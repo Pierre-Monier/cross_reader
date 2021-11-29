@@ -1,5 +1,10 @@
 import 'dart:io';
 
+import 'package:cross_reader/model/chapter.dart';
+import 'package:cross_reader/model/manga.dart';
+import 'package:cross_reader/repository/chapter_repository.dart';
+import 'package:get_it/get_it.dart';
+
 class BackupService {
   final Directory _cacheDirectory;
   final bool shouldMock;
@@ -18,6 +23,17 @@ class BackupService {
     }
 
     return BackupFiles(backupDirectory, mangasJsonFile);
+  }
+
+  List<Manga> transformImagesPath(BackupFiles backupFiles, List<Manga> mangas) {
+    return mangas.map((manga) {
+      final newDirPath = '${backupFiles.backupDirectory.path}/${manga.name}/';
+      final List<Chapter> chapters = GetIt.I
+          .get<ChapterRepository>()
+          .transformImagesPath(newDirPath, manga.chapters);
+
+      return Manga(manga.name, chapters);
+    }).toList();
   }
 }
 

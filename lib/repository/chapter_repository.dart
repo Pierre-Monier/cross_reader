@@ -9,4 +9,13 @@ class ChapterRepository {
 
     return Chapter(name, imagesPath);
   }
+
+  List<Chapter> transformImagesPath(String newDirPath, List<Chapter> chapters) {
+    return chapters.map((chapter) {
+      final List<String> images = chapter.imagesPath.map((imagePath) {
+        return '$newDirPath/${chapter.name}/$imagePath';
+      }).toList();
+      return Chapter(chapter.name, images);
+    }).toList();
+  }
 }
