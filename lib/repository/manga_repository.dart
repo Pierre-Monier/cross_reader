@@ -2,22 +2,26 @@ import 'dart:io';
 
 import 'package:cross_reader/model/manga.dart';
 import 'package:cross_reader/repository/chapter_repository.dart';
+import 'package:cross_reader/service/box_service.dart';
 import 'package:get_it/get_it.dart';
 
 class MangaRepository {
   List<Manga> _mangaList = [];
-  static final MangaRepository _mangaRepository = MangaRepository._internal();
+  late Future _initDone;
 
-  factory MangaRepository() {
-    return _mangaRepository;
+  MangaRepository() {
+    _initDone = _init();
   }
 
-  MangaRepository._internal();
+  _init() async {
+    _mangaList = await GetIt.I.get<BoxService>().getAllMangas();
+  }
 
   /// this should only be called by the library bloc
-  Future<void> addMangaToMangaList(Directory directory) async {
+  Future<int> addMangaToMangaList(Directory directory) async {
     Manga manga = await _createManga(directory);
-    _mangaRepository._mangaList.add(manga);
+    _mangaList.add(manga);
+    return GetIt.I.get<BoxService>().saveManga(manga);
   }
 
   Future<Manga> _createManga(Directory directory) async {
@@ -39,5 +43,8 @@ class MangaRepository {
     return Manga(name, chapters);
   }
 
-  List<Manga> get mangaList => _mangaRepository._mangaList;
+  Future<List<Manga>> get mangaList async {
+    await _initDone;
+    return _mangaList;
+  }
 }

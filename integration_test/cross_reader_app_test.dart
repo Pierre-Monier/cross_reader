@@ -7,6 +7,7 @@ import 'package:cross_reader/main.dart';
 import 'package:cross_reader/reader/widget/reader_page.dart';
 import 'package:cross_reader/repository/chapter_repository.dart';
 import 'package:cross_reader/repository/manga_repository.dart';
+import 'package:cross_reader/service/box_service.dart';
 import 'package:cross_reader/service/file_picker_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -18,9 +19,11 @@ final FilePickerWrapper mockFilePickerWrapper = MockFilePickerWrapper();
 
 void main() {
   setUpAll(() async {
+    GetIt.instance.registerSingleton<BoxService>(BoxService());
     GetIt.instance.registerSingleton<MangaRepository>(MangaRepository());
     GetIt.instance.registerSingleton<ChapterRepository>(ChapterRepository());
     GetIt.I.registerSingleton<FilePickerWrapper>(mockFilePickerWrapper);
+    await GetIt.I.get<BoxService>().cleanMangas();
   });
   testWidgets('It should render the library page by default',
       (WidgetTester tester) async {

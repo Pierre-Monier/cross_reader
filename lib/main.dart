@@ -5,6 +5,7 @@ import 'package:cross_reader/reader/model/reader_arguments.dart';
 import 'package:cross_reader/reader/widget/reader_page.dart';
 import 'package:cross_reader/repository/chapter_repository.dart';
 import 'package:cross_reader/repository/manga_repository.dart';
+import 'package:cross_reader/service/box_service.dart';
 import 'package:cross_reader/service/file_picker_wrapper.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 void registerServices() {
+  GetIt.I.registerSingleton<BoxService>(BoxService());
   GetIt.instance.registerSingleton<MangaRepository>(MangaRepository());
   GetIt.instance.registerSingleton<ChapterRepository>(ChapterRepository());
   GetIt.instance.registerSingleton<FilePickerWrapper>(

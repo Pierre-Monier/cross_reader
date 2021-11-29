@@ -9,7 +9,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:get_it/get_it.dart';
 import '../../utils/mock_data.dart';
-import '../../utils/with_material_app.dart';
+import '../../utils/function.dart';
 import '../../utils/mock_class.dart';
 
 final mockMangaRepository = MockMangaRepository();
@@ -19,7 +19,8 @@ void main() {
     registerFallbackValue(LibraryStateFake());
     registerFallbackValue(LibraryEventFake());
 
-    when(() => mockMangaRepository.mangaList).thenReturn([mockManga]);
+    when(() => mockMangaRepository.mangaList)
+        .thenAnswer((_) => Future.value([mockManga]));
     GetIt.I.registerSingleton<MangaRepository>(mockMangaRepository);
   });
   testWidgets('It should render a FAB btn', (WidgetTester tester) async {
@@ -69,7 +70,7 @@ void main() {
 
     whenListen(
       mockBloc,
-      Stream.fromIterable([ImportStarted()]),
+      Stream.fromIterable([Loading()]),
       initialState: ShowMangas([mockManga]),
     );
 
@@ -106,14 +107,18 @@ void main() {
         withMaterialAppAndNavigatorKey(LibraryPage(bloc), globalNavigatorKey));
 
     bloc.add(ListChapters(mockManga.chapters, mockManga));
+
     // We wait for the bloc to stream the new state
-    await tester.pumpAndSettle(Duration(seconds: 1));
+    await tester.pumpAndSettle(Duration(milliseconds: 100));
 
     if (globalNavigatorKey.currentState != null) {
       await globalNavigatorKey.currentState!.maybePop();
     } else {
       throw Exception("State of the NavigatorKey is null");
     }
+
+    // we wait for the ListManga event to be processed
+    await tester.pumpAndSettle(Duration(milliseconds: 100));
 
     // triggering maybePop change the bloc state
     expect(bloc.state, equals(ShowMangas([mockManga])));
@@ -144,7 +149,8 @@ void main() {
       (WidgetTester tester) async {
     final mockBloc = MockLibraryBloc();
     reset(mockMangaRepository);
-    when(() => mockMangaRepository.mangaList).thenReturn([mockManga]);
+    when(() => mockMangaRepository.mangaList)
+        .thenAnswer((_) => Future.value([mockManga]));
     whenListen(
       mockBloc,
       Stream.fromIterable([

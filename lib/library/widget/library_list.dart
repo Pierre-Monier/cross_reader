@@ -2,17 +2,15 @@ import 'package:cross_reader/library/bloc/library_bloc.dart';
 import 'package:cross_reader/library/widget/library_list_chapter_item.dart';
 import 'package:cross_reader/library/widget/library_list_image_item.dart';
 import 'package:cross_reader/library/widget/library_list_manga_item.dart';
-import 'package:cross_reader/repository/manga_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
 class LibraryList extends StatelessWidget {
   const LibraryList({Key? key}) : super(key: key);
 
   int _getItemCount(LibraryState state) {
     if (state is ShowMangas) {
-      return GetIt.I.get<MangaRepository>().mangaList.length;
+      return state.mangas.length;
     } else if (state is ShowChapters) {
       return state.manga.chapters.length;
     } else if (state is ShowImages) {

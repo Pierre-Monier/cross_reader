@@ -13,12 +13,4 @@ void main() {
     expect(manga.name, name);
     expect(manga.chapters, chapters);
   });
-
-  test('It should bind chapter to manga', () {
-    final name = "name";
-    final chapters = [Chapter("01", mockImagesPath)];
-    final manga = Manga(name, chapters);
-
-    expect(manga.chapters[0].manga, manga);
-  });
 }

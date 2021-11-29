@@ -7,8 +7,8 @@ abstract class LibraryState extends Equatable {
   List<Object> get props => [];
 }
 
-class ImportStarted extends LibraryState {
-  const ImportStarted() : super();
+class Loading extends LibraryState {
+  const Loading() : super();
 
   @override
   List<Object> get props => [];

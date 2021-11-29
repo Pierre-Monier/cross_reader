@@ -7,13 +7,14 @@ import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 import '../../utils/mock_class.dart';
 import '../../utils/mock_data.dart';
-import '../../utils/with_material_app.dart';
+import '../../utils/function.dart';
 
 void main() {
   setUpAll(() {
     final mockMangaRepository = MockMangaRepository();
     GetIt.I.registerSingleton<MangaRepository>(mockMangaRepository);
-    when(() => mockMangaRepository.mangaList).thenReturn([mockManga]);
+    when(() => mockMangaRepository.mangaList)
+        .thenAnswer((_) => Future.value([mockManga]));
   });
   testWidgets('It should render the number of the chapter',
       (WidgetTester tester) async {

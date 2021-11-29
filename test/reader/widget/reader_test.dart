@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cross_reader/reader/reader.dart';
 import '../../utils/mock_data.dart';
-import '../../utils/with_material_app.dart';
+import '../../utils/function.dart';
 
 void main() {
   testWidgets('It display the firt image on init', (WidgetTester tester) async {

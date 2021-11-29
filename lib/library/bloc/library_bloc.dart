@@ -23,23 +23,29 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
   /// We don't want a nested level of 3 or more
   static const MAX_IMPORT_NESTED_LEVEL = 2;
 
-  LibraryBloc() : super(ShowMangas(GetIt.I.get<MangaRepository>().mangaList)) {
+  LibraryBloc() : super(Loading()) {
     on<Import>((event, emit) async => await _import(emit));
     on<ListChapters>(
         (event, emit) => emit(ShowChapters(event.chapters, event.manga)));
-    on<ListMangas>((event, emit) =>
-        emit(ShowMangas(GetIt.I.get<MangaRepository>().mangaList)));
+    on<ListMangas>((event, emit) async => await _listMangas(emit));
     on<ListImages>((event, emit) =>
         emit(ShowImages(event.imagesPath, event.manga, event.chapterIndex)));
+
+    this.add(ListMangas());
+  }
+
+  Future<void> _listMangas(Emitter<LibraryState> emit) async {
+    final mangaList = await GetIt.I.get<MangaRepository>().mangaList;
+    return emit(ShowMangas(mangaList));
   }
 
   Future<void> _import(Emitter<LibraryState> emit) async {
-    emit(ImportStarted());
+    emit(Loading());
 
     final directory = await GetIt.I.get<FilePickerWrapper>().getDirectory();
 
     if (directory == null) {
-      emit(ShowMangas(GetIt.I.get<MangaRepository>().mangaList));
+      emit(ShowMangas(await GetIt.I.get<MangaRepository>().mangaList));
       return;
     }
 
@@ -50,11 +56,11 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
 
     if (!exists || !hasValidFiles) {
       emit(ImportFailed());
-      emit(ShowMangas(GetIt.I.get<MangaRepository>().mangaList));
+      emit(ShowMangas(await GetIt.I.get<MangaRepository>().mangaList));
     } else {
       await GetIt.I<MangaRepository>().addMangaToMangaList(directory);
       emit(ImportSucceed());
-      emit(ShowMangas(GetIt.I.get<MangaRepository>().mangaList));
+      emit(ShowMangas(await GetIt.I.get<MangaRepository>().mangaList));
     }
   }
 

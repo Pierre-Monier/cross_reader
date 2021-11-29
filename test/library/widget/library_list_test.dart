@@ -10,7 +10,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:get_it/get_it.dart';
 import '../../utils/mock_data.dart';
 import '../../utils/mock_class.dart';
-import '../../utils/with_material_app.dart';
+import '../../utils/function.dart';
 
 final mockMangaRepository = MockMangaRepository();
 
@@ -19,7 +19,8 @@ void main() {
     registerFallbackValue(LibraryStateFake());
     registerFallbackValue(LibraryEventFake());
 
-    when(() => mockMangaRepository.mangaList).thenReturn([mockManga]);
+    when(() => mockMangaRepository.mangaList)
+        .thenAnswer((_) => Future.value([mockManga]));
     GetIt.I.registerSingleton<MangaRepository>(mockMangaRepository);
   });
 

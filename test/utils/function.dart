@@ -59,3 +59,9 @@ MaterialApp withMaterialAppAndWidgetAncestorAndBlocProvider<T extends Bloc>(
     ),
   );
 }
+
+Future<Function> withDebounce(Function callback) async {
+  await Future.delayed(const Duration(milliseconds: 300), () {});
+
+  return callback();
+}
