@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:cross_reader/model/chapter.dart';
 import 'package:cross_reader/model/manga.dart';
 import 'package:cross_reader/repository/manga_repository.dart';
+import 'package:cross_reader/service/backup_service.dart';
 import 'package:cross_reader/service/file_picker_wrapper.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:path_provider/path_provider.dart';
 
 part 'library_event.dart';
 part 'library_state.dart';
@@ -62,6 +64,13 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
       emit(ImportSucceed());
       emit(ShowMangas(await GetIt.I.get<MangaRepository>().mangaList));
     }
+    // final success = await GetIt.I.get<BackupService>().backup();
+    // print("success : $success");
+    // final _cacheDirectory = await getTemporaryDirectory();
+    // _cacheDirectory.listSync(recursive: true).forEach((file) {
+    //   print("FILE - ${file.path}");
+    // });
+    emit(ShowMangas(await GetIt.I.get<MangaRepository>().mangaList));
   }
 
   Future<bool> _doesDirHasValidFiles(Directory directory,

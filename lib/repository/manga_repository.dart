@@ -40,7 +40,7 @@ class MangaRepository {
             .get<ChapterRepository>()
             .createChapter(subDirectory)));
 
-    return Manga(name, chapters);
+    return Manga(name: name, onDevicePath: directory.path, chapters: chapters);
   }
 
   Future<List<Manga>> get mangaList async {

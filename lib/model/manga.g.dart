@@ -17,19 +17,22 @@ class MangaAdapter extends TypeAdapter<Manga> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Manga(
-      fields[0] as String,
-      (fields[1] as List).cast<Chapter>(),
+      name: fields[0] as String,
+      chapters: (fields[1] as List).cast<Chapter>(),
+      onDevicePath: fields[2] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Manga obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.chapters);
+      ..write(obj.chapters)
+      ..writeByte(2)
+      ..write(obj.onDevicePath);
   }
 
   @override
@@ -42,19 +45,3 @@ class MangaAdapter extends TypeAdapter<Manga> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-Manga _$MangaFromJson(Map<String, dynamic> json) => Manga(
-      json['name'] as String,
-      (json['chapters'] as List<dynamic>)
-          .map((e) => Chapter.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$MangaToJson(Manga instance) => <String, dynamic>{
-      'name': instance.name,
-      'chapters': instance.chapters,
-    };

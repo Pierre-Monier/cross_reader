@@ -1,9 +1,11 @@
 import 'dart:io';
 
-import 'package:cross_reader/model/chapter.dart';
 import 'package:cross_reader/model/manga.dart';
-import 'package:cross_reader/repository/chapter_repository.dart';
+import 'package:cross_reader/repository/manga_repository.dart';
+import 'package:cross_reader/service/file_helper.dart';
+import 'package:cross_reader/service/process_service.dart';
 import 'package:file/local.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:file/file.dart' show FileSystem;
 
@@ -13,68 +15,54 @@ class BackupService {
   const BackupService(this._cacheDirectory,
       {this.fileSystem = const LocalFileSystem()});
 
-  static const backupDirName = 'backup/';
+  static const backupDirName = "backup";
   static const mangasJsonFileName = 'mangas.json';
 
-  Future<BackupFiles> getBackupFiles() async {
-    final backupDirectory =
-        fileSystem.directory('${_cacheDirectory.path}/$backupDirName');
-    final mangasJsonFile =
-        fileSystem.file('${backupDirectory.path}/$mangasJsonFileName');
-
-    // if (!shouldMock) {
-    await backupDirectory.create(recursive: true);
-    await mangasJsonFile.create(recursive: true);
-    // }
-
-    return BackupFiles(backupDirectory, mangasJsonFile);
-  }
-
-  List<Manga> createBackupMangas(BackupFiles backupFiles, List<Manga> mangas) {
-    return mangas.map((manga) {
-      final newDirPath = '${backupFiles.backupDirectory.path}/${manga.name}/';
-      final List<Chapter> chapters = GetIt.I
-          .get<ChapterRepository>()
-          .transformImagesPath(newDirPath, manga.chapters);
-
-      return Manga(manga.name, chapters);
-    }).toList();
-  }
-
-  Future<bool> copyMangasFiles(List<Manga> mangas) async {
+  /// return a list of manga that failed to backup
+  ///
+  /// If null is return that means that the backup operation as failed
+  Future<List<Manga>?> backup() async {
     try {
-      final backupImagesPath = [];
-      final onDeviceImagesPath = [];
-
-      if (backupImagesPath.length == onDeviceImagesPath.length) {
-        // length of arrays
-        final length = backupImagesPath.length;
-
-        for (var i = 0; i < length; i++) {
-          final onDeviceFile = fileSystem.file(onDeviceImagesPath[i]);
-          final file = fileSystem.file(backupImagesPath[i]);
-
-          await file.create(recursive: true);
-          await onDeviceFile.copy(file.path);
-        }
-
-        return true;
-      } else {
-        throw Exception(
-            'Backup files and on device files doesn\'t have the same size');
-      }
+      final backupDir = await createBackupDir();
+      final mangas = await GetIt.I.get<MangaRepository>().mangaList;
+      final fails =
+          await copyMangas(backupDir: backupDir, onDeviceManga: mangas);
+      return fails;
     } catch (e) {
-      return false;
+      debugPrint("Backup failed: $e");
+      return null;
     }
   }
-}
 
-class BackupFiles {
-  final Directory _backupDirectory;
-  final File _mangasJsonFile;
+  Future<Directory> createBackupDir() {
+    final backupDirectoryPath = FileHelper.createPath(
+        [_cacheDirectory.path, backupDirName],
+        isDirectory: true);
+    final backupDirectory = fileSystem.directory(backupDirectoryPath);
 
-  const BackupFiles(this._backupDirectory, this._mangasJsonFile);
+    return backupDirectory.create(recursive: true);
+  }
 
-  File get mangasJsonFile => _mangasJsonFile;
-  Directory get backupDirectory => _backupDirectory;
+  Future<List<Manga>> copyMangas(
+      {required Directory backupDir,
+      required List<Manga> onDeviceManga}) async {
+    final fails = <Manga>[];
+    // loop on each manga
+    // copy manga directory with all it's content to backup directory
+    for (final manga in onDeviceManga) {
+      final backupMangaDir = fileSystem
+          .directory(FileHelper.createPath([backupDir.path, manga.name]));
+      final mangaDir = fileSystem.directory(manga.onDevicePath);
+      try {
+        await GetIt.I
+            .get<ProcessService>()
+            .copyDirectory(destination: backupMangaDir, source: mangaDir);
+      } catch (e) {
+        debugPrint("manga ${manga.name} directory copy failed ${e.toString()}");
+        fails.add(manga);
+      }
+    }
+
+    return fails;
+  }
 }

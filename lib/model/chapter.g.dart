@@ -42,17 +42,3 @@ class ChapterAdapter extends TypeAdapter<Chapter> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-Chapter _$ChapterFromJson(Map<String, dynamic> json) => Chapter(
-      json['name'] as String,
-      (json['imagesPath'] as List<dynamic>).map((e) => e as String).toList(),
-    );
-
-Map<String, dynamic> _$ChapterToJson(Chapter instance) => <String, dynamic>{
-      'name': instance.name,
-      'imagesPath': instance.imagesPath,
-    };
