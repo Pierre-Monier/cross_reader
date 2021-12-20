@@ -8,7 +8,6 @@ import 'package:cross_reader/service/file_picker_wrapper.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:path_provider/path_provider.dart';
 
 part 'library_event.dart';
 part 'library_state.dart';
@@ -32,7 +31,7 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
     on<ListMangas>((event, emit) async => await _listMangas(emit));
     on<ListImages>((event, emit) =>
         emit(ShowImages(event.imagesPath, event.manga, event.chapterIndex)));
-
+    on<BackupLibrary>((event, emit) async => await _backupLibrary(emit));
     this.add(ListMangas());
   }
 
@@ -64,12 +63,7 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
       emit(ImportSucceed());
       emit(ShowMangas(await GetIt.I.get<MangaRepository>().mangaList));
     }
-    // final success = await GetIt.I.get<BackupService>().backup();
-    // print("success : $success");
-    // final _cacheDirectory = await getTemporaryDirectory();
-    // _cacheDirectory.listSync(recursive: true).forEach((file) {
-    //   print("FILE - ${file.path}");
-    // });
+
     emit(ShowMangas(await GetIt.I.get<MangaRepository>().mangaList));
   }
 
@@ -101,6 +95,19 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
           nestedLevel < MAX_IMPORT_NESTED_LEVEL;
     } catch (e) {
       return false;
+    }
+  }
+
+  Future<void> _backupLibrary(Emitter<LibraryState> emit) async {
+    emit(BackupLoading());
+
+    try {
+      final backupResponse = await GetIt.I.get<BackupService>().backup();
+
+      emit(BackupSuccess(
+          fails: backupResponse.fails, backupDir: backupResponse.backupDir));
+    } catch (e) {
+      emit(BackupFailed());
     }
   }
 }

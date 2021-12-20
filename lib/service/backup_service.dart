@@ -21,16 +21,16 @@ class BackupService {
   /// return a list of manga that failed to backup
   ///
   /// If null is return that means that the backup operation as failed
-  Future<List<Manga>?> backup() async {
+  Future<BackupResponse> backup() async {
     try {
       final backupDir = await createBackupDir();
       final mangas = await GetIt.I.get<MangaRepository>().mangaList;
       final fails =
           await copyMangas(backupDir: backupDir, onDeviceManga: mangas);
-      return fails;
+      return BackupResponse(fails: fails, backupDir: backupDir);
     } catch (e) {
       debugPrint("Backup failed: $e");
-      return null;
+      rethrow;
     }
   }
 
@@ -43,20 +43,19 @@ class BackupService {
     return backupDirectory.create(recursive: true);
   }
 
+  /// return a list of all mangas that failed to backup
   Future<List<Manga>> copyMangas(
       {required Directory backupDir,
       required List<Manga> onDeviceManga}) async {
     final fails = <Manga>[];
     // loop on each manga
-    // copy manga directory with all it's content to backup directory
+    // copy manga directory to backup directory
     for (final manga in onDeviceManga) {
-      final backupMangaDir = fileSystem
-          .directory(FileHelper.createPath([backupDir.path, manga.name]));
       final mangaDir = fileSystem.directory(manga.onDevicePath);
       try {
         await GetIt.I
             .get<ProcessService>()
-            .copyDirectory(destination: backupMangaDir, source: mangaDir);
+            .copyDirectory(destination: backupDir, source: mangaDir);
       } catch (e) {
         debugPrint("manga ${manga.name} directory copy failed ${e.toString()}");
         fails.add(manga);
@@ -65,4 +64,10 @@ class BackupService {
 
     return fails;
   }
+}
+
+class BackupResponse {
+  final List<Manga> fails;
+  final Directory backupDir;
+  BackupResponse({required this.fails, required this.backupDir});
 }

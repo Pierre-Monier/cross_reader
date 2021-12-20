@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cross_reader/model/chapter.dart';
 import 'package:cross_reader/model/manga.dart';
+import 'package:cross_reader/service/backup_service.dart';
 
 final notAnImageFile = File('notanimage.exe');
 final realImageFile = File('image.png');
@@ -39,3 +40,8 @@ final mockChapter1 =
     Chapter("01", ["test_ressources" + Platform.pathSeparator + "Page01.png"]);
 final mockChapter2 =
     Chapter("02", ["test_ressources" + Platform.pathSeparator + "Page02.png"]);
+
+final mockBackupDir = Directory("path");
+
+final successBackupResponse =
+    BackupResponse(fails: [mockManga], backupDir: mockBackupDir);

@@ -1,5 +1,6 @@
 import 'package:cross_reader/library/bloc/library_bloc.dart';
-import 'package:cross_reader/library/importer_fab/importer_fab.dart';
+import 'package:cross_reader/library/widget/importer_fab.dart';
+import 'package:cross_reader/library/widget/library_appbar.dart';
 import 'package:cross_reader/library/widget/library_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,9 +28,7 @@ class LibraryPageScaffold extends StatelessWidget {
       return WillPopScope(
           onWillPop: () => _onWillPop(context, state),
           child: Scaffold(
-            appBar: AppBar(
-              title: Text('Library'),
-            ),
+            appBar: LibraryAppBar(),
             body: const LibraryView(),
             floatingActionButton: const ImporterFab(),
           ));

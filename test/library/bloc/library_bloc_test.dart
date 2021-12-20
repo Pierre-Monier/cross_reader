@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cross_reader/repository/manga_repository.dart';
+import 'package:cross_reader/service/backup_service.dart';
 import 'package:cross_reader/service/box_service.dart';
 import 'package:cross_reader/service/file_picker_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,6 +15,7 @@ import '../../utils/function.dart';
 
 final mockMangaRepository = MockMangaRepository();
 final mockFilePickerWrapper = MockFilePickerWrapper();
+final mockBackupService = MockBackupService();
 
 void resetMockFilePickerWrapper(Directory? directory) {
   reset(mockFilePickerWrapper);
@@ -28,6 +30,7 @@ void main() {
     GetIt.I.registerSingleton<BoxService>(mockBoxService);
     GetIt.I.registerSingleton<MangaRepository>(mockMangaRepository);
     GetIt.I.registerSingleton<FilePickerWrapper>(mockFilePickerWrapper);
+    GetIt.I.registerSingleton<BackupService>(mockBackupService);
     registerFallbackValue(FakeDirectory());
     when(() => mockMangaRepository.addMangaToMangaList(any()))
         .thenAnswer((_) => Future.value(1));
@@ -56,8 +59,8 @@ void main() {
       });
     },
     wait: const Duration(milliseconds: 300),
+    skip: 1,
     expect: () => [
-      ShowMangas([mockManga]),
       Loading(),
       ImportFailed(),
       ShowMangas([mockManga])
@@ -79,8 +82,8 @@ void main() {
       });
     },
     wait: const Duration(milliseconds: 300),
+    skip: 1,
     expect: () => [
-      ShowMangas([mockManga]),
       Loading(),
       ImportFailed(),
       ShowMangas([mockManga])
@@ -102,8 +105,8 @@ void main() {
       });
     },
     wait: const Duration(milliseconds: 1000),
+    skip: 1,
     expect: () => [
-      ShowMangas([mockManga]),
       Loading(),
       ImportSucceed(),
       ShowMangas([mockManga])
@@ -128,8 +131,8 @@ void main() {
       });
     },
     wait: const Duration(milliseconds: 300),
+    skip: 1,
     expect: () => [
-      ShowMangas([mockManga]),
       Loading(),
       ImportSucceed(),
       ShowMangas([mockManga])
@@ -154,8 +157,8 @@ void main() {
       });
     },
     wait: const Duration(milliseconds: 300),
+    skip: 1,
     expect: () => [
-      ShowMangas([mockManga]),
       Loading(),
       ImportFailed(),
       ShowMangas([mockManga])
@@ -176,8 +179,8 @@ void main() {
         });
       },
       wait: const Duration(milliseconds: 300),
+      skip: 1,
       expect: () => [
-            ShowMangas([mockManga]),
             Loading(),
             ImportFailed(),
             ShowMangas([mockManga])
@@ -192,10 +195,8 @@ void main() {
         });
       },
       wait: const Duration(milliseconds: 300),
-      expect: () => [
-            ShowMangas([mockManga]),
-            ShowChapters(mockManga.chapters, mockManga)
-          ]);
+      skip: 1,
+      expect: () => [ShowChapters(mockManga.chapters, mockManga)]);
 
   blocTest<LibraryBloc, LibraryState>(
       'It should emit a ShowMangas state when triggering the ListMangas',
@@ -215,10 +216,8 @@ void main() {
         return bloc.add(ListImages(mockImagesPath, mockManga, 0));
       },
       wait: const Duration(milliseconds: 300),
-      expect: () => [
-            ShowMangas([mockManga]),
-            ShowImages(mockImagesPath, mockManga, 0)
-          ]);
+      skip: 1,
+      expect: () => [ShowImages(mockImagesPath, mockManga, 0)]);
 
   blocTest<LibraryBloc, LibraryState>(
       'It should emit an Loading/ImportFailed/ShowMangas when the selected directory is too nested',
@@ -240,10 +239,37 @@ void main() {
         });
       },
       wait: const Duration(milliseconds: 300),
+      skip: 1,
       expect: () => [
-            ShowMangas([mockManga]),
             Loading(),
             ImportFailed(),
             ShowMangas([mockManga])
           ]);
+
+  blocTest<LibraryBloc, LibraryState>(
+      'It should emit a BackupSuccess state if backup is successful',
+      build: () => LibraryBloc(),
+      act: (bloc) {
+        when(() => mockBackupService.backup())
+            .thenAnswer((_) => Future.value(successBackupResponse));
+        return bloc.add(BackupLibrary());
+      },
+      wait: const Duration(milliseconds: 300),
+      skip: 1,
+      expect: () => [
+            BackupLoading(),
+            BackupSuccess(fails: [mockManga], backupDir: mockBackupDir)
+          ]);
+
+  blocTest<LibraryBloc, LibraryState>(
+      "It should emit a BackupFailed state if backup isn't successful",
+      build: () => LibraryBloc(),
+      act: (bloc) {
+        when(() => mockBackupService.backup())
+            .thenAnswer((_) => throw Exception());
+        return bloc.add(BackupLibrary());
+      },
+      wait: const Duration(milliseconds: 300),
+      skip: 1,
+      expect: () => [BackupLoading(), BackupFailed()]);
 }

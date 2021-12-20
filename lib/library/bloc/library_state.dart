@@ -28,6 +28,21 @@ class ImportFailed extends LibraryState {
   List<Object> get props => [];
 }
 
+class BackupSuccess extends LibraryState {
+  final List<Manga> fails;
+  final Directory backupDir;
+
+  const BackupSuccess({required this.fails, required this.backupDir}) : super();
+}
+
+class BackupFailed extends LibraryState {
+  const BackupFailed() : super();
+}
+
+class BackupLoading extends LibraryState {
+  const BackupLoading() : super();
+}
+
 abstract class LibraryShowState extends LibraryState {
   final bool isEmpty;
   LibraryShowState(this.isEmpty);
