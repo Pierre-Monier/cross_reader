@@ -105,7 +105,8 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
       final backupResponse = await GetIt.I.get<BackupService>().backup();
 
       emit(BackupSuccess(
-          fails: backupResponse.fails, backupDir: backupResponse.backupDir));
+          fails: backupResponse.fails,
+          archiveBackupDir: backupResponse.archiveBackupDir));
     } catch (e) {
       emit(BackupFailed());
     }

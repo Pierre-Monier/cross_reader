@@ -30,9 +30,10 @@ class ImportFailed extends LibraryState {
 
 class BackupSuccess extends LibraryState {
   final List<Manga> fails;
-  final Directory backupDir;
+  final File archiveBackupDir;
 
-  const BackupSuccess({required this.fails, required this.backupDir}) : super();
+  const BackupSuccess({required this.fails, required this.archiveBackupDir})
+      : super();
 }
 
 class BackupFailed extends LibraryState {

@@ -41,7 +41,7 @@ final mockChapter1 =
 final mockChapter2 =
     Chapter("02", ["test_ressources" + Platform.pathSeparator + "Page02.png"]);
 
-final mockBackupDir = Directory("path");
+final mockArchiveBackupDir = File("path");
 
 final successBackupResponse =
-    BackupResponse(fails: [mockManga], backupDir: mockBackupDir);
+    BackupResponse(fails: [mockManga], archiveBackupDir: mockArchiveBackupDir);

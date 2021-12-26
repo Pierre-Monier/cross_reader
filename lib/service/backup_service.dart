@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:cross_reader/model/manga.dart';
 import 'package:cross_reader/repository/manga_repository.dart';
+import 'package:cross_reader/service/archive_service.dart';
 import 'package:cross_reader/service/file_helper.dart';
-import 'package:cross_reader/service/process_service.dart';
 import 'package:file/local.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
@@ -25,9 +25,9 @@ class BackupService {
     try {
       final backupDir = await createBackupDir();
       final mangas = await GetIt.I.get<MangaRepository>().mangaList;
-      final fails =
+      final backupResponse =
           await copyMangas(backupDir: backupDir, onDeviceManga: mangas);
-      return BackupResponse(fails: fails, backupDir: backupDir);
+      return backupResponse;
     } catch (e) {
       debugPrint("Backup failed: $e");
       rethrow;
@@ -44,7 +44,7 @@ class BackupService {
   }
 
   /// return a list of all mangas that failed to backup
-  Future<List<Manga>> copyMangas(
+  Future<BackupResponse> copyMangas(
       {required Directory backupDir,
       required List<Manga> onDeviceManga}) async {
     final fails = <Manga>[];
@@ -53,21 +53,28 @@ class BackupService {
     for (final manga in onDeviceManga) {
       final mangaDir = fileSystem.directory(manga.onDevicePath);
       try {
-        await GetIt.I
-            .get<ProcessService>()
-            .copyDirectory(destination: backupDir, source: mangaDir);
+        final archiveFilePath = FileHelper.createPath(
+            [backupDir.path, manga.name],
+            isArchive: true);
+        final archiveFile = fileSystem.file(archiveFilePath);
+        await GetIt.I.get<ArchiveService>().compressDirToArchive(
+            directory: mangaDir, archiveFile: archiveFile);
       } catch (e) {
         debugPrint("manga ${manga.name} directory copy failed ${e.toString()}");
         fails.add(manga);
       }
     }
 
-    return fails;
+    final archiveBackupDirPath =
+        FileHelper.createPath([backupDir.path, '.zip'], isArchive: true);
+    final archiveBackupDir = fileSystem.file(archiveBackupDirPath);
+
+    return BackupResponse(fails: fails, archiveBackupDir: archiveBackupDir);
   }
 }
 
 class BackupResponse {
   final List<Manga> fails;
-  final Directory backupDir;
-  BackupResponse({required this.fails, required this.backupDir});
+  final File archiveBackupDir;
+  BackupResponse({required this.fails, required this.archiveBackupDir});
 }

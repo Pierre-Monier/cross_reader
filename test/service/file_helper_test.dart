@@ -18,4 +18,11 @@ void main() {
     expect(path,
         "a${Platform.pathSeparator}b${Platform.pathSeparator}c${Platform.pathSeparator}");
   });
+
+  test("It should add the archive extension is isArchive is true", () async {
+    const strings = ["a", "b", "c"];
+    final path = FileHelper.createPath(strings, isArchive: true);
+
+    expect(path, "a${Platform.pathSeparator}b${Platform.pathSeparator}c.zip");
+  });
 }

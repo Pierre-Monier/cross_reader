@@ -258,7 +258,8 @@ void main() {
       skip: 1,
       expect: () => [
             BackupLoading(),
-            BackupSuccess(fails: [mockManga], backupDir: mockBackupDir)
+            BackupSuccess(
+                fails: [mockManga], archiveBackupDir: mockArchiveBackupDir)
           ]);
 
   blocTest<LibraryBloc, LibraryState>(

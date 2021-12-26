@@ -8,11 +8,20 @@ class LibraryAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text('Library'),
       actions: [
-        IconButton(
-          icon: Icon(Icons.save),
-          onPressed: () {
-            BlocProvider.of<LibraryBloc>(context).add(BackupLibrary());
-          },
+        PopupMenuButton(
+          itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+            PopupMenuItem(
+              child: IconButton(
+                icon: Icon(
+                  Icons.save,
+                  color: Colors.black26,
+                ),
+                onPressed: () {
+                  BlocProvider.of<LibraryBloc>(context).add(BackupLibrary());
+                },
+              ),
+            ),
+          ],
         ),
       ],
     );
