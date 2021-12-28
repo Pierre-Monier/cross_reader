@@ -1,6 +1,5 @@
 import 'package:cross_reader/model/chapter.dart';
 import 'package:cross_reader/model/manga.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class BoxService {

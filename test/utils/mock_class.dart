@@ -7,7 +7,6 @@ import 'package:cross_reader/repository/manga_repository.dart';
 import 'package:cross_reader/service/backup_service.dart';
 import 'package:cross_reader/service/box_service.dart';
 import 'package:cross_reader/service/file_picker_wrapper.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:file_picker/file_picker.dart';

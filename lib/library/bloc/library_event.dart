@@ -22,7 +22,3 @@ class ListImages extends LibraryEvent {
   final int chapterIndex;
   ListImages(this.imagesPath, this.manga, this.chapterIndex);
 }
-
-class BackupLibrary extends LibraryEvent {
-  BackupLibrary();
-}

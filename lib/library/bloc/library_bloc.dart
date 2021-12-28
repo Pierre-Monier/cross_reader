@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cross_reader/model/chapter.dart';
 import 'package:cross_reader/model/manga.dart';
 import 'package:cross_reader/repository/manga_repository.dart';
-import 'package:cross_reader/service/backup_service.dart';
 import 'package:cross_reader/service/file_picker_wrapper.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,7 +30,6 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
     on<ListMangas>((event, emit) async => await _listMangas(emit));
     on<ListImages>((event, emit) =>
         emit(ShowImages(event.imagesPath, event.manga, event.chapterIndex)));
-    on<BackupLibrary>((event, emit) async => await _backupLibrary(emit));
     this.add(ListMangas());
   }
 
@@ -95,20 +93,6 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
           nestedLevel < MAX_IMPORT_NESTED_LEVEL;
     } catch (e) {
       return false;
-    }
-  }
-
-  Future<void> _backupLibrary(Emitter<LibraryState> emit) async {
-    emit(BackupLoading());
-
-    try {
-      final backupResponse = await GetIt.I.get<BackupService>().backup();
-
-      emit(BackupSuccess(
-          fails: backupResponse.fails,
-          archiveBackupDir: backupResponse.archiveBackupDir));
-    } catch (e) {
-      emit(BackupFailed());
     }
   }
 }

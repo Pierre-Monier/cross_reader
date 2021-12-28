@@ -1,3 +1,4 @@
+import 'package:cross_reader/library/bloc/backup_bloc.dart';
 import 'package:cross_reader/library/bloc/library_bloc.dart';
 import 'package:cross_reader/library/widget/library_page.dart';
 import 'package:cross_reader/reader/bloc/reader_cubit.dart';
@@ -60,12 +61,18 @@ class CrossReaderApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LibraryPage(LibraryBloc()),
+      home: LibraryPage(
+        libraryBloc: LibraryBloc(),
+        backupBloc: BackupBloc(),
+      ),
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
           case '/library':
             return MaterialPageRoute(
-              builder: (context) => LibraryPage(LibraryBloc()),
+              builder: (context) => LibraryPage(
+                libraryBloc: LibraryBloc(),
+                backupBloc: BackupBloc(),
+              ),
             );
           case '/reader':
             final args = settings.arguments as ReaderArguments;
@@ -75,7 +82,10 @@ class CrossReaderApp extends StatelessWidget {
             );
           default:
             return MaterialPageRoute(
-              builder: (context) => LibraryPage(LibraryBloc()),
+              builder: (context) => LibraryPage(
+                libraryBloc: LibraryBloc(),
+                backupBloc: BackupBloc(),
+              ),
             );
         }
       },

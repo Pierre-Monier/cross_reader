@@ -1,4 +1,4 @@
-import 'package:cross_reader/library/bloc/library_bloc.dart';
+import 'package:cross_reader/library/bloc/backup_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,7 +17,7 @@ class LibraryAppBar extends StatelessWidget implements PreferredSizeWidget {
                   color: Colors.black26,
                 ),
                 onPressed: () {
-                  BlocProvider.of<LibraryBloc>(context).add(BackupLibrary());
+                  BlocProvider.of<BackupBloc>(context).add(BackupLibrary());
                 },
               ),
             ),
