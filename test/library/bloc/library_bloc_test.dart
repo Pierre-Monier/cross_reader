@@ -245,32 +245,4 @@ void main() {
             ImportFailed(),
             ShowMangas([mockManga])
           ]);
-
-  blocTest<LibraryBloc, LibraryState>(
-      'It should emit a BackupSuccess state if backup is successful',
-      build: () => LibraryBloc(),
-      act: (bloc) {
-        when(() => mockBackupService.backup())
-            .thenAnswer((_) => Future.value(successBackupResponse));
-        return bloc.add(BackupLibrary());
-      },
-      wait: const Duration(milliseconds: 300),
-      skip: 1,
-      expect: () => [
-            BackupLoading(),
-            BackupSuccess(
-                fails: [mockManga], archiveBackupDir: mockArchiveBackupDir)
-          ]);
-
-  blocTest<LibraryBloc, LibraryState>(
-      "It should emit a BackupFailed state if backup isn't successful",
-      build: () => LibraryBloc(),
-      act: (bloc) {
-        when(() => mockBackupService.backup())
-            .thenAnswer((_) => throw Exception());
-        return bloc.add(BackupLibrary());
-      },
-      wait: const Duration(milliseconds: 300),
-      skip: 1,
-      expect: () => [BackupLoading(), BackupFailed()]);
 }

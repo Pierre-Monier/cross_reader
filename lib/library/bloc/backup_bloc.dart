@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cross_reader/model/manga.dart';
 import 'package:cross_reader/service/backup_service.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 

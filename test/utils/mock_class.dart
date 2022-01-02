@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cross_reader/library/bloc/backup_bloc.dart';
 import 'package:cross_reader/library/bloc/library_bloc.dart';
 import 'package:cross_reader/model/manga.dart';
 import 'package:cross_reader/repository/chapter_repository.dart';
@@ -35,3 +36,6 @@ class MockFilePicker extends Mock implements FilePicker {}
 class MockChapterRepository extends Mock implements ChapterRepository {}
 
 class MockBackupService extends Mock implements BackupService {}
+
+class MockBackupBloc extends MockBloc<BackupEvent, BackupState>
+    implements BackupBloc {}

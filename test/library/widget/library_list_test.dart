@@ -1,3 +1,4 @@
+import 'package:cross_reader/library/bloc/backup_bloc.dart';
 import 'package:cross_reader/library/bloc/library_bloc.dart';
 import 'package:cross_reader/library/library.dart';
 import 'package:cross_reader/library/widget/library_list_chapter_item.dart';
@@ -27,16 +28,19 @@ void main() {
   testWidgets(
       'It should render libraryListMangaItem widget on ShowMangas state',
       (WidgetTester tester) async {
-    final mockBloc = MockLibraryBloc();
+    final mockLibraryBloc = MockLibraryBloc();
     whenListen(
-      mockBloc,
+      mockLibraryBloc,
       Stream.fromIterable([
         ShowMangas([mockManga])
       ]),
       initialState: ShowMangas([mockManga]),
     );
 
-    await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
+    await tester.pumpWidget(withMaterialApp(LibraryPage(
+      libraryBloc: mockLibraryBloc,
+      backupBloc: BackupBloc(),
+    )));
     await tester.pump(Duration.zero);
 
     final libraryItemFinder = find.byType(LibraryListMangaItem);
@@ -46,14 +50,21 @@ void main() {
   testWidgets(
       'It should render libraryListChapterItem widget on ShowChapter state',
       (WidgetTester tester) async {
-    final mockBloc = MockLibraryBloc();
+    final mockLibraryBloc = MockLibraryBloc();
     whenListen(
-      mockBloc,
+      mockLibraryBloc,
       Stream.fromIterable([ShowChapters(mockManga.chapters, mockManga)]),
       initialState: ShowMangas([mockManga]),
     );
 
-    await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
+    await tester.pumpWidget(
+      withMaterialApp(
+        LibraryPage(
+          libraryBloc: mockLibraryBloc,
+          backupBloc: BackupBloc(),
+        ),
+      ),
+    );
     await tester.pump(Duration.zero);
 
     final libraryItemFinder = find.byType(LibraryListChapterItem);
@@ -63,15 +74,18 @@ void main() {
   testWidgets(
       'It should render libraryListImageItem widget on ShowImages state',
       (WidgetTester tester) async {
-    final mockBloc = MockLibraryBloc();
+    final mockLibraryBloc = MockLibraryBloc();
     whenListen(
-      mockBloc,
+      mockLibraryBloc,
       Stream.fromIterable(
           [ShowImages(mockManga.chapters[0].imagesPath, mockManga, 0)]),
       initialState: ShowMangas([mockManga]),
     );
 
-    await tester.pumpWidget(withMaterialApp(LibraryPage(mockBloc)));
+    await tester.pumpWidget(withMaterialApp(LibraryPage(
+      libraryBloc: mockLibraryBloc,
+      backupBloc: BackupBloc(),
+    )));
     await tester.pump(Duration.zero);
 
     final libraryItemFinder = find.byType(LibraryListImageItem);
