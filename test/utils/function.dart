@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import "package:flutter/material.dart" hide State;
+import "package:flutter_bloc/flutter_bloc.dart";
 
 MaterialApp withMaterialApp(Widget widget) {
   return MaterialApp(
@@ -8,7 +8,9 @@ MaterialApp withMaterialApp(Widget widget) {
 }
 
 MaterialApp withMaterialAppAndNavigatorKey(
-    Widget widget, GlobalKey<NavigatorState> key) {
+  Widget widget,
+  GlobalKey<NavigatorState> key,
+) {
   return MaterialApp(
     navigatorKey: key,
     home: widget,
@@ -25,21 +27,25 @@ MaterialApp withMaterialAppAndWidgetAncestor(Widget widget) {
 
 MaterialApp
     withMaterialAppAndWidgetAncestorAndNavigatorObserverAndRouteGenerator(
-        Widget widget, NavigatorObserver observer) {
+  Widget widget,
+  NavigatorObserver observer,
+) {
   return MaterialApp(
     navigatorObservers: [observer],
     onGenerateRoute: (RouteSettings settings) {
       switch (settings.name) {
-        case '/reader':
-          return MaterialPageRoute(
-              builder: (context) => Scaffold(
-                    body: widget,
-                  ));
+        case "/reader":
+          return MaterialPageRoute<Scaffold>(
+            builder: (context) => Scaffold(
+              body: widget,
+            ),
+          );
         default:
-          return MaterialPageRoute(
-              builder: (context) => Scaffold(
-                    body: widget,
-                  ));
+          return MaterialPageRoute<Scaffold>(
+            builder: (context) => Scaffold(
+              body: widget,
+            ),
+          );
       }
     },
     home: Scaffold(
@@ -48,8 +54,11 @@ MaterialApp
   );
 }
 
-MaterialApp withMaterialAppAndWidgetAncestorAndBlocProvider<T extends Bloc>(
-    Widget widget, T bloc) {
+MaterialApp withMaterialAppAndWidgetAncestorAndBlocProvider<
+    T extends Bloc<Object, Object>>(
+  Widget widget,
+  T bloc,
+) {
   return MaterialApp(
     home: BlocProvider(
       create: (context) => bloc,
@@ -60,8 +69,8 @@ MaterialApp withMaterialAppAndWidgetAncestorAndBlocProvider<T extends Bloc>(
   );
 }
 
-Future<Function> withDebounce(Function callback) async {
+Future<void> withDebounce(Function() callback) async {
   await Future.delayed(const Duration(milliseconds: 300), () {});
 
-  return callback();
+  callback();
 }

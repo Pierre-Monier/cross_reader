@@ -1,6 +1,11 @@
+/// The route parameters of the reader screen
 class ReaderArguments {
-  final List<String> images;
-  final int index;
+  /// The route parameters of the reader screen
+  ReaderArguments(this.pages, this.index);
 
-  ReaderArguments(this.images, this.index);
+  /// list of pages to read
+  final List<String> pages;
+
+  /// current page index
+  final int index;
 }

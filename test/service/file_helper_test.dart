@@ -15,8 +15,11 @@ void main() {
     const strings = ["a", "b", "c"];
     final path = FileHelper.createPath(strings, isDirectory: true);
 
-    expect(path,
-        "a${Platform.pathSeparator}b${Platform.pathSeparator}c${Platform.pathSeparator}");
+    expect(
+      path,
+      "a${Platform.pathSeparator}b${Platform.pathSeparator}c"
+      "${Platform.pathSeparator}",
+    );
   });
 
   test("It should add the archive extension is isArchive is true", () async {

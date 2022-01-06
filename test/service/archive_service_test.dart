@@ -1,8 +1,12 @@
-import 'package:flutter_test/flutter_test.dart';
+import "package:flutter_test/flutter_test.dart";
 
-// TODO write tests
+// TODO(pierre): write tests
 void main() {
-  test('todo', () {
-    expect(true, true);
-  }, skip: true);
+  test(
+    "todo",
+    () {
+      expect(true, true);
+    },
+    skip: true,
+  );
 }

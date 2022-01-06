@@ -1,21 +1,22 @@
-import 'package:cross_reader/library/bloc/backup_bloc.dart';
-import 'package:cross_reader/library/bloc/library_bloc.dart';
-import 'package:cross_reader/library/widget/library_page.dart';
-import 'package:cross_reader/reader/bloc/reader_cubit.dart';
-import 'package:cross_reader/reader/model/reader_arguments.dart';
-import 'package:cross_reader/reader/widget/reader_page.dart';
-import 'package:cross_reader/repository/chapter_repository.dart';
-import 'package:cross_reader/repository/manga_repository.dart';
-import 'package:cross_reader/service/archive_service.dart';
-import 'package:cross_reader/service/backup_service.dart';
-import 'package:cross_reader/service/box_service.dart';
-import 'package:cross_reader/service/file_picker_wrapper.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:path_provider/path_provider.dart';
+import "package:cross_reader/error/error_view.dart";
+import "package:cross_reader/library/bloc/backup_bloc.dart";
+import "package:cross_reader/library/bloc/library_bloc.dart";
+import "package:cross_reader/library/widget/library_page.dart";
+import "package:cross_reader/reader/bloc/reader_cubit.dart";
+import "package:cross_reader/reader/model/reader_arguments.dart";
+import "package:cross_reader/reader/widget/reader_page.dart";
+import "package:cross_reader/repository/chapter_repository.dart";
+import "package:cross_reader/repository/manga_repository.dart";
+import "package:cross_reader/service/archive_service.dart";
+import "package:cross_reader/service/backup_service.dart";
+import "package:cross_reader/service/box_service.dart";
+import "package:cross_reader/service/file_picker_wrapper.dart";
+import "package:file_picker/file_picker.dart";
+import "package:flutter/material.dart";
+import "package:get_it/get_it.dart";
+import "package:path_provider/path_provider.dart";
 
+/// Register all services and repositories
 Future<void> registerServices() async {
   final _cacheDirectory = await getTemporaryDirectory();
   GetIt.I.registerSingleton<BoxService>(BoxService());
@@ -24,40 +25,24 @@ Future<void> registerServices() async {
   GetIt.I.registerSingleton<ArchiveService>(ArchiveService());
   GetIt.I.registerSingleton<BackupService>(BackupService(_cacheDirectory));
   GetIt.I.registerSingleton<FilePickerWrapper>(
-      FilePickerWrapper(FilePicker.platform));
+    FilePickerWrapper(FilePicker.platform),
+  );
 }
 
-handleErrors() {
-  ErrorWidget.builder = (FlutterErrorDetails details) {
-    if (kDebugMode) {
-      return ErrorWidget(details.exception);
-    } else {
-      return Container(
-        color: Colors.red,
-        child: Center(
-          child: Text(
-            details.exceptionAsString(),
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-      );
-    }
-  };
-}
-
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await registerServices();
-  handleErrors();
   runApp(const CrossReaderApp());
 }
 
+/// cross_reader entry point
 class CrossReaderApp extends StatelessWidget {
+  /// cross_reader entry point
   const CrossReaderApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'CrossReader',
+      title: "CrossReader",
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -67,21 +52,20 @@ class CrossReaderApp extends StatelessWidget {
       ),
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
-          case '/library':
-            return MaterialPageRoute(
-              builder: (context) => LibraryPage(
-                libraryBloc: LibraryBloc(),
-                backupBloc: BackupBloc(),
-              ),
+          case "/reader":
+            final args = settings.arguments as ReaderArguments?;
+            return MaterialPageRoute<ReaderPage>(
+              builder: (context) {
+                if (args != null) {
+                  return ReaderPage(ReaderCubit(args.pages, index: args.index));
+                }
+
+                return const ErrorView();
+              },
             );
-          case '/reader':
-            final args = settings.arguments as ReaderArguments;
-            return MaterialPageRoute(
-              builder: (context) =>
-                  ReaderPage(ReaderCubit(args.images, index: args.index)),
-            );
+          case "/library":
           default:
-            return MaterialPageRoute(
+            return MaterialPageRoute<LibraryPage>(
               builder: (context) => LibraryPage(
                 libraryBloc: LibraryBloc(),
                 backupBloc: BackupBloc(),
