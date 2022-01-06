@@ -1,13 +1,14 @@
-import 'dart:io';
+import "dart:io";
 
-import 'package:cross_reader/model/chapter.dart';
+import "package:cross_reader/model/chapter.dart";
 
+/// Repository responsible of `Chapter` entity
 class ChapterRepository {
+  /// Create a new `Chapter` entity from a `Directory`
   Future<Chapter> createChapter(Directory directory) async {
     final name = directory.path.split(Platform.pathSeparator).last;
-    final images =
-        await directory.list().map((file) => File(file.path)).toList();
+    final imagesPath = await directory.list().map((file) => file.path).toList();
 
-    return Chapter(name, images);
+    return Chapter(name, imagesPath);
   }
 }

@@ -1,65 +1,96 @@
-part of 'library_bloc.dart';
+part of "library_bloc.dart";
 
+/// States of the `LibraryBloc`
 abstract class LibraryState extends Equatable {
+  /// States of the `LibraryBloc`
   const LibraryState();
 
   @override
   List<Object> get props => [];
 }
 
-class ImportStarted extends LibraryState {
-  const ImportStarted() : super();
+/// The `LibraryBloc` is fetching all `Manga` from the library
+class Loading extends LibraryState {
+  /// The `LibraryBloc` is fetching all `Manga` from the library
+  const Loading() : super();
 
   @override
   List<Object> get props => [];
 }
 
+/// The `LibraryBloc` has fetched all `Manga` from the library
 class ImportSucceed extends LibraryState {
+  /// The `LibraryBloc` has fetched all `Manga` from the library
   const ImportSucceed() : super();
 
   @override
   List<Object> get props => [];
 }
 
+/// The `LibraryBloc` has failed to fetch all `Manga` from the library
 class ImportFailed extends LibraryState {
+  /// The `LibraryBloc` has failed to fetch all `Manga` from the library
   const ImportFailed() : super();
 
   @override
   List<Object> get props => [];
 }
 
+// TODO(pierre): refacto
+/// This state show that I should refactor the import code into another bloc
 abstract class LibraryShowState extends LibraryState {
+  /// This state show that I should refactor the import code into another bloc
+  const LibraryShowState({required this.isEmpty});
+
+  /// Is the library empty
   final bool isEmpty;
-  LibraryShowState(this.isEmpty);
 
   @override
   List<Object> get props => [isEmpty];
 }
 
+/// List all `Manga` from the library
 class ShowMangas extends LibraryShowState {
+  /// List all `Manga` from the library
+  ShowMangas(this.mangas) : super(isEmpty: mangas.isEmpty);
+
+  /// all `Manga`
   final List<Manga> mangas;
-  ShowMangas(this.mangas) : super(mangas.isEmpty);
 
   @override
   List<Object> get props => [mangas, isEmpty];
 }
 
+/// List all chapters of a `Manga`
 class ShowChapters extends LibraryShowState {
+  /// List all chapters of a `Manga`
+  ShowChapters(this.chapters, this.manga) : super(isEmpty: chapters.isEmpty);
+
+  /// all `Chapter`
   final List<Chapter> chapters;
+
+  /// the `Manga` from which we list chapters
   final Manga manga;
-  ShowChapters(this.chapters, this.manga) : super(chapters.isEmpty);
 
   @override
   List<Object> get props => [chapters, manga, isEmpty];
 }
 
-class ShowImages extends LibraryShowState {
-  final List<File> images;
+/// List all pages of a `Chapter`
+class ShowPages extends LibraryShowState {
+  /// List all pages of a `Chapter`
+  ShowPages(this.imagesPath, this.manga, this.chapterIndex)
+      : super(isEmpty: imagesPath.isEmpty);
+
+  /// All pages of a `Chapter`
+  final List<String> imagesPath;
+
+  /// The `Manga` from which we list chapters from which we list pages
   final Manga manga;
+
+  /// The index of the current `Chapter` in the `Manga` chapter's list
   final int chapterIndex;
-  ShowImages(this.images, this.manga, this.chapterIndex)
-      : super(images.isEmpty);
 
   @override
-  List<Object> get props => [images, manga, chapterIndex, isEmpty];
+  List<Object> get props => [imagesPath, manga, chapterIndex, isEmpty];
 }
