@@ -29,8 +29,10 @@ class BackupService {
     try {
       final backupDir = await _createBackupDir();
       final mangas = await GetIt.I.get<MangaRepository>().mangaList;
+
       final backupResponse =
           await copyMangas(backupDir: backupDir, onDeviceManga: mangas);
+
       return backupResponse;
     } catch (e) {
       debugPrint("Backup failed: $e");
@@ -53,20 +55,29 @@ class BackupService {
     required Directory backupDir,
     required List<Manga> onDeviceManga,
   }) async {
+    final tmpMangaDirPath = FileHelper.createPath(
+      [backupDir.path, "tmp"],
+      isDirectory: true,
+    );
+    final tmpMangaDir =
+        await _fileSystem.directory(tmpMangaDirPath).create(recursive: true);
+
     final fails = <Manga>[];
     // loop on each manga
     // copy manga directory to backup directory
     for (final manga in onDeviceManga) {
       final mangaDir = _fileSystem.directory(manga.onDevicePath);
       try {
-        final archiveFilePath = FileHelper.createPath(
-          [backupDir.path, manga.name],
+        final mangaArchiveFilePath = FileHelper.createPath(
+          [tmpMangaDir.path, manga.name],
           isArchive: true,
         );
-        final archiveFile = _fileSystem.file(archiveFilePath);
+
+        final mangaArchiveFile = _fileSystem.file(mangaArchiveFilePath);
+
         await GetIt.I.get<ArchiveService>().compressDirToArchive(
               directory: mangaDir,
-              archiveFile: archiveFile,
+              archiveFile: mangaArchiveFile,
             );
       } catch (e) {
         debugPrint("manga ${manga.name} directory copy failed ${e.toString()}");
@@ -74,11 +85,18 @@ class BackupService {
       }
     }
 
-    final archiveBackupDirPath =
-        FileHelper.createPath([backupDir.path, ".zip"], isArchive: true);
-    final archiveBackupDir = _fileSystem.file(archiveBackupDirPath);
+    final archiveBackupFilePath = FileHelper.createPath(
+      [backupDir.path, "cross_reader_backup"],
+      isArchive: true,
+    );
+    final archiveBackupFile = _fileSystem.file(archiveBackupFilePath);
 
-    return BackupResponse(fails: fails, archiveBackupDir: archiveBackupDir);
+    await GetIt.I.get<ArchiveService>().compressDirToArchive(
+          directory: tmpMangaDir,
+          archiveFile: archiveBackupFile,
+        );
+
+    return BackupResponse(fails: fails, archiveBackupDir: archiveBackupFile);
   }
 }
 

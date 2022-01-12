@@ -18,7 +18,6 @@ import "../../utils/mock_data.dart";
 final mockMangaRepository = MockMangaRepository();
 final mockBackupService = MockBackupService();
 
-// TODO(pierre): test backup feature when it's done
 void main() {
   setUpAll(() {
     registerFallbackValue(LibraryStateFake());

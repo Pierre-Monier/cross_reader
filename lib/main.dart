@@ -11,6 +11,7 @@ import "package:cross_reader/service/archive_service.dart";
 import "package:cross_reader/service/backup_service.dart";
 import "package:cross_reader/service/box_service.dart";
 import "package:cross_reader/service/file_picker_wrapper.dart";
+import "package:cross_reader/service/share_service.dart";
 import "package:file_picker/file_picker.dart";
 import "package:flutter/material.dart";
 import "package:get_it/get_it.dart";
@@ -27,6 +28,7 @@ Future<void> registerServices() async {
   GetIt.I.registerSingleton<FilePickerWrapper>(
     FilePickerWrapper(FilePicker.platform),
   );
+  GetIt.I.registerSingleton<ShareService>(ShareService());
 }
 
 Future<void> main() async {

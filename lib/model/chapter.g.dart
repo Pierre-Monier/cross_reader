@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of "chapter.dart";
+part of 'chapter.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
@@ -29,7 +29,7 @@ class ChapterAdapter extends TypeAdapter<Chapter> {
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.imagesPath);
+      ..write(obj.pagesPath);
   }
 
   @override

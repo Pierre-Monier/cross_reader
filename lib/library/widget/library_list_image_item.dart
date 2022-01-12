@@ -3,8 +3,6 @@ import "dart:io";
 import "package:cross_reader/reader/model/reader_arguments.dart";
 import "package:flutter/material.dart";
 
-// TODO(pierre): refacto all item widget
-
 /// A page representation, displayed in page list
 class LibraryListPageItem extends StatelessWidget {
   /// A page representation, displayed in page list

@@ -2,7 +2,9 @@ import "dart:io";
 
 import "package:cross_reader/model/manga.dart";
 import "package:cross_reader/service/backup_service.dart";
+import "package:cross_reader/service/share_service.dart";
 import "package:equatable/equatable.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:get_it/get_it.dart";
 
@@ -21,6 +23,9 @@ class BackupBloc extends Bloc<BackupEvent, BackupState> {
 
     try {
       final backupResponse = await GetIt.I.get<BackupService>().backup();
+      final backupFilePath = backupResponse.archiveBackupDir.path;
+
+      await GetIt.I.get<ShareService>().shareFile(backupFilePath);
 
       emit(
         BackupSuccess(
@@ -29,6 +34,7 @@ class BackupBloc extends Bloc<BackupEvent, BackupState> {
         ),
       );
     } catch (e) {
+      debugPrint(e.toString());
       emit(const BackupFailed());
     }
   }

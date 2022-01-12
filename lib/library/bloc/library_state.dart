@@ -36,7 +36,6 @@ class ImportFailed extends LibraryState {
   List<Object> get props => [];
 }
 
-// TODO(pierre): refacto
 /// This state show that I should refactor the import code into another bloc
 abstract class LibraryShowState extends LibraryState {
   /// This state show that I should refactor the import code into another bloc
