@@ -63,6 +63,8 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
       _currentPageIndex++;
     }
 
+    _updateLastReadedPage();
+
     return emit(
       NextPageState(
         currentManga: _manga,
@@ -71,6 +73,21 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
         isNextChapter: isNextChapter,
       ),
     );
+  }
+
+  void _updateLastReadedPage() {
+    final mangaLastReaded = _manga.lastReaded;
+
+    if (mangaLastReaded.chapterIndex < _currentChapterIndex ||
+        (mangaLastReaded.chapterIndex == _currentChapterIndex &&
+            mangaLastReaded.pageIndex < _currentPageIndex)) {
+      _manga
+        ..lastReaded = LastReaded(
+          chapterIndex: _currentChapterIndex,
+          pageIndex: _currentPageIndex,
+        )
+        ..save();
+    }
   }
 
   void _onReaderPreviousEvent(Emitter emit) {

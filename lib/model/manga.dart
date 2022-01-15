@@ -5,13 +5,13 @@ part "manga.g.dart";
 
 /// `Manga` entity
 @HiveType(typeId: 1)
-class Manga {
+class Manga extends HiveObject {
   /// `Manga` entity
   Manga({
     required this.name,
     required this.chapters,
     required this.onDevicePath,
-  }) : lastReadedChapter = chapters.first;
+  }) : lastReaded = LastReaded.defaultValue();
 
   @HiveField(0)
 
@@ -31,5 +31,21 @@ class Manga {
   @HiveField(3)
 
   /// last readed chapter
-  Chapter lastReadedChapter;
+  LastReaded lastReaded;
+}
+
+/// Represent the last data a user has read
+class LastReaded {
+  /// Represent the last data a user has read
+  const LastReaded({required this.chapterIndex, required this.pageIndex});
+
+  /// default LastReaded value (chapterIndex: 0, pageIndex: 0)
+  factory LastReaded.defaultValue() =>
+      const LastReaded(chapterIndex: 0, pageIndex: 0);
+
+  /// index of the last readed chapter
+  final int chapterIndex;
+
+  /// index of the last readed page
+  final int pageIndex;
 }

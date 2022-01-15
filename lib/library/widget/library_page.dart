@@ -4,6 +4,7 @@ import "package:cross_reader/library/widget/backup_failed_dialog.dart";
 import "package:cross_reader/library/widget/backup_loading_dialog.dart";
 import "package:cross_reader/library/widget/backup_success_dialog.dart";
 import "package:cross_reader/library/widget/library_page_scaffold.dart";
+import 'package:cross_reader/model/manga.dart';
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 
@@ -36,6 +37,13 @@ class LibraryPage extends StatelessWidget {
         },
       );
 
+  void _showMangaLastReadSnackbar(BuildContext context, Manga manga) {
+    final snackBar = SnackBar(
+        content: Text("Reprendre ${manga.name} au chapitre "
+            " ${manga.lastReaded.chapterIndex} page ${manga.lastReaded.pageIndex}"));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -51,6 +59,10 @@ class LibraryPage extends StatelessWidget {
                 _showSnackBar(context, "FAILED");
               } else if (state is ImportSucceed) {
                 _showSnackBar(context, "SUCCESS");
+              } else if (state is ShowChapters) {
+                if (state.manga.lastReaded != LastReaded.defaultValue()) {
+                  _showMangaLastReadSnackbar(context, state.manga);
+                }
               }
             },
           ),
