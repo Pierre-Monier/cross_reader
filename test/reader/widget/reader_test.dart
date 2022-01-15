@@ -7,8 +7,18 @@ import "../../utils/mock_data.dart";
 
 void main() {
   testWidgets("It display the firt image on init", (WidgetTester tester) async {
-    final cubit = ReaderCubit(mockImagesPath);
-    await tester.pumpWidget(withMaterialApp(ReaderPage(cubit)));
+    final bloc = ReaderBloc(
+      manga: mockManga,
+      currentChapterIndex: 0,
+      currentPageIndex: 0,
+    );
+    await tester.pumpWidget(
+      withMaterialApp(
+        ReaderPage(
+          readerBloc: bloc,
+        ),
+      ),
+    );
 
     final imageFinder = find.byType(Image);
     expect(imageFinder, findsOneWidget);
@@ -19,9 +29,19 @@ void main() {
   testWidgets(
     "It display the next ressource on left swip",
     (WidgetTester tester) async {
-      final cubit = ReaderCubit(mockImagesPath);
+      final bloc = ReaderBloc(
+        manga: mockManga,
+        currentChapterIndex: 0,
+        currentPageIndex: 0,
+      );
 
-      await tester.pumpWidget(withMaterialApp(ReaderPage(cubit)));
+      await tester.pumpWidget(
+        withMaterialApp(
+          ReaderPage(
+            readerBloc: bloc,
+          ),
+        ),
+      );
       final firstImageFinder = find.byType(Image);
 
       await tester.fling(

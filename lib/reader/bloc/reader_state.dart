@@ -58,6 +58,21 @@ class NextPageState extends ReaderState {
       [currentManga, currentChapter, currentPage, isNextChapter];
 }
 
+/// `ReaderBloc` state trigger when the user is at the end of a `Manga`
+/// and whant to see the next page
+class LastPageInManga extends ReaderState {
+  /// `ReaderBloc` state trigger when the user is at the end of a `Manga`
+  const LastPageInManga({
+    required Manga currentManga,
+    required Chapter currentChapter,
+    required String currentPage,
+  }) : super(
+          currentManga: currentManga,
+          currentChapter: currentChapter,
+          currentPage: currentPage,
+        );
+}
+
 /// `ReaderBloc` next page state
 class PreviousPageState extends ReaderState {
   /// `ReaderBloc` Previous page state
@@ -78,4 +93,19 @@ class PreviousPageState extends ReaderState {
   @override
   List<Object> get props =>
       [currentManga, currentChapter, currentPage, isPreviousChapter];
+}
+
+/// `ReaderBloc` state trigger when the user is at the beguinning of a `Manga`
+/// and whant to see the previous page
+class FirstPageInManga extends ReaderState {
+  /// `ReaderBloc` state trigger when the user is at the end of a `Manga`
+  const FirstPageInManga({
+    required Manga currentManga,
+    required Chapter currentChapter,
+    required String currentPage,
+  }) : super(
+          currentManga: currentManga,
+          currentChapter: currentChapter,
+          currentPage: currentPage,
+        );
 }

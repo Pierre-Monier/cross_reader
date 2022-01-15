@@ -13,7 +13,11 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(
       withMaterialAppAndWidgetAncestor(
-        LibraryListPageItem(mockImagesPath, index),
+        LibraryListPageItem(
+          manga: mockManga,
+          chapterIndex: index,
+          pageIndex: index,
+        ),
       ),
     );
 
@@ -24,7 +28,11 @@ void main() {
   testWidgets("It should render an image", (WidgetTester tester) async {
     await tester.pumpWidget(
       withMaterialAppAndWidgetAncestor(
-        LibraryListPageItem(mockImagesPath, index),
+        LibraryListPageItem(
+          manga: mockManga,
+          chapterIndex: index,
+          pageIndex: index,
+        ),
       ),
     );
 
@@ -37,7 +45,11 @@ void main() {
     final navigatorObserver = NavigationHistoryObserver();
     await tester.pumpWidget(
       withMaterialAppAndWidgetAncestorAndNavigatorObserverAndRouteGenerator(
-        LibraryListPageItem(mockImagesPath, index),
+        LibraryListPageItem(
+          manga: mockManga,
+          chapterIndex: index,
+          pageIndex: index,
+        ),
         navigatorObserver,
       ),
     );

@@ -24,8 +24,8 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
                 manga.chapters[currentChapterIndex].pagesPath[currentPageIndex],
           ),
         ) {
-    on<ReaderNextEvent>((_, emit) => _onReaderNextEvent(emit));
-    on<ReaderPreviousEvent>((_, emit) => _onReaderPreviousEvent(emit));
+    on<ReaderNextEvent>((event, emit) => _onReaderNextEvent(emit));
+    on<ReaderPreviousEvent>((event, emit) => _onReaderPreviousEvent(emit));
   }
 
   /// The manga to read
@@ -46,7 +46,14 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
 
     if (isNextChapter && isLastChapter) {
       // it's the last page of the last chapter
-      // TODO(pierre): create an state for this case
+      emit(
+        LastPageInManga(
+          currentManga: _manga,
+          currentChapter: currentChapter,
+          currentPage: currentPage,
+        ),
+      );
+
       return;
     } else if (isNextChapter && !isLastChapter) {
       // it's the last page of the current chapter
@@ -56,7 +63,7 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
       _currentPageIndex++;
     }
 
-    emit(
+    return emit(
       NextPageState(
         currentManga: _manga,
         currentChapter: currentChapter,
@@ -72,7 +79,14 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
 
     if (isPreviousChapter && isFirstChapter) {
       // it's the first page of the first chapter
-      // TODO(pierre): create an state for this case
+      emit(
+        FirstPageInManga(
+          currentManga: _manga,
+          currentChapter: currentChapter,
+          currentPage: currentPage,
+        ),
+      );
+
       return;
     } else if (isPreviousChapter && !isFirstChapter) {
       // it's the first page of the current chapter
