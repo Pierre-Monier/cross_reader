@@ -1,11 +1,20 @@
+import "package:cross_reader/model/manga.dart";
+
 /// The route parameters of the reader screen
 class ReaderArguments {
   /// The route parameters of the reader screen
-  ReaderArguments(this.pages, this.index);
+  ReaderArguments({
+    required this.manga,
+    required this.chapterIndex,
+    required this.pageIndex,
+  });
 
-  /// list of pages to read
-  final List<String> pages;
+  /// `Manga` to read
+  final Manga manga;
 
-  /// current page index
-  final int index;
+  /// index of the chapter to read
+  final int chapterIndex;
+
+  /// index of the page to read
+  final int pageIndex;
 }

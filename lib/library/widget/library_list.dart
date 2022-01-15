@@ -30,8 +30,9 @@ class LibraryList extends StatelessWidget {
       return LibraryListChapterItem(state.manga, index);
     } else if (state is ShowPages) {
       return LibraryListPageItem(
-        state.manga.chapters[state.chapterIndex].pagesPath,
-        index,
+        manga: state.manga,
+        chapterIndex: state.chapterIndex,
+        pageIndex: index,
       );
     } else {
       throw Exception("In LibraryList with state: $state");

@@ -2,7 +2,7 @@ import "package:cross_reader/error/error_view.dart";
 import "package:cross_reader/library/bloc/backup_bloc.dart";
 import "package:cross_reader/library/bloc/library_bloc.dart";
 import "package:cross_reader/library/widget/library_page.dart";
-import "package:cross_reader/reader/bloc/reader_cubit.dart";
+import "package:cross_reader/reader/bloc/reader_bloc.dart";
 import "package:cross_reader/reader/model/reader_arguments.dart";
 import "package:cross_reader/reader/widget/reader_page.dart";
 import "package:cross_reader/repository/chapter_repository.dart";
@@ -59,7 +59,14 @@ class CrossReaderApp extends StatelessWidget {
             return MaterialPageRoute<ReaderPage>(
               builder: (context) {
                 if (args != null) {
-                  return ReaderPage(ReaderCubit(args.pages, index: args.index));
+                  final readerBloc = ReaderBloc(
+                    manga: args.manga,
+                    currentChapterIndex: args.chapterIndex,
+                    currentPageIndex: args.pageIndex,
+                  );
+                  return ReaderPage(
+                    readerBloc: readerBloc,
+                  );
                 }
 
                 return const ErrorView();

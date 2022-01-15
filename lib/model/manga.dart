@@ -11,17 +11,25 @@ class Manga {
     required this.name,
     required this.chapters,
     required this.onDevicePath,
-  });
+  }) : lastReadedChapter = chapters.first;
+
   @HiveField(0)
 
   /// name of the `Manga`
   final String name;
+
   @HiveField(1)
 
   /// chapters of the `Manga`
   final List<Chapter> chapters;
+
   @HiveField(2)
 
   /// path to the `Manga` data on the device
   final String onDevicePath;
+
+  @HiveField(3)
+
+  /// last readed chapter
+  Chapter lastReadedChapter;
 }

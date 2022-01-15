@@ -1,5 +1,5 @@
 import "package:bloc_test/bloc_test.dart";
-import "package:cross_reader/reader/bloc/reader_cubit.dart";
+import 'package:cross_reader/reader/bloc/reader_bloc.dart';
 import "package:flutter_test/flutter_test.dart";
 
 import "../../utils/mock_data.dart";

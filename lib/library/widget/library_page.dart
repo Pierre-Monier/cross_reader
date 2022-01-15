@@ -17,6 +17,9 @@ class LibraryPage extends StatelessWidget {
   })  : _libraryBloc = libraryBloc,
         _backupBloc = backupBloc,
         super(key: key);
+
+  /// route name of the page
+  static const routeName = "/library";
   final LibraryBloc _libraryBloc;
   final BackupBloc _backupBloc;
 
