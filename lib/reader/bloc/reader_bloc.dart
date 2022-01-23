@@ -42,8 +42,8 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
 
   void _onReaderNextEvent(Emitter emit) {
     final isNextChapter =
-        _currentPageIndex + 1 > currentChapter.pagesPath.length;
-    final isLastChapter = _currentChapterIndex + 1 > _manga.chapters.length;
+        _currentPageIndex + 1 >= currentChapter.pagesPath.length;
+    final isLastChapter = _currentChapterIndex + 1 >= _manga.chapters.length;
 
     if (isNextChapter && isLastChapter) {
       // it's the last page of the last chapter

@@ -37,10 +37,12 @@ final mockManga = Manga(
   onDevicePath: mangaOnDevicePath,
   chapters: [mockChapter1, mockChapter2],
 );
-final mockChapter1 =
-    Chapter("01", ["test_ressources${Platform.pathSeparator}Page01.png"]);
+final mockChapter1 = Chapter("01", [
+  "test_ressources${Platform.pathSeparator}Page01.png",
+  "test_ressources${Platform.pathSeparator}Page02.png"
+]);
 final mockChapter2 =
-    Chapter("02", ["test_ressources${Platform.pathSeparator}Page02.png"]);
+    Chapter("02", ["test_ressources${Platform.pathSeparator}Page01.png"]);
 
 final mockArchiveBackupDir = File("path");
 

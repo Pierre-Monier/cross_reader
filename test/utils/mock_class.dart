@@ -10,6 +10,7 @@ import "package:cross_reader/repository/manga_repository.dart";
 import "package:cross_reader/service/backup_service.dart";
 import "package:cross_reader/service/box_service.dart";
 import "package:cross_reader/service/file_picker_wrapper.dart";
+import "package:cross_reader/service/share_service.dart";
 import "package:file_picker/file_picker.dart";
 import "package:mocktail/mocktail.dart";
 
@@ -39,6 +40,8 @@ class MockFilePicker extends Mock implements FilePicker {}
 class MockChapterRepository extends Mock implements ChapterRepository {}
 
 class MockBackupService extends Mock implements BackupService {}
+
+class MockShareService extends Mock implements ShareService {}
 
 class MockBackupBloc extends MockBloc<BackupEvent, BackupState>
     implements BackupBloc {}
