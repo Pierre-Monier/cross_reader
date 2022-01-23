@@ -4,7 +4,10 @@ import "package:cross_reader/library/widget/backup_failed_dialog.dart";
 import "package:cross_reader/library/widget/backup_loading_dialog.dart";
 import "package:cross_reader/library/widget/backup_success_dialog.dart";
 import "package:cross_reader/library/widget/library_page_scaffold.dart";
-import 'package:cross_reader/model/manga.dart';
+import "package:cross_reader/model/last_readed.dart";
+import "package:cross_reader/model/manga.dart";
+import "package:cross_reader/reader/model/reader_arguments.dart";
+import "package:cross_reader/reader/widget/reader_page.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 
@@ -37,11 +40,34 @@ class LibraryPage extends StatelessWidget {
         },
       );
 
-  void _showMangaLastReadSnackbar(BuildContext context, Manga manga) {
-    final snackBar = SnackBar(
-        content: Text("Reprendre ${manga.name} au chapitre "
-            " ${manga.lastReaded.chapterIndex} page ${manga.lastReaded.pageIndex}"));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  void _showMangaLastReadMaterialBanner(BuildContext context, Manga manga) {
+    final materialBanner = MaterialBanner(
+      content: const Text("Retourner la ou vous vous êtes arreter ?"),
+      actions: [
+        TextButton(
+          child: const Text("Oui"),
+          onPressed: () {
+            ScaffoldMessenger.of(context).clearMaterialBanners();
+            Navigator.of(context).pushNamed(
+              ReaderPage.routeName,
+              arguments: ReaderArguments(
+                manga: manga,
+                chapterIndex: manga.lastReaded.chapterIndex,
+                pageIndex: manga.lastReaded.pageIndex,
+              ),
+            );
+          },
+        ),
+        TextButton(
+          child: const Text("Non"),
+          onPressed: () {
+            ScaffoldMessenger.of(context).clearMaterialBanners();
+          },
+        ),
+      ],
+    );
+
+    ScaffoldMessenger.of(context).showMaterialBanner(materialBanner);
   }
 
   @override
@@ -61,7 +87,7 @@ class LibraryPage extends StatelessWidget {
                 _showSnackBar(context, "SUCCESS");
               } else if (state is ShowChapters) {
                 if (state.manga.lastReaded != LastReaded.defaultValue()) {
-                  _showMangaLastReadSnackbar(context, state.manga);
+                  _showMangaLastReadMaterialBanner(context, state.manga);
                 }
               }
             },

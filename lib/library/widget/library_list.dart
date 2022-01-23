@@ -2,7 +2,6 @@ import "package:cross_reader/library/bloc/library_bloc.dart";
 import "package:cross_reader/library/widget/library_list_chapter_item.dart";
 import "package:cross_reader/library/widget/library_list_image_item.dart";
 import "package:cross_reader/library/widget/library_list_manga_item.dart";
-import 'package:cross_reader/model/manga.dart';
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 

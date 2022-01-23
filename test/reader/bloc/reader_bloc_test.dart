@@ -1,8 +1,9 @@
 import "package:bloc_test/bloc_test.dart";
 import "package:cross_reader/reader/bloc/reader_bloc.dart";
 import "package:flutter_test/flutter_test.dart";
+import 'package:mocktail/mocktail.dart';
 
-import '../../utils/function.dart';
+import '../../utils/mock_class.dart';
 import "../../utils/mock_data.dart";
 
 void main() {
@@ -31,8 +32,8 @@ void main() {
   //     currentChapterIndex: 0,
   //     currentPageIndex: 0,
   //   ),
-  //   act: (bloc) => const ReaderNextEvent(),
-  //   wait: const Duration(milliseconds: 1000),
+  //   act: (bloc) => bloc.add(const ReaderNextEvent()),
+  //   wait: const Duration(milliseconds: 2000),
   //   expect: () => [
   //     NextPageState(
   //       currentManga: mockManga,
@@ -63,7 +64,7 @@ void main() {
   //   ],
   // );
 
-  // next last page
+  // // next last page
   // blocTest<ReaderBloc, ReaderState>(
   //   "It should emit a LastPageInManga state triggering NextEvent on last page",
   //   build: () => ReaderBloc(
@@ -81,7 +82,6 @@ void main() {
   //           .pagesPath[mockManga.chapters[0].pagesPath.length - 1],
   //     )
   //   ],
-
   // );
   // previous
 

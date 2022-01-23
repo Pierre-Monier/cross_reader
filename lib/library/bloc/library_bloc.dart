@@ -29,7 +29,7 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
   }
 
   /// list of type file that the library can handle
-  static const validImagesFiles = ["png", "pdf", "jpeg", "jpg"];
+  static const validImagesFiles = ["png", "jpeg", "jpg"];
 
   /// this is use to limit the nested level of import
   ///

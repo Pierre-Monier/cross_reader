@@ -1,4 +1,5 @@
 import "package:cross_reader/model/chapter.dart";
+import "package:cross_reader/model/last_readed.dart";
 import "package:cross_reader/model/manga.dart";
 import "package:hive_flutter/hive_flutter.dart";
 
@@ -15,9 +16,10 @@ class BoxService {
 
   Future<void> _createBox() async {
     await Hive.initFlutter();
-    Hive.registerAdapter<Manga>(MangaAdapter());
-    // ignore: cascade_invocations
-    Hive.registerAdapter<Chapter>(ChapterAdapter());
+    Hive
+      ..registerAdapter<Manga>(MangaAdapter())
+      ..registerAdapter<Chapter>(ChapterAdapter())
+      ..registerAdapter<LastReaded>(LastReadedAdapter());
     _mangaBox = await Hive.openBox<Manga>(_mangaBoxKey);
   }
 
@@ -37,5 +39,11 @@ class BoxService {
   Future<int> cleanMangas() async {
     await _boxCreated;
     return _mangaBox.clear();
+  }
+
+  /// just testing for now
+  Future<void> updateManga(Manga manga) async {
+    await _boxCreated;
+    return _mangaBox.put(manga.key, manga);
   }
 }

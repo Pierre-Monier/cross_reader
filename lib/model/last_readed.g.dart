@@ -1,40 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'manga.dart';
+part of 'last_readed.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class MangaAdapter extends TypeAdapter<Manga> {
+class LastReadedAdapter extends TypeAdapter<LastReaded> {
   @override
-  final int typeId = 1;
+  final int typeId = 3;
 
   @override
-  Manga read(BinaryReader reader) {
+  LastReaded read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Manga(
-      name: fields[0] as String,
-      chapters: (fields[1] as List).cast<Chapter>(),
-      onDevicePath: fields[2] as String,
-    )..lastReaded = fields[3] as LastReaded;
+    return LastReaded(
+      chapterIndex: fields[0] as int,
+      pageIndex: fields[1] as int,
+    );
   }
 
   @override
-  void write(BinaryWriter writer, Manga obj) {
+  void write(BinaryWriter writer, LastReaded obj) {
     writer
-      ..writeByte(4)
-      ..writeByte(0)
-      ..write(obj.name)
-      ..writeByte(1)
-      ..write(obj.chapters)
       ..writeByte(2)
-      ..write(obj.onDevicePath)
-      ..writeByte(3)
-      ..write(obj.lastReaded);
+      ..writeByte(0)
+      ..write(obj.chapterIndex)
+      ..writeByte(1)
+      ..write(obj.pageIndex);
   }
 
   @override
@@ -43,7 +38,7 @@ class MangaAdapter extends TypeAdapter<Manga> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MangaAdapter &&
+      other is LastReadedAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

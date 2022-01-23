@@ -3,6 +3,7 @@ import "dart:io";
 import "package:bloc_test/bloc_test.dart";
 import "package:cross_reader/library/bloc/backup_bloc.dart";
 import "package:cross_reader/library/bloc/library_bloc.dart";
+import "package:cross_reader/model/chapter.dart";
 import "package:cross_reader/model/manga.dart";
 import "package:cross_reader/repository/chapter_repository.dart";
 import "package:cross_reader/repository/manga_repository.dart";
@@ -30,6 +31,8 @@ class MockBoxService extends Mock implements BoxService {}
 class FakeDirectory extends Fake implements Directory {}
 
 class FakeManga extends Fake implements Manga {}
+
+class FakeChapter extends Fake implements Chapter {}
 
 class MockFilePicker extends Mock implements FilePicker {}
 

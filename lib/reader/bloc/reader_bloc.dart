@@ -1,4 +1,5 @@
 import "package:cross_reader/model/chapter.dart";
+import "package:cross_reader/model/last_readed.dart";
 import "package:cross_reader/model/manga.dart";
 import "package:equatable/equatable.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -63,9 +64,7 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
       _currentPageIndex++;
     }
 
-    _updateLastReadedPage();
-
-    return emit(
+    emit(
       NextPageState(
         currentManga: _manga,
         currentChapter: currentChapter,
@@ -73,6 +72,8 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
         isNextChapter: isNextChapter,
       ),
     );
+
+    _updateLastReadedPage();
   }
 
   void _updateLastReadedPage() {
@@ -87,6 +88,8 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
           pageIndex: _currentPageIndex,
         )
         ..save();
+
+      // GetIt.I.get<BoxService>().updateManga(_manga);
     }
   }
 
