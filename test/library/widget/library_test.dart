@@ -186,7 +186,7 @@ void main() {
       ),
     );
 
-    libraryBloc.add(ListImages(mockManga.chapters[0].pagesPath, mockManga, 0));
+    libraryBloc.add(ListPages(mockManga.chapters[0].pagesPath, mockManga, 0));
     // We wait for the bloc to stream the new state
     await tester.pumpAndSettle(const Duration(seconds: 1));
 

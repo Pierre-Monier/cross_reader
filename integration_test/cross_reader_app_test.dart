@@ -1,8 +1,6 @@
 import "package:cross_reader/library/library.dart";
 import "package:cross_reader/library/widget/importer_fab.dart";
-import "package:cross_reader/library/widget/library_list_chapter_item.dart";
-import "package:cross_reader/library/widget/library_list_image_item.dart";
-import "package:cross_reader/library/widget/library_list_manga_item.dart";
+import "package:cross_reader/library/widget/library_item.dart";
 import "package:cross_reader/main.dart";
 import "package:cross_reader/reader/widget/reader_page.dart";
 import "package:cross_reader/repository/chapter_repository.dart";
@@ -60,21 +58,21 @@ void main() {
     await tester.tap(importerFabFinder);
     await tester.pumpAndSettle();
 
-    final mangaItemFinder = find.byType(LibraryListMangaItem);
+    final mangaItemFinder = find.byType(LibraryItem);
 
     expect(mangaItemFinder, findsOneWidget);
 
     await tester.tap(mangaItemFinder);
     await tester.pumpAndSettle();
 
-    final chapterItemFinder = find.byType(LibraryListChapterItem);
+    final chapterItemFinder = find.byType(LibraryItem);
 
     expect(chapterItemFinder, findsOneWidget);
 
     await tester.tap(chapterItemFinder);
     await tester.pumpAndSettle();
 
-    final imageItemFinder = find.byType(LibraryListPageItem);
+    final imageItemFinder = find.byType(LibraryItem);
 
     expect(imageItemFinder, findsNWidgets(onDevicemockImagesPath.length));
 

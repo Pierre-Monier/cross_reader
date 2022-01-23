@@ -1,7 +1,7 @@
 import "package:cross_reader/library/bloc/library_bloc.dart";
-import "package:cross_reader/library/widget/library_list_chapter_item.dart";
-import "package:cross_reader/library/widget/library_list_image_item.dart";
-import "package:cross_reader/library/widget/library_list_manga_item.dart";
+import "package:cross_reader/library/widget/library_item.dart";
+import "package:cross_reader/reader/model/reader_arguments.dart";
+import "package:cross_reader/reader/widget/reader_page.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 
@@ -23,20 +23,63 @@ class LibraryList extends StatelessWidget {
     }
   }
 
-  Widget _getItem(LibraryState state, int index) {
+  Widget _getItem(BuildContext context, LibraryState state, int index) {
+    var imagePath = "";
+    var text = "";
+    var onTap = () {};
+
     if (state is ShowMangas) {
-      return LibraryListMangaItem(state.mangas[index]);
+      final stateManga = state.mangas[index];
+
+      imagePath = stateManga.chapters[0].pagesPath[0];
+      text = stateManga.name;
+      onTap = () {
+        BlocProvider.of<LibraryBloc>(context).add(
+          ListChapters(
+            stateManga.chapters,
+            stateManga,
+          ),
+        );
+      };
     } else if (state is ShowChapters) {
-      return LibraryListChapterItem(state.manga, index);
+      final stateManga = state.manga;
+      final stateChapter = state.chapters[index];
+
+      imagePath = stateChapter.pagesPath[0];
+      text = stateChapter.name;
+      onTap = () {
+        BlocProvider.of<LibraryBloc>(context).add(
+          ListPages(
+            stateChapter.pagesPath,
+            stateManga,
+            index,
+          ),
+        );
+      };
     } else if (state is ShowPages) {
-      return LibraryListPageItem(
-        manga: state.manga,
-        chapterIndex: state.chapterIndex,
-        pageIndex: index,
-      );
-    } else {
-      throw Exception("In LibraryList with state: $state");
+      final stateManga = state.manga;
+      final stateChapterIndex = state.chapterIndex;
+      final stateChapter = stateManga.chapters[stateChapterIndex];
+
+      imagePath = stateChapter.pagesPath[index];
+      text = index.toString();
+      onTap = () {
+        Navigator.of(context).pushNamed(
+          ReaderPage.routeName,
+          arguments: ReaderArguments(
+            manga: stateManga,
+            chapterIndex: stateChapterIndex,
+            pageIndex: index,
+          ),
+        );
+      };
     }
+
+    return LibraryItem(
+      imagePath: imagePath,
+      text: text,
+      onTap: onTap,
+    );
   }
 
   @override
@@ -52,7 +95,7 @@ class LibraryList extends StatelessWidget {
             ),
             itemCount: _getItemCount(state),
             itemBuilder: (BuildContext ctx, index) {
-              return _getItem(state, index);
+              return _getItem(context, state, index);
             },
           );
         } else {

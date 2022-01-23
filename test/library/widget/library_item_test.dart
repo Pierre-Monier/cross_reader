@@ -1,5 +1,4 @@
-import "package:cross_reader/library/bloc/library_bloc.dart";
-import "package:cross_reader/library/widget/library_list_manga_item.dart";
+import "package:cross_reader/library/widget/library_item.dart";
 import "package:cross_reader/repository/manga_repository.dart";
 import "package:flutter/widgets.dart";
 import "package:flutter_test/flutter_test.dart";
@@ -10,6 +9,8 @@ import "../../utils/function.dart";
 import "../../utils/mock_class.dart";
 import "../../utils/mock_data.dart";
 
+const text = "toto";
+const imagePath = "/fake";
 void main() {
   setUpAll(() {
     final mockMangaRepository = MockMangaRepository();
@@ -17,40 +18,51 @@ void main() {
     when(() => mockMangaRepository.mangaList)
         .thenAnswer((_) => Future.value([mockManga]));
   });
-  testWidgets("It should render the title of the manga",
-      (WidgetTester tester) async {
+  testWidgets("It should render a text", (WidgetTester tester) async {
     await tester.pumpWidget(
-      withMaterialAppAndWidgetAncestor(LibraryListMangaItem(mockManga)),
+      withMaterialAppAndWidgetAncestor(
+        LibraryItem(imagePath: imagePath, text: text, onTap: () {}),
+      ),
     );
 
-    final titleFinder = find.text(mockManga.name);
+    final titleFinder = find.text(text);
     expect(titleFinder, findsOneWidget);
   });
 
   testWidgets("It should render an image", (WidgetTester tester) async {
     await tester.pumpWidget(
-      withMaterialAppAndWidgetAncestor(LibraryListMangaItem(mockManga)),
+      withMaterialAppAndWidgetAncestor(
+        LibraryItem(imagePath: imagePath, text: text, onTap: () {}),
+      ),
     );
 
     final imageFinder = find.byType(Image);
     expect(imageFinder, findsOneWidget);
   });
 
-  testWidgets("It should send a ListChapters event on tap",
+  testWidgets("It should call the onTap function onTap",
       (WidgetTester tester) async {
-    final bloc = LibraryBloc();
+    var toIncrement = 1;
 
     await tester.pumpWidget(
-      withMaterialAppAndWidgetAncestorAndBlocProvider<LibraryBloc>(
-        LibraryListMangaItem(mockManga),
-        bloc,
+      withMaterialAppAndWidgetAncestor(
+        LibraryItem(
+          imagePath: imagePath,
+          text: text,
+          onTap: () {
+            toIncrement += 1;
+          },
+        ),
       ),
     );
 
-    final mangaItemFinder = find.byType(LibraryListMangaItem);
-    await tester.tap(mangaItemFinder);
+    final chapterItemFinder = find.byType(LibraryItem);
+    await tester.tap(chapterItemFinder);
     await tester.pumpAndSettle();
 
-    expect(bloc.state, equals(ShowChapters(mockManga.chapters, mockManga)));
+    expect(
+      toIncrement,
+      2,
+    );
   });
 }

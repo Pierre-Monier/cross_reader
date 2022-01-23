@@ -21,7 +21,7 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
       (event, emit) => emit(ShowChapters(event.chapters, event.manga)),
     );
     on<ListMangas>((event, emit) => _listMangas(emit));
-    on<ListImages>(
+    on<ListPages>(
       (event, emit) =>
           emit(ShowPages(event.imagesPath, event.manga, event.chapterIndex)),
     );

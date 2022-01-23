@@ -28,10 +28,10 @@ class ListChapters extends LibraryEvent {
 }
 
 /// `ListPages` event represents the event of listing pages of a `Chapter`
-class ListImages extends LibraryEvent {
+class ListPages extends LibraryEvent {
   /// needs all images path of the chapter and the `Chapter` object
   /// and the `Manga` object
-  ListImages(this.imagesPath, this.manga, this.chapterIndex);
+  ListPages(this.imagesPath, this.manga, this.chapterIndex);
 
   /// All images path of the chapter
   final List<String> imagesPath;

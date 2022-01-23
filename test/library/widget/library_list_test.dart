@@ -2,9 +2,7 @@ import "package:bloc_test/bloc_test.dart";
 import "package:cross_reader/library/bloc/backup_bloc.dart";
 import "package:cross_reader/library/bloc/library_bloc.dart";
 import "package:cross_reader/library/library.dart";
-import "package:cross_reader/library/widget/library_list_chapter_item.dart";
-import "package:cross_reader/library/widget/library_list_image_item.dart";
-import "package:cross_reader/library/widget/library_list_manga_item.dart";
+import "package:cross_reader/library/widget/library_item.dart";
 import "package:cross_reader/repository/manga_repository.dart";
 import "package:flutter_test/flutter_test.dart";
 import "package:get_it/get_it.dart";
@@ -48,7 +46,7 @@ void main() {
     );
     await tester.pump(Duration.zero);
 
-    final libraryItemFinder = find.byType(LibraryListMangaItem);
+    final libraryItemFinder = find.byType(LibraryItem);
     expect(libraryItemFinder, findsOneWidget);
   });
 
@@ -72,7 +70,7 @@ void main() {
     );
     await tester.pump(Duration.zero);
 
-    final libraryItemFinder = find.byType(LibraryListChapterItem);
+    final libraryItemFinder = find.byType(LibraryItem);
     expect(libraryItemFinder, findsWidgets);
   });
 
@@ -97,7 +95,7 @@ void main() {
     );
     await tester.pump(Duration.zero);
 
-    final libraryItemFinder = find.byType(LibraryListPageItem);
+    final libraryItemFinder = find.byType(LibraryItem);
     expect(libraryItemFinder, findsWidgets);
   });
 }

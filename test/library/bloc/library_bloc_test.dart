@@ -214,10 +214,10 @@ void main() {
   );
 
   blocTest<LibraryBloc, LibraryState>(
-    "It should emit a ShowPages state when triggering the ListImages",
+    "It should emit a ShowPages state when triggering the ListPages",
     build: () => LibraryBloc(),
     act: (bloc) {
-      return bloc.add(ListImages(mockImagesPath, mockManga, 0));
+      return bloc.add(ListPages(mockImagesPath, mockManga, 0));
     },
     wait: const Duration(milliseconds: 300),
     skip: 1,
