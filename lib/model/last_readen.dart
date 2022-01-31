@@ -1,16 +1,16 @@
 import "package:hive/hive.dart";
 
-part "last_readed.g.dart";
+part "last_readen.g.dart";
 
 /// Represent the last data a user has read
 @HiveType(typeId: 3)
-class LastReaded {
+class LastReaden {
   /// Represent the last data a user has read
-  const LastReaded({required this.chapterIndex, required this.pageIndex});
+  const LastReaden({required this.chapterIndex, required this.pageIndex});
 
-  /// default LastReaded value (chapterIndex: 0, pageIndex: 0)
-  factory LastReaded.defaultValue() =>
-      const LastReaded(chapterIndex: 0, pageIndex: 0);
+  /// default LastReaden value (chapterIndex: 0, pageIndex: 0)
+  factory LastReaden.defaultValue() =>
+      const LastReaden(chapterIndex: 0, pageIndex: 0);
 
   /// index of the last readed chapter
   @HiveField(0)

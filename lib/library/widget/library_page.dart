@@ -4,7 +4,7 @@ import "package:cross_reader/library/widget/backup_failed_dialog.dart";
 import "package:cross_reader/library/widget/backup_loading_dialog.dart";
 import "package:cross_reader/library/widget/backup_success_dialog.dart";
 import "package:cross_reader/library/widget/library_page_scaffold.dart";
-import "package:cross_reader/model/last_readed.dart";
+import "package:cross_reader/model/last_readen.dart";
 import "package:cross_reader/model/manga.dart";
 import "package:cross_reader/reader/model/reader_arguments.dart";
 import "package:cross_reader/reader/widget/reader_page.dart";
@@ -52,8 +52,8 @@ class LibraryPage extends StatelessWidget {
               ReaderPage.routeName,
               arguments: ReaderArguments(
                 manga: manga,
-                chapterIndex: manga.lastReaded.chapterIndex,
-                pageIndex: manga.lastReaded.pageIndex,
+                chapterIndex: manga.lastReaden.chapterIndex,
+                pageIndex: manga.lastReaden.pageIndex,
               ),
             );
           },
@@ -86,9 +86,11 @@ class LibraryPage extends StatelessWidget {
               } else if (state is ImportSucceed) {
                 _showSnackBar(context, "SUCCESS");
               } else if (state is ShowChapters) {
-                if (state.manga.lastReaded != LastReaded.defaultValue()) {
+                if (state.manga.lastReaden != LastReaden.defaultValue()) {
                   _showMangaLastReadMaterialBanner(context, state.manga);
                 }
+              } else if (state is ShowMangas) {
+                ScaffoldMessenger.of(context).clearMaterialBanners();
               }
             },
           ),

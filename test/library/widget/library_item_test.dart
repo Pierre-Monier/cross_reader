@@ -9,7 +9,8 @@ import "../../utils/function.dart";
 import "../../utils/mock_class.dart";
 import "../../utils/mock_data.dart";
 
-const text = "toto";
+const textData = "toto";
+const text = Text(textData);
 const imagePath = "/fake";
 void main() {
   setUpAll(() {
@@ -21,18 +22,18 @@ void main() {
   testWidgets("It should render a text", (WidgetTester tester) async {
     await tester.pumpWidget(
       withMaterialAppAndWidgetAncestor(
-        LibraryItem(imagePath: imagePath, text: text, onTap: () {}),
+        LibraryItem(imagePath: imagePath, child: text, onTap: () {}),
       ),
     );
 
-    final titleFinder = find.text(text);
+    final titleFinder = find.text(textData);
     expect(titleFinder, findsOneWidget);
   });
 
   testWidgets("It should render an image", (WidgetTester tester) async {
     await tester.pumpWidget(
       withMaterialAppAndWidgetAncestor(
-        LibraryItem(imagePath: imagePath, text: text, onTap: () {}),
+        LibraryItem(imagePath: imagePath, child: text, onTap: () {}),
       ),
     );
 
@@ -48,7 +49,7 @@ void main() {
       withMaterialAppAndWidgetAncestor(
         LibraryItem(
           imagePath: imagePath,
-          text: text,
+          child: text,
           onTap: () {
             toIncrement += 1;
           },

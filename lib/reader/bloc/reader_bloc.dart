@@ -1,5 +1,5 @@
 import "package:cross_reader/model/chapter.dart";
-import "package:cross_reader/model/last_readed.dart";
+import "package:cross_reader/model/last_readen.dart";
 import "package:cross_reader/model/manga.dart";
 import "package:equatable/equatable.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -77,13 +77,13 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
   }
 
   void _updateLastReadedPage() {
-    final mangaLastReaded = _manga.lastReaded;
+    final mangaLastReaded = _manga.lastReaden;
 
     if (mangaLastReaded.chapterIndex < _currentChapterIndex ||
         (mangaLastReaded.chapterIndex == _currentChapterIndex &&
             mangaLastReaded.pageIndex < _currentPageIndex)) {
       _manga
-        ..lastReaded = LastReaded(
+        ..lastReaden = LastReaden(
           chapterIndex: _currentChapterIndex,
           pageIndex: _currentPageIndex,
         )

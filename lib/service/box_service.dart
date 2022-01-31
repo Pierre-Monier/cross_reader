@@ -1,5 +1,5 @@
 import "package:cross_reader/model/chapter.dart";
-import "package:cross_reader/model/last_readed.dart";
+import "package:cross_reader/model/last_readen.dart";
 import "package:cross_reader/model/manga.dart";
 import "package:hive_flutter/hive_flutter.dart";
 
@@ -19,7 +19,7 @@ class BoxService {
     Hive
       ..registerAdapter<Manga>(MangaAdapter())
       ..registerAdapter<Chapter>(ChapterAdapter())
-      ..registerAdapter<LastReaded>(LastReadedAdapter());
+      ..registerAdapter<LastReaden>(LastReadedAdapter());
     _mangaBox = await Hive.openBox<Manga>(_mangaBoxKey);
   }
 

@@ -20,7 +20,7 @@ class MangaAdapter extends TypeAdapter<Manga> {
       name: fields[0] as String,
       chapters: (fields[1] as List).cast<Chapter>(),
       onDevicePath: fields[2] as String,
-    )..lastReaded = fields[3] as LastReaded;
+    )..lastReaden = fields[3] as LastReaden;
   }
 
   @override
@@ -34,7 +34,7 @@ class MangaAdapter extends TypeAdapter<Manga> {
       ..writeByte(2)
       ..write(obj.onDevicePath)
       ..writeByte(3)
-      ..write(obj.lastReaded);
+      ..write(obj.lastReaden);
   }
 
   @override

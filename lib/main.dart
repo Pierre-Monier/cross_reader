@@ -12,9 +12,11 @@ import "package:cross_reader/service/backup_service.dart";
 import "package:cross_reader/service/box_service.dart";
 import "package:cross_reader/service/file_picker_wrapper.dart";
 import "package:cross_reader/service/share_service.dart";
+import "package:cross_reader/util/app_color.dart";
 import "package:file_picker/file_picker.dart";
 import "package:flutter/material.dart";
 import "package:get_it/get_it.dart";
+import "package:google_fonts/google_fonts.dart";
 import "package:path_provider/path_provider.dart";
 
 /// Register all services and repositories
@@ -46,7 +48,21 @@ class CrossReaderApp extends StatelessWidget {
     return MaterialApp(
       title: "CrossReader",
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        textTheme: GoogleFonts.nunitoTextTheme(),
+        appBarTheme: const AppBarTheme(
+          color: mainColor,
+        ),
+        floatingActionButtonTheme:
+            const FloatingActionButtonThemeData(backgroundColor: mainColor),
+        primaryColor: mainColor,
+        scaffoldBackgroundColor: backgroundColor,
+        cardTheme: const CardTheme(
+          color: secondColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          shadowColor: textColor,
+        ),
       ),
       home: LibraryPage(
         libraryBloc: LibraryBloc(),

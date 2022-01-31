@@ -7,7 +7,7 @@ class LibraryItem extends StatelessWidget {
   const LibraryItem({
     required this.onTap,
     required this.imagePath,
-    required this.text,
+    required this.child,
     Key? key,
   }) : super(key: key);
 
@@ -17,25 +17,34 @@ class LibraryItem extends StatelessWidget {
   /// The path to the image to display.
   final String imagePath;
 
-  /// The text to display.
-  final String text;
+  /// The rest of the data to display
+  /// below the image.
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        alignment: Alignment.center,
-        child: Column(
-          children: [
-            Expanded(
-              child: Image.file(
-                File(imagePath),
-                fit: BoxFit.contain,
-              ),
-            ),
-            Text(text)
-          ],
+    return Card(
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          alignment: Alignment.center,
+          child: LayoutBuilder(
+            builder: (context, constrains) {
+              return Column(
+                children: [
+                  Expanded(
+                    child: Image.file(
+                      File(imagePath),
+                      width: constrains.maxWidth,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child,
+                ],
+              );
+            },
+          ),
         ),
       ),
     );

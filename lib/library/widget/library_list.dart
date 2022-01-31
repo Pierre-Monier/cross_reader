@@ -1,7 +1,11 @@
 import "package:cross_reader/library/bloc/library_bloc.dart";
 import "package:cross_reader/library/widget/library_item.dart";
+import "package:cross_reader/library/widget/library_item_chapter_child.dart";
+import "package:cross_reader/library/widget/library_item_manga_child.dart";
+import "package:cross_reader/library/widget/library_item_page_child.dart";
 import "package:cross_reader/reader/model/reader_arguments.dart";
 import "package:cross_reader/reader/widget/reader_page.dart";
+import "package:cross_reader/util/app_spacing.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 
@@ -24,15 +28,17 @@ class LibraryList extends StatelessWidget {
   }
 
   Widget _getItem(BuildContext context, LibraryState state, int index) {
-    var imagePath = "";
-    var text = "";
-    var onTap = () {};
+    late String imagePath;
+    late Widget child;
+    late VoidCallback onTap;
 
     if (state is ShowMangas) {
       final stateManga = state.mangas[index];
 
       imagePath = stateManga.chapters[0].pagesPath[0];
-      text = stateManga.name;
+      child = LibraryItemMangaChild(
+        manga: stateManga,
+      );
       onTap = () {
         BlocProvider.of<LibraryBloc>(context).add(
           ListChapters(
@@ -46,7 +52,11 @@ class LibraryList extends StatelessWidget {
       final stateChapter = state.chapters[index];
 
       imagePath = stateChapter.pagesPath[0];
-      text = stateChapter.name;
+      child = LibraryItemChapterChild(
+        manga: stateManga,
+        chapterIndex: index,
+      );
+
       onTap = () {
         BlocProvider.of<LibraryBloc>(context).add(
           ListPages(
@@ -62,7 +72,10 @@ class LibraryList extends StatelessWidget {
       final stateChapter = stateManga.chapters[stateChapterIndex];
 
       imagePath = stateChapter.pagesPath[index];
-      text = index.toString();
+      child = LibraryItemPageChild(
+        pageName: index.toString(),
+      );
+
       onTap = () {
         Navigator.of(context).pushNamed(
           ReaderPage.routeName,
@@ -77,8 +90,11 @@ class LibraryList extends StatelessWidget {
 
     return LibraryItem(
       imagePath: imagePath,
-      text: text,
       onTap: onTap,
+      child: Padding(
+        padding: AppSpacing.smallPadding,
+        child: child,
+      ),
     );
   }
 
@@ -89,7 +105,7 @@ class LibraryList extends StatelessWidget {
         if (state is LibraryShowState) {
           return GridView.builder(
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 200,
+              maxCrossAxisExtent: 300,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
             ),

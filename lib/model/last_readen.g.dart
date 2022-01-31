@@ -1,29 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'last_readed.dart';
+part of 'last_readen.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class LastReadedAdapter extends TypeAdapter<LastReaded> {
+class LastReadedAdapter extends TypeAdapter<LastReaden> {
   @override
   final int typeId = 3;
 
   @override
-  LastReaded read(BinaryReader reader) {
+  LastReaden read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return LastReaded(
+    return LastReaden(
       chapterIndex: fields[0] as int,
       pageIndex: fields[1] as int,
     );
   }
 
   @override
-  void write(BinaryWriter writer, LastReaded obj) {
+  void write(BinaryWriter writer, LastReaden obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
