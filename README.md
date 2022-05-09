@@ -1,3 +1,3 @@
 # cross_reader
 
-A manga reader app
+A manga reader app - wip
